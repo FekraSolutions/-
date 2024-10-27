@@ -32,6 +32,43 @@ body {
             text-align: center;
             margin-bottom: 20px;
         }
+        /* Login box styling */
+        .login-box {
+            border: 1px solid black;
+            padding: 20px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: right;
+        }
+
+        /* Label styling */
+        label {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        /* Textbox styling */
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        /* Button styling */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
         /* Splitter line */
         .splitter {
             width: 100%;
@@ -119,6 +156,22 @@ body {
     </div>
     <!-- Title -->
     <div class="title">تطبيق محلات مواد البناء</div>
+ <!-- Login Box -->
+    <div class="login-box">
+        <!-- Username -->
+        <label for="username">اسم المستخدم</label>
+        <input type="text" id="username" placeholder="Enter username">
+
+        <!-- Password -->
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" placeholder="Enter password">
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button>دخول</button>
+            <button>إنشاء حساب جديد</button>
+        </div>
+    </div>
     <!-- Splitter line -->
     <div class="splitter"></div>
     <!-- Social media icons -->
