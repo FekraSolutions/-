@@ -101,50 +101,59 @@ body {
             font-size: 16px;
             padding: 5px;
         }
-        #moreApps {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-weight: bold;
-            color: red;
-            cursor: pointer; /* Hand cursor on hover */
-        }
-        #donateLabel {
-            position: absolute;
-            top: 60px; /* Adjust the value as needed */
-            right: 10px;
-            font-weight: bold;
-            color: red;
-            cursor: pointer; /* Hand cursor on hover */
-        }
-        #dropdown {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 10px;
-            background-color: #ccc; /* Set the dropdown list to grey */
-            border: 1px solid black;
-            z-index: 10;
-        }
-        #dropdown div {
-            padding: 5px;
-            cursor: pointer;
-            background-color: #ccc; /* Default option background color */
-        }
-        #dropdown div:hover {
-            background-color: #bbb; /* Slightly darker grey on hover */
-        }
+/* Container for both elements */
+#topRightContainer {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-end; /* Align items to the right */
+    position: relative; /* Allow absolute positioning of dropdown if needed */
+    margin: 10px; /* Add some margin for spacing */
+}
+
+#moreApps {
+    font-weight: bold;
+    color: red;
+    cursor: pointer; /* Hand cursor on hover */
+}
+
+#donateLabel {
+    font-weight: bold;
+    color: red;
+    cursor: pointer; /* Hand cursor on hover */
+    margin-top: 5px; /* Space between elements */
+    font-size: 16px; /* Ensure font size remains */
+}
+
+#dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; /* Keep dropdown position absolute if needed */
+    right: 0; /* Align to the right */
+    background-color: #ccc; /* Set the dropdown list to grey */
+    border: 1px solid black;
+    z-index: 10;
+}
+
+#dropdown div {
+    padding: 5px;
+    cursor: pointer;
+    background-color: #ccc; /* Default option background color */
+}
+
+#dropdown div:hover {
+    background-color: #bbb; /* Slightly darker grey on hover */
+}
     </style>
 </head>
 <body>
-<div id="moreApps">More Free Apps</div>
-<div id="dropdown">
-    <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
-    <div>Loading2</div>
-    <div>Loading3</div>
+<div id="topRightContainer">
+    <div id="moreApps">More Free Apps</div>
+    <div id="donateLabel">ساهم في التطوير</div>
+    <div id="dropdown">
+        <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
+        <div>Loading2</div>
+        <div>Loading3</div>
+    </div>
 </div>
-    <div id="donateLabel" style="font-size: 16px; color: red; font-weight: bold;">ساهم في التطوير</div>
-    <div style="position: absolute; top: 10px; left: 10px;">
         <img src="Media/Tlogo.png" alt="Language" style="height: 40px;">
         <br>
         <img src="Media/Language.png" alt="Language" style="height: 40px; margin-left: 2px;">
