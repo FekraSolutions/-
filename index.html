@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تطبيق محلات مواد البناء</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">   
-    <!-- Meta Tags for Social Media -->
-    <meta property="og:title" content="تطبيق محلات مواد البناء" />
-    <meta property="og:description" content="كاشير، مراقبة مخزون، نقدية، أرصدة عملاء وموردين، والمزيد." />
-    <meta property="og:image" content="Media/Tlogo.png" /> <!-- Thumbnail for social media -->
+<meta property="og:description" content="كاشير، مراقبة مخزون، نقدية، أرصدة عملاء وموردين، والمزيد." />
+<meta property="og:image" content="Media/Tlogo.png" /> <!-- Thumbnail for social media -->
 
+    <style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Cairo', sans-serif;
+    position: relative;
+    flex-direction: column;
+    background-color: #F4E1BC; /* Light sand color, more yellowish */
+}
+        /* Title styling */
 <style>
     body {
         display: flex;
@@ -20,7 +23,6 @@
         flex-direction: column;
         background-color: #F4E1BC; /* Light sand color, more yellowish */
         margin: 0; /* Remove default margin */
-        position: relative; /* Added to position elements */
     }
 
     /* Title styling */
@@ -153,126 +155,133 @@
 
     /* Media Queries for Responsiveness */
     @media (max-width: 600px) {
-        .title {
-            font-size: 24px; /* Smaller title font on mobile */
+.title {
+            font-size: 28px;
+            font-weight: bold;
+            color: black;
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
         }
+        /* Login box styling */
+        .login-box {
+            border: 1px solid black;
+            padding: 20px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            text-align: right;
+            font-size: 24px; /* Smaller title font on mobile */
+}
 
+        /* Label styling */
+        label {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
         .login-box {
             width: 90%; /* Full width on small screens */
             padding: 15px; /* Less padding on mobile */
+}
+
+        /* Textbox styling */
+input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
         }
 
-        input[type="text"], input[type="password"] {
+        /* Button styling */
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
             font-size: 16px; /* Larger input font on mobile */
-        }
+}
 
-        button {
+button {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* Splitter line */
+        .splitter {
+            width: 100%;
+            height: 2px;
+            background-color: #ccc; /* Line color */
+            margin: 20px 0; /* Spacing around the line */
+        }
+        /* Social media icons */
+        .social-icons {
+            display: flex;
+            justify-content: center; /* Center the icons */
+            flex-wrap: wrap; /* Allow icons to wrap onto multiple lines */
+            max-width: 100%; /* Ensure it doesn't exceed the container width */
             font-size: 16px; /* Larger button font on mobile */
-        }
+}
 
-        .icon {
+.icon {
+            width: 50px; /* Icon width */
+            height: 50px; /* Icon height */
+            margin: 0 10px; /* Spacing between icons */
+            background-color: #f0f0f0; /* Placeholder background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px; /* Rounded corners */
+            cursor: pointer; /* Add this line */
+        }
+        .icon img {
+            width: 80%; /* Adjust image size */
+            height: auto; /* Keep aspect ratio */
             width: 40px; /* Smaller icons on mobile */
             height: 40px; /* Smaller icons on mobile */
-        }
+}
 
-        #languageSelect {
+#languageSelect {
+            font-size: 16px;
+            padding: 5px;
+        }
+        #moreApps {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-weight: bold;
+            color: red;
+            cursor: pointer; /* Hand cursor on hover */
+        }
+        #donateLabel {
+            position: absolute;
+            top: 60px; /* Adjust the value as needed */
+            right: 10px;
+            font-weight: bold;
+            color: red;
+            cursor: pointer; /* Hand cursor on hover */
             font-size: 14px; /* Smaller font size for dropdown */
+}
+        #dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 10px;
+            background-color: #ccc; /* Set the dropdown list to grey */
+            border: 1px solid black;
+            z-index: 10;
         }
-    }
-
-    /* Top right logo and language section */
-    #topRight {
-        position: absolute; /* Positioning for the top right corner */
-        top: 10px;
-        right: 10px;
-        display: flex;
-        align-items: center; /* Center vertically */
+        #dropdown div {
+            padding: 5px;
+            cursor: pointer;
+            background-color: #ccc; /* Default option background color */
+        }
+        #dropdown div:hover {
+            background-color: #bbb; /* Slightly darker grey on hover */
+        }
+    </style>
     }
 </style>
 
 </head>
 <body>
-    <div id="topRight">
-        <img src="Media/Tlogo.png" alt="Logo" style="height: 40px;">
-        <br>
-        <img src="Media/Language.png" alt="Language" style="height: 40px; margin-left: 2px;">
-        <select id="languageSelect" style="margin-left: 10px;">
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-        </select>
-    </div>
-    <div id="moreApps">More Free Apps</div>
-    <div id="dropdown">
-        <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
-        <div>Loading2</div>
-        <div>Loading3</div>
-    </div>
-    <div id="donateLabel" style="font-size: 16px; color: red; font-weight: bold;">ساهم في التطوير</div>
-    <!-- Title -->
-    <div class="title">تطبيق محلات مواد البناء</div>
-    <!-- Login Box -->
-    <div class="login-box">
-        <!-- Username -->
-        <label for="username">اسم المستخدم</label>
-        <input type="text" id="username" placeholder="Enter username">
-
-        <!-- Password -->
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" placeholder="Enter password">
-
-        <!-- Buttons -->
-        <div class="buttons">
-            <button>إنشاء حساب جديد</button>
-            <button>دخول</button>
-        </div>
-    </div>
-    <!-- Splitter line -->
-    <div class="splitter"></div>
-    <!-- Social media icons -->
-    <div class="social-icons">
-        <div class="icon" onclick="window.open('https://wa.me/201060469453?text=Hi', '_blank');"><img src="Media/whatsapp.png" alt="Whatsapp"></div>
-        <div class="icon" onclick="window.open('https://www.facebook.com/Fekra.business.Solutions', '_blank');"><img src="Media/facebook.png" alt="Facebook"></div>
-        <div class="icon" onclick="window.open('https://www.youtube.com/@fekrabusinesssolutions', '_blank');"><img src="Media/youtube.png" alt="YouTube"></div>
-        <div class="icon" onclick="window.open('https://www.tiktok.com/@fekra_remote_va', '_blank');"><img src="Media/Tiktok.png" alt="TikTok"></div>
-        <div class="icon" onclick="window.open('https://www.instagram.com/fekrasolutions/', '_blank');"><img src="Media/instagram.png" alt="Instagram"></div>
-        <div class="icon" onclick="window.open('https://x.com/Fekrasolutions', '_blank');"><img src="Media/twitter.png" alt="Twitter"></div>
-    </div>
-    <!-- Donation Message Container -->
-    <div id="donationMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px; z-index: 1000; text-align: center;">
-        <p style="font-size: 20px;">If you want to support this app, please click the button below!</p>
-        <button id="closeButton">Close</button>
-    </div>
-
-    <script>
-        // Toggle dropdown visibility
-        document.getElementById("moreApps").onclick = function() {
-            var dropdown = document.getElementById("dropdown");
-            dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === "" ? "block" : "none";
-        };
-
-        // Show donation message
-        document.getElementById("donateLabel").onclick = function() {
-            document.getElementById("donationMessage").style.display = "block";
-        };
-
-        // Language selection
-        document.getElementById("languageSelect").onchange = function() {
-            // Handle language change
-            updateAppLanguage(); // Make sure this function is defined
-        };
-
-        // Initialize dropdown as hidden
-        document.getElementById("dropdown").style.display = "none";
-
-        // Close button functionality for donation message
-        document.getElementById("closeButton").onclick = function() {
-            document.getElementById("donationMessage").style.display = "none"; // Hide the donation message
-        };
-
-        // Ensure all elements are properly initialized
-        window.onload = function() {
-            updateAppLanguage(); // Ensure this function is defined and implemented
-        };
-    </script>
-</body>
-</html>
+<div id="moreApps">More Free Apps</div>
