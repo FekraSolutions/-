@@ -20,6 +20,7 @@
         flex-direction: column;
         background-color: #F4E1BC; /* Light sand color, more yellowish */
         margin: 0; /* Remove default margin */
+        position: relative; /* Added to position elements */
     }
 
     /* Title styling */
@@ -178,29 +179,38 @@
             font-size: 14px; /* Smaller font size for dropdown */
         }
     }
+
+    /* Top right logo and language section */
+    #topRight {
+        position: absolute; /* Positioning for the top right corner */
+        top: 10px;
+        right: 10px;
+        display: flex;
+        align-items: center; /* Center vertically */
+    }
 </style>
 
 </head>
 <body>
-<div id="moreApps">More Free Apps</div>
-<div id="dropdown">
-    <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
-    <div>Loading2</div>
-    <div>Loading3</div>
-</div>
-    <div id="donateLabel" style="font-size: 16px; color: red; font-weight: bold;">ساهم في التطوير</div>
-    <div style="position: absolute; top: 10px; left: 10px;">
-        <img src="Media/Tlogo.png" alt="Language" style="height: 40px;">
+    <div id="topRight">
+        <img src="Media/Tlogo.png" alt="Logo" style="height: 40px;">
         <br>
         <img src="Media/Language.png" alt="Language" style="height: 40px; margin-left: 2px;">
-        <select id="languageSelect" style="margin-left: 10px; position: relative; top: -12px;">
+        <select id="languageSelect" style="margin-left: 10px;">
             <option value="ar">العربية</option>
             <option value="en">English</option>
         </select>
     </div>
+    <div id="moreApps">More Free Apps</div>
+    <div id="dropdown">
+        <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
+        <div>Loading2</div>
+        <div>Loading3</div>
+    </div>
+    <div id="donateLabel" style="font-size: 16px; color: red; font-weight: bold;">ساهم في التطوير</div>
     <!-- Title -->
     <div class="title">تطبيق محلات مواد البناء</div>
- <!-- Login Box -->
+    <!-- Login Box -->
     <div class="login-box">
         <!-- Username -->
         <label for="username">اسم المستخدم</label>
@@ -227,82 +237,41 @@
         <div class="icon" onclick="window.open('https://www.instagram.com/fekrasolutions/', '_blank');"><img src="Media/instagram.png" alt="Instagram"></div>
         <div class="icon" onclick="window.open('https://x.com/Fekrasolutions', '_blank');"><img src="Media/twitter.png" alt="Twitter"></div>
     </div>
-    <!-- Logo -->
-    <div style="text-align: center; margin-top: 20px;">
-        <img src="Media/Tlogo.png" alt="Logo" style="max-width: 35%; height: auto;">
-    </div>
     <!-- Donation Message Container -->
     <div id="donationMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px; z-index: 1000; text-align: center;">
-        <div id="donationText" style="color: black;"></div>
-        <button id="closeButton" style="margin-top: 10px;">Close</button>
+        <p style="font-size: 20px;">If you want to support this app, please click the button below!</p>
+        <button id="closeButton">Close</button>
     </div>
+
     <script>
-        function updateAppLanguage() {
-            var selectedLanguage = document.getElementById("languageSelect").value;
-            var moreAppsLabel = document.getElementById("moreApps"); // Add this line
-            var donateLabel = document.getElementById("donateLabel"); // Add this line
-            
-            if (selectedLanguage === "ar") {
-                moreAppsLabel.innerHTML = "تطبيقات مجانية أخرى"; // Arabic for "More Free Apps"
-                donateLabel.innerHTML = "ساهم في التطوير"; // Arabic for "Donate"
-            } else if (selectedLanguage === "en") {
-                moreAppsLabel.innerHTML = "More Free Apps"; // English for "More Free Apps"
-                donateLabel.innerHTML = "Donate"; // English for "Donate"
-            }
-        }
-
-        // Add event listener to language select dropdown
-        document.getElementById("languageSelect").addEventListener("change", updateAppLanguage);
-
-        // Call updateLabel on page load to set the initial label value
-        updateAppLanguage();
-
-            // Toggle dropdown visibility when "More Free Apps" button is clicked
-    document.getElementById("moreApps").addEventListener("click", function(event) {
-        event.stopPropagation(); // Stop the click from propagating to the document
-        var dropdown = document.getElementById("dropdown");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    });
-
-    // Close the dropdown if a click occurs outside of it
-    document.addEventListener("click", function(event) {
-        var dropdown = document.getElementById("dropdown");
-        var moreAppsButton = document.getElementById("moreApps");
-
-        // Check if the clicked element is not the dropdown itself or the button that opens it
-        if (!dropdown.contains(event.target) && event.target !== moreAppsButton) {
-            dropdown.style.display = "none"; // Close the dropdown
-        }
-    });
-        document.getElementById("donateLabel").onclick = function() {
-            var selectedLanguage = document.getElementById("languageSelect").value;
-            var donationText;
-
-            if (selectedLanguage === "ar") {
-                donationText = `
-                    أعجبك التطبيق؟ نحن نخصص أي مبالغ تدفعها في تطوير النسخة القادمة! شكرا لكم. 
-                    <strong>يمكنك إرسال فودافون كاش على رقم 01060469453</strong> 
-                    يمكنك المساهمة من كل بلدان العالم من خلال شراء أي من منتجاتنا في 
-                    <a href="https://www.upwork.com/freelancers/mazena107" target="_blank">آب ورك</a>, 
-                    أفضل منصة رقمية في العالم.
-                `;
-            } else {
-                donationText = `
-                    Liked the app? We will allocate any money you pay to develop the next version! Thank you. 
-                    <strong>Send Vodafone Cash to 01060469453</strong>. 
-                    You can contribute from all countries of the world by purchasing any of our products on 
-                    <a href="https://www.upwork.com/freelancers/mazena107" target="_blank">Upwork</a>, 
-                    the best digital platform in the world.
-                `;
-            }
-
-            document.getElementById("donationText").innerHTML = donationText;
-            document.getElementById("donationMessage").style.display = "block"; // Show the donation message
+        // Toggle dropdown visibility
+        document.getElementById("moreApps").onclick = function() {
+            var dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "none" || dropdown.style.display === "" ? "block" : "none";
         };
 
-        // Close button functionality
+        // Show donation message
+        document.getElementById("donateLabel").onclick = function() {
+            document.getElementById("donationMessage").style.display = "block";
+        };
+
+        // Language selection
+        document.getElementById("languageSelect").onchange = function() {
+            // Handle language change
+            updateAppLanguage(); // Make sure this function is defined
+        };
+
+        // Initialize dropdown as hidden
+        document.getElementById("dropdown").style.display = "none";
+
+        // Close button functionality for donation message
         document.getElementById("closeButton").onclick = function() {
             document.getElementById("donationMessage").style.display = "none"; // Hide the donation message
+        };
+
+        // Ensure all elements are properly initialized
+        window.onload = function() {
+            updateAppLanguage(); // Ensure this function is defined and implemented
         };
     </script>
 </body>
