@@ -148,10 +148,23 @@
         // Call updateLabel on page load to set the initial label value
         updateAppLanguage();
 
-        document.getElementById("moreApps").addEventListener("click", function() {
-            var dropdown = document.getElementById("dropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        });
+            // Toggle dropdown visibility when "More Free Apps" button is clicked
+    document.getElementById("moreApps").addEventListener("click", function(event) {
+        event.stopPropagation(); // Stop the click from propagating to the document
+        var dropdown = document.getElementById("dropdown");
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    // Close the dropdown if a click occurs outside of it
+    document.addEventListener("click", function(event) {
+        var dropdown = document.getElementById("dropdown");
+        var moreAppsButton = document.getElementById("moreApps");
+
+        // Check if the clicked element is not the dropdown itself or the button that opens it
+        if (!dropdown.contains(event.target) && event.target !== moreAppsButton) {
+            dropdown.style.display = "none"; // Close the dropdown
+        }
+    });
         document.getElementById("donateLabel").onclick = function() {
             var selectedLanguage = document.getElementById("languageSelect").value;
             var donationText;
@@ -182,23 +195,6 @@
         document.getElementById("closeButton").onclick = function() {
             document.getElementById("donationMessage").style.display = "none"; // Hide the donation message
         };
-    // Toggle dropdown visibility when "More Free Apps" button is clicked
-    document.getElementById("moreApps").addEventListener("click", function(event) {
-        event.stopPropagation(); // Stop the click from propagating to the document
-        var dropdown = document.getElementById("dropdown");
-        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-    });
-
-    // Close the dropdown if a click occurs outside of it
-    document.addEventListener("click", function(event) {
-        var dropdown = document.getElementById("dropdown");
-        var moreAppsButton = document.getElementById("moreApps");
-
-        // Check if the clicked element is not the dropdown itself or the button that opens it
-        if (!dropdown.contains(event.target) && event.target !== moreAppsButton) {
-            dropdown.style.display = "none"; // Close the dropdown
-        }
-    });
     </script>
 </body>
 </html>
