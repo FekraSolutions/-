@@ -97,7 +97,7 @@
             justify-content: center;
             align-items: center;
             border-radius: 8px; /* Rounded corners */
-            cursor: pointer; /* Add this line */
+            cursor: pointer; /* Hand cursor on hover */
         }
         .icon img {
             width: 80%; /* Adjust image size */
@@ -108,27 +108,29 @@
             padding: 5px;
         }
         #moreApps {
-            position: relative; /* Change to relative */
             font-weight: bold;
             color: red;
             cursor: pointer; /* Hand cursor on hover */
             margin: 10px 0; /* Margin for spacing */
+            text-align: center; /* Center text */
         }
         #donateLabel {
-            position: relative; /* Change to relative */
             font-weight: bold;
             color: red;
             cursor: pointer; /* Hand cursor on hover */
             margin: 10px 0; /* Margin for spacing */
+            text-align: center; /* Center text */
         }
         #dropdown {
-            display: none;
+            display: none; /* Hidden by default */
             position: absolute;
-            top: 50px; /* Adjusted value to avoid overlap */
-            right: 10px;
+            top: 80px; /* Adjusted value to avoid overlap */
+            left: 50%;
+            transform: translateX(-50%); /* Center dropdown */
             background-color: #ccc; /* Set the dropdown list to grey */
             border: 1px solid black;
             z-index: 10;
+            width: 200px; /* Set a width for dropdown */
         }
         #dropdown div {
             padding: 5px;
@@ -138,12 +140,24 @@
         #dropdown div:hover {
             background-color: #bbb; /* Slightly darker grey on hover */
         }
+        /* Responsive styling */
+        @media (max-width: 480px) {
+            .title {
+                font-size: 24px; /* Reduce title size for mobile */
+            }
+            .login-box {
+                max-width: 90%; /* Use more width on mobile */
+            }
+            button {
+                font-size: 12px; /* Reduce button text size for mobile */
+            }
+        }
     </style>
 </head>
 <body>
     <div id="moreApps">More Free Apps</div>
     <div id="dropdown">
-        <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank">EyeRelax-تطبيق راحة العين</a>
+        <a href="https://fekrasolutions.github.io/EyeRelax/" target="_blank" style="display: block; padding: 5px; color: black;">EyeRelax-تطبيق راحة العين</a>
         <div>Loading2</div>
         <div>Loading3</div>
     </div>
@@ -191,18 +205,19 @@
         <img src="Media/Tlogo.png" alt="Logo" style="max-width: 35%; height: auto;">
     </div>
     <!-- Donation Message Container -->
-    <div id="donationMessage" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid black; padding: 20px; z-index: 1000; text-align: center;">
-        <div id="donationText" style="color: black;"></div>
-        <button id="closeButton" style="margin-top: 10px;">Close</button>
+    <div id="donationMessage" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background: white; border: 1px solid black; padding: 20px; z-index: 1000;">
+        <p id="donationText"></p>
+        <button id="closeButton">Close</button>
     </div>
+
     <script>
+        // Change app language based on selection
         function updateAppLanguage() {
-            var selectedLanguage = document.getElementById("languageSelect").value;
-            var moreAppsLabel = document.getElementById("moreApps"); // Add this line
-            var donateLabel = document.getElementById("donateLabel"); // Add this line
-            
-            if (selectedLanguage === "ar") {
-                moreAppsLabel.innerHTML = "تطبيقات مجانية أخرى"; // Arabic for "More Free Apps"
+            var language = document.getElementById("languageSelect").value;
+            var moreAppsLabel = document.getElementById("moreApps");
+            var donateLabel = document.getElementById("donateLabel");
+            if (language === "ar") {
+                moreAppsLabel.innerHTML = "المزيد من التطبيقات المجانية"; // Arabic for "More Free Apps"
                 donateLabel.innerHTML = "ساهم في التطوير"; // Arabic for "Donate"
             } else {
                 moreAppsLabel.innerHTML = "More Free Apps"; // English for "More Free Apps"
