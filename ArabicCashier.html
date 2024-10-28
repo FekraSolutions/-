@@ -10,35 +10,62 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full height of the viewport */
+            height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
             flex-direction: column;
-            background-color: #F4E1BC; /* Light sand color, more yellowish */
+            background-color: #F4E1BC;
             position: relative;
         }
         .icon-container {
             display: flex;
             justify-content: flex-start;
             width: 100%;
-            padding: 10px; /* Add padding for spacing */
+            padding: 10px;
             box-sizing: border-box;
-            position: fixed; /* Keeps the icon at the top on scroll */
+            position: fixed;
             top: 0;
             left: 0;
         }
         .icon {
-            width: 35px; /* Responsive size */
-            height: auto; /* Keep aspect ratio */
+            width: 35px;
+            height: auto;
             cursor: pointer;
+        }
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 60px; /* Adds space between icon and button */
+            padding: 0 10px;
+        }
+        .full-width-button {
+            width: 100%;
+            padding: 15px 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF; /* Adjust as needed */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .full-width-button:hover {
+            background-color: #0056b3; /* Darken on hover */
+        }
     </style>
 </head>
 <body>
-    <!-- Icon container to hold the icon in the top left corner -->
     <div class="icon-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
+    </div>
+    
+    <!-- Button container to hold the full-width button -->
+    <div class="button-container">
+        <button class="full-width-button">كاش</button>
     </div>
 </body>
 </html>
