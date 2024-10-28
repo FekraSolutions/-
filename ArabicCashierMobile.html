@@ -77,7 +77,7 @@
     
     <!-- Button container to hold the full-width button -->
     <div class="button-container">
-        <button class="full-width-button" onclick="startCamera()">كاش</button>
+        <button class="full-width-button">كاش</button>
     </div>
 
     <!-- Camera preview square -->
@@ -86,7 +86,8 @@
     </div>
 
     <script>
-        function startCamera() {
+        // Automatically enable the camera when the page loads
+        window.onload = function() {
             const cameraPreview = document.getElementById('cameraPreview');
             const video = document.getElementById('video');
 
@@ -104,7 +105,7 @@
             .catch(error => {
                 console.error("Error accessing the camera: ", error);
             });
-        }
+        };
     </script>
 </body>
 </html>
