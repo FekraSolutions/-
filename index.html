@@ -296,7 +296,7 @@ document.getElementById("newAccountButton").onclick = function() {
 document.getElementById('loginButton').onclick = function() {
     var username = document.getElementById('username').value; // Get username from input
     var password = document.getElementById('password').value; // Get password from input
-
+    var selectedLanguage = document.getElementById('languageSelect').value; // Get the selected language
     // Create the URL with query parameters
     var url = `https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
