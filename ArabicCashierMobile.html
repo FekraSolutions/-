@@ -32,6 +32,16 @@
             height: auto;
             cursor: pointer;
         }
+        .camera-preview {
+            width: 300px; /* Adjust the size as needed */
+            height: 300px; /* Adjust the size as needed */
+            border: 2px solid #000; /* Optional border */
+            position: absolute;
+            top: 20px; /* Position from the top */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: black; /* Fallback color */
+        }
     </style>
 </head>
 <body>
@@ -40,5 +50,28 @@
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
     </div>
+    
+    <video id="camera-preview" class="camera-preview" autoplay></video>
+
+    <script>
+        // Access the back camera and stream it to the video element
+        async function startCamera() {
+            try {
+                const constraints = {
+                    video: {
+                        facingMode: 'environment', // Use back camera
+                    },
+                };
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.getElementById('camera-preview');
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error('Error accessing the camera:', error);
+            }
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
 </body>
 </html>
