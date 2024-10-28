@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الكاشير موبايل - تطبيق محلات أدوات البناء</title>
+    <title>موبايل كاشير - تطبيق محلات أدوات البناء</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -32,40 +32,6 @@
             height: auto;
             cursor: pointer;
         }
-        .button-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-top: 60px; /* Adds space between icon and button */
-            padding: 0 10px;
-        }
-        .full-width-button {
-            width: 100%;
-            padding: 15px 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: #fff;
-            background-color: #007BFF; /* Adjust as needed */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-align: center;
-        }
-        .full-width-button:hover {
-            background-color: #0056b3; /* Darken on hover */
-        }
-        .camera-preview {
-            width: 100vw; /* Full width of the viewport */
-            height: 100vw; /* Square - full width */
-            max-height: 100vh; /* Limit height to viewport */
-            background-color: black; /* Fallback color */
-            display: none; /* Hide initially */
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Cover the entire square */
-        }
     </style>
 </head>
 <body>
@@ -74,38 +40,5 @@
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
     </div>
-    
-    <!-- Button container to hold the full-width button -->
-    <div class="button-container">
-        <button class="full-width-button">كاش</button>
-    </div>
-
-    <!-- Camera preview square -->
-    <div class="camera-preview" id="cameraPreview">
-        <video id="video" autoplay playsinline></video>
-    </div>
-
-    <script>
-        // Automatically enable the camera when the page loads
-        window.onload = function() {
-            const cameraPreview = document.getElementById('cameraPreview');
-            const video = document.getElementById('video');
-
-            // Show the camera preview
-            cameraPreview.style.display = 'block';
-
-            // Request access to the back camera
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' } // Use the back camera
-            })
-            .then(stream => {
-                // Attach the camera stream to the video element
-                video.srcObject = stream;
-            })
-            .catch(error => {
-                console.error("Error accessing the camera: ", error);
-            });
-        };
-    </script>
 </body>
 </html>
