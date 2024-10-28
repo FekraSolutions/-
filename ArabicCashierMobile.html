@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الكاشير موبايل - تطبيق محلات أدوات البناء</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxing/0.18.6/zxing.min.js"></script>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            flex-direction: column;
             background-color: #F4E1BC;
             position: relative;
         }
@@ -36,7 +37,7 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-top: 60px; /* Adds space between icon and button */
+            margin-top: 60px; /* Space between icon and button */
             padding: 0 10px;
         }
         .full-width-button {
@@ -55,27 +56,19 @@
             background-color: #0056b3; /* Darken on hover */
         }
         .camera-preview {
-            width: 100vw; /* Full width of the viewport */
-            height: 100vw; /* Square - full width */
-            max-height: 100vh; /* Limit height to viewport */
-            background-color: black; /* Fallback color */
-            display: none; /* Hide initially */
-        }
-        video {
             width: 100%;
-            height: 100%;
-            object-fit: cover; /* Cover the entire square */
+            height: 100%; /* Full screen height */
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Behind other elements */
         }
-        .barcode-input {
-            width: 80%; /* Adjust as needed */
-            padding: 10px;
-            font-size: 18px;
-            margin-top: 20px; /* Spacing from camera */
-            text-align: center; /* Center text */
+        #barcodeResult {
+            margin-top: 20px; /* Space below camera */
+            font-size: 24px;
+            text-align: center;
         }
     </style>
-    <script src="https://cdn.rawgit.com/zxing/zxing/master/javascript/QRCode.js"></script>
-    <script src="https://cdn.rawgit.com/zxing/zxing/master/javascript/BrowserQRCodeReader.js"></script>
 </head>
 <body>
     <div class="icon-container">
@@ -83,54 +76,46 @@
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
     </div>
-    
-    <!-- Button container to hold the full-width button -->
+
     <div class="button-container">
         <button class="full-width-button">كاش</button>
     </div>
 
-    <!-- Camera preview square -->
-    <div class="camera-preview" id="cameraPreview">
-        <video id="video" autoplay playsinline></video>
-    </div>
-
-    <!-- Textbox for displaying barcode value -->
-    <input type="text" id="barcodeInput" class="barcode-input" placeholder="قيمة الباركود ستظهر هنا" readonly>
+    <!-- Video element for camera preview -->
+    <video id="video" class="camera-preview" autoplay playsinline></video>
+    <div id="barcodeResult">مسح باركود: </div>
 
     <script>
-        const barcodeInput = document.getElementById('barcodeInput');
+        const video = document.getElementById('video');
+        const barcodeResult = document.getElementById('barcodeResult');
+        const codeReader = new ZXing.BrowserMultiFormatReader();
 
-        // Automatically enable the camera when the page loads
-        window.onload = function() {
-            const cameraPreview = document.getElementById('cameraPreview');
-            const video = document.getElementById('video');
-
-            // Show the camera preview
-            cameraPreview.style.display = 'block';
-
-            // Request access to the back camera
-            navigator.mediaDevices.getUserMedia({
-                video: { facingMode: 'environment' } // Use the back camera
-            })
-            .then(stream => {
-                // Attach the camera stream to the video element
+        // Start the video stream
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then((stream) => {
                 video.srcObject = stream;
-                startBarcodeScanning(video);
+                video.setAttribute("playsinline", true); // Required to tell iOS Safari we don't want fullscreen
+                video.play();
+                startBarcodeScanning(); // Start scanning after the video is playing
             })
-            .catch(error => {
-                console.error("Error accessing the camera: ", error);
+            .catch(err => {
+                console.error('Error accessing camera: ', err);
             });
-        };
 
-        function startBarcodeScanning(video) {
-            const codeReader = new ZXing.BrowserMultiFormatReader();
-            codeReader.decodeFromVideoElement(video)
-                .then(result => {
-                    barcodeInput.value = result.text; // Set the barcode value in the textbox
-                })
-                .catch(err => {
-                    console.error(err);
+        function startBarcodeScanning() {
+            // Continuously scan for barcodes
+            const decodeBarcode = () => {
+                codeReader.decodeFromVideoDevice(undefined, video, (result, err) => {
+                    if (result) {
+                        barcodeResult.innerText = `مسح باركود: ${result.text}`;
+                    }
+                    if (err && !(err instanceof ZXing.NotFoundException)) {
+                        console.error(err);
+                    }
                 });
+            };
+
+            decodeBarcode(); // Start the decoding process
         }
     </script>
 </body>
