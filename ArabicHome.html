@@ -34,7 +34,8 @@
         }
         .label-container {
             display: flex;
-            gap: 20px; /* Spacing between labels */
+            flex-direction: column; /* Stack labels vertically */
+            gap: 10px; /* Spacing between labels */
             margin-top: 20px;
         }
         .label {
@@ -59,7 +60,7 @@
         </a>
     </div>
 
-    <!-- Container for clickable labels -->
+    <!-- Container for clickable labels, arranged vertically -->
     <div class="label-container">
         <div class="label" onclick="location.href='#'">الكاشير</div>
         <div class="label" onclick="location.href='#'">المدير</div>
