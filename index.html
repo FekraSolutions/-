@@ -296,6 +296,18 @@ document.getElementById("newAccountButton").onclick = function() {
     }
 };
 
+         document.getElementById('loginButton').onclick = function() {
+        fetch('https://script.google.com/macros/s/AKfycbya9qEBdLA-mcQd2Ny4VNyBuy7DZoDf_jtfUGTeHGnznlW5eUvGeFOtD-h-dENrvTKI/exec', { method: 'GET' })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // You can see the response in the console
+                alert('Hello written in Google Sheets!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error writing to Google Sheets.');
+            });
+    };
     </script>
 </body>
 </html>
