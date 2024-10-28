@@ -169,11 +169,14 @@ body {
         <!-- Password -->
         <label for="password">كلمة المرور</label>
         <input type="password" id="password" placeholder="Enter password">
+
+        <!-- Buttons -->
 <!-- Buttons -->
 <div class="buttons">
     <button id="newAccountButton">إنشاء حساب جديد</button>
     <button id="loginButton" class="login-button">دخول</button>
 </div>
+
     </div>
     <!-- Splitter line -->
     <div class="splitter"></div>
@@ -293,27 +296,6 @@ document.getElementById("newAccountButton").onclick = function() {
     }
 };
 
-        document.getElementById("loginBtn").addEventListener("click", async function () {
-        const usernameInput = document.getElementById("username").value;
-        const passwordInput = document.getElementById("password").value;
-
-        try {
-            const response = await fetch("YOUR_GOOGLE_APPS_SCRIPT_URL");
-            const data = await response.json();
-
-            const isValid = data.some(([username, password]) =>
-                username === usernameInput && password === passwordInput
-            );
-
-            if (isValid) {
-                window.location.href = "YOUR_NEXT_PAGE_URL";
-            } else {
-                alert("Incorrect username or password.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
     </script>
 </body>
 </html>
