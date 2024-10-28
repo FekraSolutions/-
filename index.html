@@ -294,34 +294,33 @@ document.getElementById("newAccountButton").onclick = function() {
 };
 
 document.getElementById('loginButton').onclick = function() {
-    var username = document.getElementById('username').value; // Get username from input
-    var password = document.getElementById('password').value; // Get password from input
-    var selectedLanguage = document.getElementById('languageSelect').value; // Get the selected language
-    // Create the URL with query parameters
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    var selectedLanguage = document.getElementById('languageSelect').value;
+    
     var url = `https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
     fetch(url, { method: 'GET' })
         .then(response => response.text())
         .then(data => {
             if (data === "Match") {
-                // Clear username and password textboxes
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
 
-       // Navigate to the appropriate home page based on selected language
                 if (selectedLanguage === "ar") {
-                    window.location.href = 'ArabicHome.html'; // Redirect to the Arabic page
+                    window.location.href = 'ArabicHome.html';
                 } else if (selectedLanguage === "en") {
-                    window.location.href = 'EnglishHome.html'; // Redirect to the English page
+                    window.location.href = 'EnglishHome.html';
                 }
             } else {
-                alert("INCORRECT INFORMATION"); // Show message box for incorrect information
+                alert("INCORRECT INFORMATION");
             }
         })
         .catch(() => {
             // Handle errors silently, if needed
         });
 };
+
 
 
     </script>
