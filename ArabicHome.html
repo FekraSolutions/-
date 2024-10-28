@@ -13,9 +13,24 @@
             height: 100vh; /* Full height of the viewport */
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            position: relative;
             flex-direction: column;
             background-color: #F4E1BC; /* Light sand color, more yellowish */
+            position: relative;
+        }
+        .icon-container {
+            display: flex;
+            justify-content: flex-start;
+            width: 100%;
+            padding: 10px; /* Add padding for spacing */
+            box-sizing: border-box;
+            position: fixed; /* Keeps the icon at the top on scroll */
+            top: 0;
+            left: 0;
+        }
+        .icon {
+            width: 35px; /* Responsive size */
+            height: auto; /* Keep aspect ratio */
+            cursor: pointer;
         }
         label {
             font-size: 24px; /* Larger font size */
@@ -24,7 +39,13 @@
     </style>
 </head>
 <body>
+    <!-- Icon container to hold the icon in the top left corner -->
+    <div class="icon-container">
+        <a href="#">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+    </div>
+
     <label>اختبار عربي</label> <!-- "Test Arabic" in Arabic -->
 </body>
 </html>
-
