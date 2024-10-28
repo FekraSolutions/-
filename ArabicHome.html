@@ -32,9 +32,22 @@
             height: auto; /* Keep aspect ratio */
             cursor: pointer;
         }
-        label {
-            font-size: 24px; /* Larger font size */
-            direction: rtl; /* Right-to-left direction for Arabic */
+        .label-container {
+            display: flex;
+            gap: 20px; /* Spacing between labels */
+            margin-top: 20px;
+        }
+        .label {
+            font-size: 24px;
+            direction: rtl;
+            padding: 10px 20px;
+            border: 1px solid black; /* Thin black border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer;
+            text-align: center;
+        }
+        .label:hover {
+            background-color: #e0e0e0; /* Light gray on hover */
         }
     </style>
 </head>
@@ -46,6 +59,10 @@
         </a>
     </div>
 
-    <label>اختبار عربي</label> <!-- "Test Arabic" in Arabic -->
+    <!-- Container for clickable labels -->
+    <div class="label-container">
+        <div class="label" onclick="location.href='#'">الكاشير</div>
+        <div class="label" onclick="location.href='#'">المدير</div>
+    </div>
 </body>
 </html>
