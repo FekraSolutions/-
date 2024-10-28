@@ -174,7 +174,7 @@ body {
 <!-- Buttons -->
 <div class="buttons">
     <button id="newAccountButton">إنشاء حساب جديد</button>
-    <button id="loginBtn">دخول</button>
+    <button id="loginButton" class="login-button">دخول</button>
 </div>
 
     </div>
@@ -296,27 +296,6 @@ document.getElementById("newAccountButton").onclick = function() {
     }
 };
 
-         document.getElementById("loginBtn").addEventListener("click", async function () {
-        const usernameInput = document.getElementById("username").value;
-        const passwordInput = document.getElementById("password").value;
-
-        try {
-            const response = await fetch("https://script.google.com/macros/s/AKfycbxFAtNo6R-Cv9h2c9VLPRn1Nil1LzgaWDMMWqnQ45o/dev");
-            const data = await response.json();
-
-            const isValid = data.some(([username, password]) =>
-                username === usernameInput && password === passwordInput
-            );
-
-            if (isValid) {
-                window.location.href = "www.google.com";
-            } else {
-                alert("Incorrect username or password.");
-            }
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    });
     </script>
 </body>
 </html>
