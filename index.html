@@ -297,14 +297,27 @@ document.getElementById("newAccountButton").onclick = function() {
 };
 
 document.getElementById('loginButton').onclick = function() {
-    fetch('https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec', { method: 'GET' })
-        .then(() => {
-            // Do nothing after the fetch is complete
+    // Get the values from the username and password input fields
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    // Construct the URL with parameters
+    var url = 'YOUR_FINAL_DEPLOYMENT_URL' + '?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password);
+
+    fetch(url, { method: 'GET' })
+        .then(response => response.text())
+        .then(data => {
+            if (data === "matched") {
+                alert("Matched"); // Show alert if matched
+            } else {
+                alert("No match"); // Show alert if not matched
+            }
         })
         .catch(() => {
             // Handle errors silently, if needed
         });
 };
+
 
     </script>
 </body>
