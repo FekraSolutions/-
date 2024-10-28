@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موبايل كاشير - تطبيق محلات أدوات البناء</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
     <style>
         body {
             display: flex;
@@ -42,6 +43,12 @@
             transform: translateX(-50%);
             background-color: black; /* Fallback color */
         }
+        .textbox {
+            margin-top: 320px; /* Adjust margin to position below the camera preview */
+            width: 300px; /* Width of the textbox */
+            padding: 10px; /* Padding for the textbox */
+            font-size: 16px; /* Font size */
+        }
     </style>
 </head>
 <body>
@@ -52,6 +59,7 @@
     </div>
     
     <video id="camera-preview" class="camera-preview" autoplay></video>
+    <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly> <!-- Textbox for barcode -->
 
     <script>
         // Access the back camera and stream it to the video element
@@ -65,9 +73,38 @@
                 const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 const videoElement = document.getElementById('camera-preview');
                 videoElement.srcObject = stream;
+
+                // Start Quagga for barcode detection
+                startBarcodeDetection();
             } catch (error) {
                 console.error('Error accessing the camera:', error);
             }
+        }
+
+        function startBarcodeDetection() {
+            Quagga.init({
+                inputStream: {
+                    type: 'LiveStream',
+                    target: document.querySelector('#camera-preview'),
+                },
+                decoder: {
+                    readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'], // List of barcode formats to recognize
+                },
+            }, (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                Quagga.start(); // Start Quagga
+                console.log('Barcode detection started');
+            });
+
+            // Handle detected barcodes
+            Quagga.onDetected((data) => {
+                const code = data.codeResult.code; // Get the detected barcode value
+                const barcodeTextbox = document.getElementById('barcode-textbox');
+                barcodeTextbox.value = code; // Update textbox with the detected barcode value
+            });
         }
 
         // Start the camera when the page loads
