@@ -36,7 +36,7 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-top: 60px;
+            margin-top: 60px; /* Adds space between icon and button */
             padding: 0 10px;
         }
         .full-width-button {
@@ -45,27 +45,14 @@
             font-size: 24px;
             font-weight: bold;
             color: #fff;
-            background-color: #007BFF;
+            background-color: #007BFF; /* Adjust as needed */
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
         }
         .full-width-button:hover {
-            background-color: #0056b3;
-        }
-        .camera-container {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            padding: 0 10px;
-        }
-        .camera-preview {
-            width: 100%;
-            max-width: 500px;
-            border: 2px solid #333;
-            border-radius: 5px;
+            background-color: #0056b3; /* Darken on hover */
         }
     </style>
 </head>
@@ -76,29 +63,9 @@
         </a>
     </div>
     
+    <!-- Button container to hold the full-width button -->
     <div class="button-container">
         <button class="full-width-button">كاش</button>
     </div>
-
-    <!-- Camera container to hold the video preview -->
-    <div class="camera-container">
-        <video id="camera-preview" class="camera-preview" autoplay playsinline></video>
-    </div>
-
-    <script>
-        // Access the device camera and stream it to the video element
-        async function startCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const video = document.getElementById('camera-preview');
-                video.srcObject = stream;
-            } catch (error) {
-                console.error("Camera access was denied or not available:", error);
-            }
-        }
-
-        // Start the camera when the page loads
-        window.addEventListener('load', startCamera);
-    </script>
 </body>
 </html>
