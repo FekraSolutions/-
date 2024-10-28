@@ -10,108 +10,35 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100vh; /* Full height of the viewport */
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #F4E1BC;
+            flex-direction: column;
+            background-color: #F4E1BC; /* Light sand color, more yellowish */
             position: relative;
         }
-
-        /* Icon Container */
         .icon-container {
             display: flex;
             justify-content: flex-start;
             width: 100%;
-            padding: 10px;
+            padding: 10px; /* Add padding for spacing */
             box-sizing: border-box;
-            position: fixed;
+            position: fixed; /* Keeps the icon at the top on scroll */
             top: 0;
             left: 0;
         }
         .icon {
-            width: 35px;
-            height: auto;
+            width: 35px; /* Responsive size */
+            height: auto; /* Keep aspect ratio */
             cursor: pointer;
-        }
-
-        /* Main container for the blocks */
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            width: 90%;
-            max-width: 500px;
-            gap: 10px;
-            margin-top: 60px; /* Offset to prevent icon overlap */
-        }
-
-        /* Block Styles */
-        .block {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid black;
-            text-align: center;
-            font-size: 1.2em;
-        }
-
-        .block1 {
-            height: 4vh;
-            background-color: #FFDDC1; /* Slight contrast for the button */
-            cursor: pointer;
-        }
-
-        .block2 {
-            height: 48vh;
-            background-color: #FFF8E7;
-        }
-
-        .block3 {
-            height: 48vh;
-            background-color: #FFEDD9;
-        }
-
-        /* Textbox Style */
-        .barcode-textbox {
-            width: 90%;
-            height: 50%;
-            font-size: 1em;
-            text-align: center;
-            padding: 10px;
-        }
     </style>
 </head>
 <body>
-    <!-- Icon container for the top-left icon -->
+    <!-- Icon container to hold the icon in the top left corner -->
     <div class="icon-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
     </div>
-
-    <!-- Main Container with 3 Blocks -->
-    <div class="main-container">
-        <!-- Block 1: Cash Out Button -->
-        <div class="block block1" onclick="cashOut()">
-            CASH OUT
-        </div>
-
-        <!-- Block 2: Barcode Capture -->
-        <div class="block block2">
-            <p>Barcode Capture (Camera)</p>
-            <!-- Add camera input here as needed -->
-        </div>
-
-        <!-- Block 3: Barcode Value Textbox -->
-        <div class="block block3">
-            <input type="text" class="barcode-textbox" placeholder="Barcode Value" readonly>
-        </div>
-    </div>
-
-    <script>
-        // JavaScript function for the Cash Out button
-        function cashOut() {
-            alert("Cash out button clicked!");
-        }
-    </script>
 </body>
 </html>
