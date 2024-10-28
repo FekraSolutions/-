@@ -171,10 +171,12 @@ body {
         <input type="password" id="password" placeholder="Enter password">
 
         <!-- Buttons -->
-        <div class="buttons">
-            <button>إنشاء حساب جديد</button>
-            <button>دخول</button>
-        </div>
+<!-- Buttons -->
+<div class="buttons">
+    <button id="newAccountButton">إنشاء حساب جديد</button>
+    <button id="loginButton" class="login-button">دخول</button>
+</div>
+
     </div>
     <!-- Splitter line -->
     <div class="splitter"></div>
@@ -282,6 +284,18 @@ body {
         document.getElementById("closeButton").onclick = function() {
             document.getElementById("donationMessage").style.display = "none"; // Hide the donation message
         };
+
+document.getElementById("newAccountButton").onclick = function() {
+    var selectedLanguage = document.getElementById("languageSelect").value;
+
+    // Check the selected language and open the appropriate URL
+    if (selectedLanguage === "ar") {
+        window.open("https://docs.google.com/forms/d/e/1FAIpQLSezumSx-ZlTRScOw2vNxoUE1ewE-q44cUsLGl-xptVoe9i7HA/viewform?usp=sharing", "_blank");
+    } else if (selectedLanguage === "en") {
+        window.open("https://docs.google.com/forms/d/e/1FAIpQLSeLhQAgAvIzXVDW2QIuMP6EHusQpL9UOBnOi6KQun7bUXy1Cw/viewform?usp=sharing", "_blank");
+    }
+};
+
     </script>
 </body>
 </html>
