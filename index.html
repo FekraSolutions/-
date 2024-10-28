@@ -174,7 +174,7 @@ body {
 <!-- Buttons -->
 <div class="buttons">
     <button id="newAccountButton">إنشاء حساب جديد</button>
-    <button id="loginButton" class="login-button" onclick="writeHello()">دخول</button>
+    <button id="loginButton" class="login-button">دخول</button>
 </div>
 
     </div>
@@ -296,19 +296,6 @@ document.getElementById("newAccountButton").onclick = function() {
     }
 };
 
-        function writeHello() {
-            fetch('https://script.google.com/macros/s/AKfycbxg4SNq5E4r6oMbwPe7kltyE9BPMGgUIlsCbZB7Prhf/dev', { method: 'GET' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('Hello has been written to the sheet!');
-                    } else {
-                        alert('Error writing to the sheet.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
     </script>
 </body>
 </html>
