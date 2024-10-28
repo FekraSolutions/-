@@ -301,8 +301,19 @@ document.getElementById('loginButton').onclick = function() {
     var url = `https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
     fetch(url, { method: 'GET' })
-        .then(() => {
-            // Do nothing after the fetch is complete
+        .then(response => response.text())
+        .then(data => {
+            if (data === "Match") {
+                // Clear username and password textboxes
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+
+                // Optionally, you can also clear A1 and B1 from the Google Sheets, handled in the script
+                // Optionally alert the user
+                alert("USER FOUND"); // Show message box for user found
+            } else {
+                alert("INCORRECT INFORMATION"); // Show message box for incorrect information
+            }
         })
         .catch(() => {
             // Handle errors silently, if needed
