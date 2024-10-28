@@ -60,6 +60,7 @@
     
     <video id="camera-preview" class="camera-preview" autoplay></video>
     <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly> <!-- Textbox for barcode -->
+    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
     <script>
         // Access the back camera and stream it to the video element
@@ -104,6 +105,11 @@
                 const code = data.codeResult.code; // Get the detected barcode value
                 const barcodeTextbox = document.getElementById('barcode-textbox');
                 barcodeTextbox.value = code; // Update textbox with the detected barcode value
+
+                // Play the beep sound
+                const beepSound = document.getElementById('beep-sound');
+                beepSound.currentTime = 0; // Reset sound to start
+                beepSound.play(); // Play the sound
             });
         }
 
