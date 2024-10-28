@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الكاشير موبايل - تطبيق محلات أدوات البناء</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxing/0.18.6/zxing.min.js"></script>
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
+            flex-direction: column;
             background-color: #F4E1BC;
             position: relative;
-            overflow: hidden; /* Prevent overflow from video */
         }
         .icon-container {
             display: flex;
@@ -38,7 +36,7 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-top: 60px; /* Space between icon and button */
+            margin-top: 60px; /* Adds space between icon and button */
             padding: 0 10px;
         }
         .full-width-button {
@@ -56,18 +54,17 @@
         .full-width-button:hover {
             background-color: #0056b3; /* Darken on hover */
         }
-        #video {
-            width: 100%; /* Full width */
-            height: auto; /* Maintain aspect ratio */
-            max-height: 60%; /* Limit height to 60% of viewport */
-            border: 2px solid #007BFF; /* Optional border for visibility */
-            border-radius: 10px; /* Rounded corners for video */
-            margin-top: 10px; /* Space above video */
+        .camera-preview {
+            width: 100vw; /* Full width of the viewport */
+            height: 100vw; /* Square - full width */
+            max-height: 100vh; /* Limit height to viewport */
+            background-color: black; /* Fallback color */
+            display: none; /* Hide initially */
         }
-        #barcodeResult {
-            margin-top: 20px; /* Space below camera */
-            font-size: 24px;
-            text-align: center;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cover the entire square */
         }
     </style>
 </head>
@@ -77,47 +74,38 @@
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
     </div>
-
+    
+    <!-- Button container to hold the full-width button -->
     <div class="button-container">
         <button class="full-width-button">كاش</button>
     </div>
 
-    <!-- Video element for camera preview -->
-    <video id="video" autoplay playsinline></video>
-    <div id="barcodeResult">مسح باركود: </div>
+    <!-- Camera preview square -->
+    <div class="camera-preview" id="cameraPreview">
+        <video id="video" autoplay playsinline></video>
+    </div>
 
     <script>
-        const video = document.getElementById('video');
-        const barcodeResult = document.getElementById('barcodeResult');
-        const codeReader = new ZXing.BrowserMultiFormatReader();
+        // Automatically enable the camera when the page loads
+        window.onload = function() {
+            const cameraPreview = document.getElementById('cameraPreview');
+            const video = document.getElementById('video');
 
-        // Start the video stream
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then((stream) => {
-                video.srcObject = stream;
-                video.setAttribute("playsinline", true); // Required to tell iOS Safari we don't want fullscreen
-                video.play();
-                startBarcodeScanning(); // Start scanning after the video is playing
+            // Show the camera preview
+            cameraPreview.style.display = 'block';
+
+            // Request access to the back camera
+            navigator.mediaDevices.getUserMedia({
+                video: { facingMode: 'environment' } // Use the back camera
             })
-            .catch(err => {
-                console.error('Error accessing camera: ', err);
+            .then(stream => {
+                // Attach the camera stream to the video element
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error("Error accessing the camera: ", error);
             });
-
-        function startBarcodeScanning() {
-            // Continuously scan for barcodes
-            const decodeBarcode = () => {
-                codeReader.decodeFromVideoDevice(undefined, video, (result, err) => {
-                    if (result) {
-                        barcodeResult.innerText = `مسح باركود: ${result.text}`;
-                    }
-                    if (err && !(err instanceof ZXing.NotFoundException)) {
-                        console.error(err);
-                    }
-                });
-            };
-
-            decodeBarcode(); // Start the decoding process
-        }
+        };
     </script>
 </body>
 </html>
