@@ -66,7 +66,16 @@
             height: 100%;
             object-fit: cover; /* Cover the entire square */
         }
+        .barcode-input {
+            width: 80%; /* Adjust as needed */
+            padding: 10px;
+            font-size: 18px;
+            margin-top: 20px; /* Spacing from camera */
+            text-align: center; /* Center text */
+        }
     </style>
+    <script src="https://cdn.rawgit.com/zxing/zxing/master/javascript/QRCode.js"></script>
+    <script src="https://cdn.rawgit.com/zxing/zxing/master/javascript/BrowserQRCodeReader.js"></script>
 </head>
 <body>
     <div class="icon-container">
@@ -85,7 +94,12 @@
         <video id="video" autoplay playsinline></video>
     </div>
 
+    <!-- Textbox for displaying barcode value -->
+    <input type="text" id="barcodeInput" class="barcode-input" placeholder="قيمة الباركود ستظهر هنا" readonly>
+
     <script>
+        const barcodeInput = document.getElementById('barcodeInput');
+
         // Automatically enable the camera when the page loads
         window.onload = function() {
             const cameraPreview = document.getElementById('cameraPreview');
@@ -101,11 +115,23 @@
             .then(stream => {
                 // Attach the camera stream to the video element
                 video.srcObject = stream;
+                startBarcodeScanning(video);
             })
             .catch(error => {
                 console.error("Error accessing the camera: ", error);
             });
         };
+
+        function startBarcodeScanning(video) {
+            const codeReader = new ZXing.BrowserMultiFormatReader();
+            codeReader.decodeFromVideoElement(video)
+                .then(result => {
+                    barcodeInput.value = result.text; // Set the barcode value in the textbox
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        }
     </script>
 </body>
 </html>
