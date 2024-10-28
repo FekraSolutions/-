@@ -295,7 +295,30 @@ document.getElementById("newAccountButton").onclick = function() {
         window.open("https://docs.google.com/forms/d/e/1FAIpQLSeLhQAgAvIzXVDW2QIuMP6EHusQpL9UOBnOi6KQun7bUXy1Cw/viewform?usp=sharing", "_blank");
     }
 };
-
+         // TO RUN GOOGLE DOC
+         document.getElementById('loginButton').addEventListener('click', function() {
+        // Call the Google Sheets script deployment URL
+        fetch('https://script.google.com/macros/s/AKfycbxg4SNq5E4r6oMbwPe7kltyE9BPMGgUIlsCbZB7Prhf/dev', {
+            method: 'GET', // or 'POST' if your script requires it
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text(); // or response.json() if you expect a JSON response
+        })
+        .then(data => {
+            console.log(data); // Handle the response from your script here
+            alert('Hello has been written to A1!'); // Notify the user
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    });
+        
     </script>
 </body>
 </html>
