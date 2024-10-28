@@ -194,18 +194,36 @@ body {
     </div>
     <script>
         function updateAppLanguage() {
-            var selectedLanguage = document.getElementById("languageSelect").value;
-            var moreAppsLabel = document.getElementById("moreApps"); // Add this line
-            var donateLabel = document.getElementById("donateLabel"); // Add this line
-            
-            if (selectedLanguage === "ar") {
-                moreAppsLabel.innerHTML = "تطبيقات مجانية أخرى"; // Arabic for "More Free Apps"
-                donateLabel.innerHTML = "ساهم في التطوير"; // Arabic for "Donate"
-            } else if (selectedLanguage === "en") {
-                moreAppsLabel.innerHTML = "More Free Apps"; // English for "More Free Apps"
-                donateLabel.innerHTML = "Donate"; // English for "Donate"
-            }
-        }
+    var selectedLanguage = document.getElementById("languageSelect").value;
+    var moreAppsLabel = document.getElementById("moreApps"); 
+    var donateLabel = document.getElementById("donateLabel"); 
+    
+    // Add references to the title and login box elements
+    var titleElement = document.querySelector(".title");
+    var usernameLabel = document.querySelector("label[for='username']");
+    var passwordLabel = document.querySelector("label[for='password']");
+    var createAccountButton = document.querySelector(".buttons button:nth-child(1)"); // First button
+    var loginButton = document.querySelector(".buttons button:nth-child(2)"); // Second button
+
+    if (selectedLanguage === "ar") {
+        moreAppsLabel.innerHTML = "تطبيقات مجانية أخرى"; 
+        donateLabel.innerHTML = "ساهم في التطوير"; 
+        titleElement.innerHTML = "تطبيق محلات مواد البناء"; // Title in Arabic
+        usernameLabel.innerHTML = "اسم المستخدم"; // Username label in Arabic
+        passwordLabel.innerHTML = "كلمة المرور"; // Password label in Arabic
+        createAccountButton.innerHTML = "إنشاء حساب جديد"; // Create account button in Arabic
+        loginButton.innerHTML = "دخول"; // Login button in Arabic
+    } else if (selectedLanguage === "en") {
+        moreAppsLabel.innerHTML = "More Free Apps"; 
+        donateLabel.innerHTML = "Donate"; 
+        titleElement.innerHTML = "Construction Materials Store App"; // Title in English
+        usernameLabel.innerHTML = "Username"; // Username label in English
+        passwordLabel.innerHTML = "Password"; // Password label in English
+        createAccountButton.innerHTML = "Create New Account"; // Create account button in English
+        loginButton.innerHTML = "Login"; // Login button in English
+    }
+}
+
 
         // Add event listener to language select dropdown
         document.getElementById("languageSelect").addEventListener("change", updateAppLanguage);
