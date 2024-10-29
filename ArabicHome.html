@@ -10,72 +10,89 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full height of the viewport */
+            height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
             flex-direction: column;
-            background-color: #F4E1BC; /* Light sand color, more yellowish */
+            background-color: #F4E1BC;
             position: relative;
         }
-        .icon-container {
+
+        .icon-textbox-container {
             display: flex;
-            justify-content: flex-start;
+            align-items: center;
+            padding: 10px;
             width: 100%;
-            padding: 10px; /* Add padding for spacing */
+            background-color: #E8D3A5; /* Slightly darker than the body background */
             box-sizing: border-box;
-            position: fixed; /* Keeps the icon at the top on scroll */
+            position: fixed;
             top: 0;
             left: 0;
         }
+
         .icon {
-            width: 35px; /* Responsive size */
-            height: auto; /* Keep aspect ratio */
+            width: 35px;
+            height: auto;
             cursor: pointer;
         }
+
+        .textbox {
+            width: 200px;
+            height: 35px;
+            margin-left: 10px; /* Spacing between icon and textbox */
+            background-color: #F4E1BC; /* Match the body background */
+            border: none;
+            outline: none;
+            font-size: 18px;
+            text-align: right;
+            padding: 5px;
+        }
+
         .label-container {
             display: flex;
-            flex-direction: column; /* Stack labels vertically */
-            gap: 10px; /* Spacing between labels */
-            margin-top: 20px;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 60px;
         }
+
         .label {
             font-size: 24px;
             direction: rtl;
             padding: 10px 20px;
-            border: 1px solid black; /* Thin black border */
-            border-radius: 5px; /* Rounded corners */
+            border: 1px solid black;
+            border-radius: 5px;
             cursor: pointer;
             text-align: center;
         }
+
         .label:hover {
-            background-color: #e0e0e0; /* Light gray on hover */
+            background-color: #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <!-- Icon container to hold the icon in the top left corner -->
-    <div class="icon-container">
+    <!-- Icon and textbox container -->
+    <div class="icon-textbox-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
+        <input type="text" class="textbox" placeholder=""/>
     </div>
 
-    <!-- Container for clickable labels, arranged vertically -->
-<div class="label-container">
-    <div class="label" onclick="redirectToPage()">الكاشير</div>
-    <div class="label" onclick="location.href='ArabicAdmin.html'">المدير</div>
-</div>
-<script>
-    function redirectToPage() {
-        // Check if the user is on a mobile device
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            // Redirect to the mobile version
-            location.href = 'ArabicCashierMobile.html';
-        } else {
-            // Redirect to the desktop version
-            location.href = 'ArabicCashier.html';
+    <!-- Container for clickable labels -->
+    <div class="label-container">
+        <div class="label" onclick="redirectToPage()">الكاشير</div>
+        <div class="label" onclick="location.href='ArabicAdmin.html'">المدير</div>
+    </div>
+
+    <script>
+        function redirectToPage() {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+                location.href = 'ArabicCashierMobile.html';
+            } else {
+                location.href = 'ArabicCashier.html';
+            }
         }
-    }
-</script>
+    </script>
 </body>
 </html>
