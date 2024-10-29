@@ -17,21 +17,37 @@
             background-color: #F4E1BC;
             position: relative;
         }
-        .icon-container {
+
+        .icon-textbox-container {
             display: flex;
-            justify-content: flex-start;
-            width: 100%;
+            align-items: center;
             padding: 10px;
+            width: 100%;
+            background-color: #E8D3A5; /* Slightly darker than the body background */
             box-sizing: border-box;
             position: fixed;
             top: 0;
             left: 0;
         }
+
         .icon {
             width: 35px;
             height: auto;
             cursor: pointer;
         }
+
+        .textbox {
+            width: 200px;
+            height: 35px;
+            margin-left: 10px;
+            background-color: #F4E1BC; /* Match the body background */
+            border: none;
+            outline: none;
+            font-size: 18px;
+            text-align: right;
+            padding: 5px;
+        }
+
         .button-container {
             width: 100%;
             display: flex;
@@ -39,30 +55,34 @@
             margin-top: 60px; /* Adds space between icon and button */
             padding: 0 10px;
         }
+
         .full-width-button {
             width: 100%;
             padding: 15px 0;
             font-size: 24px;
             font-weight: bold;
             color: #fff;
-            background-color: #007BFF; /* Adjust as needed */
+            background-color: #007BFF;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-align: center;
         }
+
         .full-width-button:hover {
-            background-color: #0056b3; /* Darken on hover */
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <div class="icon-container">
+    <!-- Icon and textbox container -->
+    <div class="icon-textbox-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
+        <input type="text" class="textbox" placeholder=""/>
     </div>
-    
+
     <!-- Button container to hold the full-width button -->
     <div class="button-container">
         <button class="full-width-button">كاش</button>
