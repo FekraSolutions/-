@@ -307,9 +307,6 @@ document.getElementById('loginButton').onclick = function() {
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
 
-                // Store the username in localStorage
-                localStorage.setItem('storedUsername', username);
-
                 if (selectedLanguage === "ar") {
                     window.location.href = 'ArabicHome.html';
                 } else if (selectedLanguage === "en") {
@@ -323,6 +320,9 @@ document.getElementById('loginButton').onclick = function() {
             // Handle errors silently, if needed
         });
 };
+
+
+
     </script>
 </body>
 </html>
