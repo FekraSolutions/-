@@ -18,46 +18,64 @@
             background-color: #F4E1BC;
             position: relative;
         }
-        .icon-container {
+
+        .icon-textbox-container {
             display: flex;
-            justify-content: flex-start;
-            width: 100%;
+            align-items: center;
             padding: 10px;
+            width: 100%;
+            background-color: #E8D3A5; /* Slightly darker than the body background */
             box-sizing: border-box;
             position: fixed;
             top: 0;
             left: 0;
         }
+
         .icon {
             width: 35px;
             height: auto;
             cursor: pointer;
         }
+
+        .textbox {
+            width: 200px;
+            height: 35px;
+            margin-left: 10px;
+            background-color: #F4E1BC; /* Match the body background */
+            border: none;
+            outline: none;
+            font-size: 18px;
+            text-align: right;
+            padding: 5px;
+        }
+
         .camera-preview {
             width: 300px; /* Adjust the size as needed */
             height: 300px; /* Adjust the size as needed */
             border: 2px solid #000; /* Optional border */
-            position: absolute;
-            top: 20px; /* Position from the top */
-            left: 50%;
-            transform: translateX(-50%);
+            margin-top: 60px; /* Space below icon-textbox-container */
             background-color: black; /* Fallback color */
         }
-        .textbox {
-            margin-top: 320px; /* Adjust margin to position below the camera preview */
-            width: 300px; /* Width of the textbox */
-            padding: 10px; /* Padding for the textbox */
-            font-size: 16px; /* Font size */
+
+        #barcode-textbox {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 20px; /* Space below the camera preview */
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <div class="icon-container">
+    <!-- Icon and textbox container -->
+    <div class="icon-textbox-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
+        <input type="text" class="textbox" placeholder="Enter text"/>
     </div>
-    
+
+    <!-- Camera preview and barcode textbox -->
     <video id="camera-preview" class="camera-preview" autoplay></video>
     <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly> <!-- Textbox for barcode -->
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
