@@ -93,6 +93,18 @@
                 location.href = 'ArabicCashier.html';
             }
         }
+          
+    // Check if 'storedUsername' exists in localStorage
+    window.onload = function() {
+        var storedUsername = localStorage.getItem('storedUsername');
+        if (storedUsername) {
+            // Update the textbox placeholder with the stored username
+            document.querySelector('.textbox').placeholder = storedUsername;
+            
+            // Optionally, clear the item from localStorage if it's only needed once
+            localStorage.removeItem('storedUsername');
+        }
+    };
     </script>
 </body>
 </html>
