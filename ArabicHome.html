@@ -93,7 +93,17 @@
                 location.href = 'ArabicCashier.html';
             }
         }
+            //username
+            window.onload = function() {
+        // Get the query string
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('username');
 
+        // Set the textbox value to the username
+        if (username) {
+            document.getElementById('usernameDisplay').value = username;
+        }
+    };
     </script>
 </body>
 </html>
