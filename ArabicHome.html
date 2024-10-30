@@ -23,7 +23,7 @@
             align-items: center;
             padding: 10px;
             width: 100%;
-            background-color: #E8D3A5; /* Slightly darker than the body background */
+            background-color: #E8D3A5;
             box-sizing: border-box;
             position: fixed;
             top: 0;
@@ -39,8 +39,8 @@
         .textbox {
             width: 200px;
             height: 35px;
-            margin-left: 10px; /* Spacing between icon and textbox */
-            background-color: #F4E1BC; /* Match the body background */
+            margin-left: 10px;
+            background-color: #F4E1BC;
             border: none;
             outline: none;
             font-size: 18px;
@@ -71,7 +71,6 @@
     </style>
 </head>
 <body>
-    <!-- Icon and textbox container -->
     <div class="icon-textbox-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
@@ -79,10 +78,9 @@
         <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
     </div>
 
-    <!-- Container for clickable labels -->
     <div class="label-container">
         <div class="label" onclick="redirectToPage()">الكاشير</div>
-        <div class="label">شراء ساميييييي</div>
+        <div class="label" onclick="redirectToPagePurchase()">شراء مخزون</div>
         <div class="label">رصيد المخزون</div>
         <div class="label">رصيد النقدية</div>
         <div class="label">رصيد الآجل</div>
@@ -96,35 +94,23 @@
                 location.href = 'ArabicCashier.html';
             }
         }
-       
-            //username
-            window.onload = function() {
-        // Get the query string
-        const params = new URLSearchParams(window.location.search);
-        const username = params.get('username');
 
-        // Set the textbox value to the username
-        if (username) {
-            document.getElementById('usernameDisplay').value = username;
+        function redirectToPagePurchase() {
+            location.href = 'ArabicPurchase.html';
         }
-    };
-
-        // Function to get URL parameters
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
+        
         // Set the textbox value with the username from the URL
         window.onload = function() {
             const username = getQueryParameter('username');
             if (username) {
-                document.getElementById('emailTextbox').placeholder = username; // Set as placeholder
-                // If you want to set the value instead, use:
-                // document.getElementById('emailTextbox').value = username;
+                document.getElementById('emailTextbox').placeholder = username;
             }
         };
-        
+
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
     </script>
 </body>
 </html>
