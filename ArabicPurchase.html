@@ -57,18 +57,18 @@
     </div>
 
     <script>      
-        // Set the textbox value with the username from the URL
-        window.onload = function() {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox').placeholder = username;
-            }
-        };
+       // Set the textbox value with the username from the URL
+window.onload = function() {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox').placeholder = username;
+    }
+};
 
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
     </script>
 </body>
 </html>
