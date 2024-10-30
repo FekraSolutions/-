@@ -298,7 +298,7 @@ document.getElementById('loginButton').onclick = function() {
     var password = document.getElementById('password').value;
     var selectedLanguage = document.getElementById('languageSelect').value;
     
-    var url = `https://script.google.com/macros/s/AKfycbx2Kn4hMTzHbxz8rDdeP4kKrNdHwERLcRnbTTqyspZtz3a8P0hc5c-NIzVLSes1G-mM/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+    var url = `https://script.google.com/macros/s/AKfycbx37r_lVEHeu1mDbCGl4RllNok0GNpoGZZS2l6NsIio_UT3GV1fQh4s8TOWUBi01wkF/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
     fetch(url, { method: 'GET' })
         .then(response => response.text())
