@@ -308,10 +308,11 @@ document.getElementById('loginButton').onclick = function() {
                 document.getElementById('password').value = '';
 
                 if (selectedLanguage === "ar") {
-                    window.location.href = 'ArabicHome.html';
+                window.location.href = `ArabicHome.html?username=${encodeURIComponent(username)}`;
                 } else if (selectedLanguage === "en") {
-                    window.location.href = 'EnglishHome.html';
+                window.location.href = 'EnglishHome.html';
                 }
+
             } else {
                 alert("INCORRECT INFORMATION");
             }
