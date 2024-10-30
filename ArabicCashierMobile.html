@@ -18,34 +18,20 @@
             background-color: #F4E1BC;
             position: relative;
         }
-        .icon-textbox-container {
+        .icon-container {
             display: flex;
-            align-items: center;
-            padding: 10px;
+            justify-content: flex-start;
             width: 100%;
-            background-color: #E8D3A5; /* Slightly darker than the body background */
+            padding: 10px;
             box-sizing: border-box;
             position: fixed;
             top: 0;
             left: 0;
         }
-
         .icon {
             width: 35px;
             height: auto;
             cursor: pointer;
-        }
-
-        .textbox {
-            width: 200px;
-            height: 35px;
-            margin-left: 10px; /* Spacing between icon and textbox */
-            background-color: #F4E1BC; /* Match the body background */
-            border: none;
-            outline: none;
-            font-size: 18px;
-            text-align: right;
-            padding: 5px;
         }
         .camera-preview {
             width: 300px; /* Adjust the size as needed */
@@ -66,12 +52,10 @@
     </style>
 </head>
 <body>
-    <!-- Icon and textbox container -->
-    <div class="icon-textbox-container">
+    <div class="icon-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
-        <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
     </div>
     
     <video id="camera-preview" class="camera-preview" autoplay></video>
@@ -131,34 +115,6 @@
 
         // Start the camera when the page loads
         window.onload = startCamera;
-
-        //username
-            window.onload = function() {
-        // Get the query string
-        const params = new URLSearchParams(window.location.search);
-        const username = params.get('username');
-
-        // Set the textbox value to the username
-        if (username) {
-            document.getElementById('usernameDisplay').value = username;
-        }
-    };
-
-        // Function to get URL parameters
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        // Set the textbox value with the username from the URL
-        window.onload = function() {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox').placeholder = username; // Set as placeholder
-                // If you want to set the value instead, use:
-                // document.getElementById('emailTextbox').value = username;
-            }
-        };
     </script>
 </body>
 </html>
