@@ -297,33 +297,28 @@ document.getElementById('loginButton').onclick = function() {
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
     var selectedLanguage = document.getElementById('languageSelect').value;
+    
+    var url = `https://script.google.com/macros/s/AKfycbx37r_lVEHeu1mDbCGl4RllNok0GNpoGZZS2l6NsIio_UT3GV1fQh4s8TOWUBi01wkF/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
 
-    // Change to a POST request for better security
-    var url = `https://script.google.com/macros/s/AKfycbx37r_lVEHeu1mDbCGl4RllNok0GNpoGZZS2l6NsIio_UT3GV1fQh4s8TOWUBi01wkF/exec`;
+    fetch(url, { method: 'GET' })
+        .then(response => response.text())
+        .then(data => {
+            if (data === "Match") {
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username: username, password: password })
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data); // Log response for debugging
-        if (data === "Match") {
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-
-            // Redirect based on selected language
-            window.location.href = selectedLanguage === "ar" ? 'ArabicHome.html' : 'EnglishHome.html';
-        } else {
-            alert("INCORRECT INFORMATION");
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error); // Log the error
-    });
+                if (selectedLanguage === "ar") {
+                    window.location.href = 'ArabicHome.html';
+                } else if (selectedLanguage === "en") {
+                    window.location.href = 'EnglishHome.html';
+                }
+            } else {
+                alert("INCORRECT INFORMATION");
+            }
+        })
+        .catch(() => {
+            // Handle errors silently, if needed
+        });
 };
 
 
