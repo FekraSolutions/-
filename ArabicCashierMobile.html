@@ -18,20 +18,34 @@
             background-color: #F4E1BC;
             position: relative;
         }
-        .icon-container {
+        .icon-textbox-container {
             display: flex;
-            justify-content: flex-start;
-            width: 100%;
+            align-items: center;
             padding: 10px;
+            width: 100%;
+            background-color: #E8D3A5; /* Slightly darker than the body background */
             box-sizing: border-box;
             position: fixed;
             top: 0;
             left: 0;
         }
+
         .icon {
             width: 35px;
             height: auto;
             cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 35px;
+            margin-left: 10px; /* Spacing between icon and textbox */
+            background-color: #F4E1BC; /* Match the body background */
+            border: none;
+            outline: none;
+            font-size: 18px;
+            text-align: right;
+            padding: 5px;
         }
         .camera-preview {
             width: 300px; /* Adjust the size as needed */
