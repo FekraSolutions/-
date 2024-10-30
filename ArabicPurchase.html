@@ -47,22 +47,36 @@
             text-align: right;
             padding: 5px;
             }
-        .camera-preview {
-            width: 300px; /* Adjust the size as needed */
-            height: 300px; /* Adjust the size as needed */
-            border: 2px solid #000; /* Optional border */
-            position: absolute;
-            top: 20px; /* Position from the top */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: black; /* Fallback color */
-        }
-        .textbox {
-            margin-top: 320px; /* Adjust margin to position below the camera preview */
-            width: 300px; /* Width of the textbox */
-            padding: 10px; /* Padding for the textbox */
-            font-size: 16px; /* Font size */
-        }
+       /* Container to hold and center elements */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Full viewport height */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Camera preview styling */
+.camera-preview {
+    width: 100%;
+    max-width: 300px; /* Limit the maximum width */
+    height: auto; /* Maintain aspect ratio */
+    border: 2px solid #000; /* Optional border */
+    background-color: black;
+}
+
+/* Textbox styling */
+.textbox {
+    margin-top: 20px; /* Space between preview and textbox */
+    width: 100%;
+    max-width: 300px; /* Limit the maximum width */
+    padding: 10px;
+    font-size: 16px;
+    text-align: center; /* Center text within the textbox */
+}
+
     </style>
 </head>
 <body>
@@ -72,9 +86,12 @@
         </a>
         <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
     </div>
+   <div class="container">
     <video id="camera-preview" class="camera-preview" autoplay></video>
-    <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly> <!-- Textbox for barcode -->
-    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
+    <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly>
+    <audio id="beep-sound" src="Media/beep.mp3"></audio>
+</div>
+
     <script>      
        // Set the textbox value with the username from the URL
 window.onload = function() {
