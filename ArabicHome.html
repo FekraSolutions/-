@@ -80,7 +80,7 @@
 
     <div class="label-container">
         <div class="label" onclick="redirectToPage()">الكاشير</div>
-        <div class="label" onclick="redirectToPagePurchase()">شراء مخزون</div>
+        <div class="label">شراء المخزون</div>
         <div class="label">رصيد المخزون</div>
         <div class="label">رصيد النقدية</div>
         <div class="label">رصيد الآجل</div>
@@ -95,10 +95,7 @@
             }
         }
 
-        function redirectToPagePurchase() {
-            location.href = 'ArabicPurchase.html';
-        }
-        
+       
         // Set the textbox value with the username from the URL
         window.onload = function() {
             const username = getQueryParameter('username');
