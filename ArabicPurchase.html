@@ -78,6 +78,15 @@
             outline: none;
             background-color: #F4E1BC;
         }
+    .form-label {
+    font-size: 14px; /* Smaller font size for labels */
+    color: #333; /* Label color */
+    margin-bottom: 5px; /* Space between label and textbox */
+    text-align: right; /* Align text to the right for Arabic */
+    display: block; /* Makes the label appear on its own line */
+    width: 100%;
+}
+
     </style>
 </head>
 <body>
@@ -92,6 +101,7 @@
     <!-- Center container with camera preview and barcode textbox -->
     <div class="center-container">
         <video id="camera-preview" class="camera-preview" autoplay></video>
+        <label for="barcode-textbox" class="form-label">باركود (اختياري)</label>
         <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="باركود" readonly>
     </div>
 
