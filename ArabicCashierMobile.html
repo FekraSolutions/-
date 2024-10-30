@@ -131,6 +131,34 @@
 
         // Start the camera when the page loads
         window.onload = startCamera;
+
+        //username
+            window.onload = function() {
+        // Get the query string
+        const params = new URLSearchParams(window.location.search);
+        const username = params.get('username');
+
+        // Set the textbox value to the username
+        if (username) {
+            document.getElementById('usernameDisplay').value = username;
+        }
+    };
+
+        // Function to get URL parameters
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Set the textbox value with the username from the URL
+        window.onload = function() {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox').placeholder = username; // Set as placeholder
+                // If you want to set the value instead, use:
+                // document.getElementById('emailTextbox').value = username;
+            }
+        };
     </script>
 </body>
 </html>
