@@ -76,7 +76,7 @@
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
-        <input type="text" class="textbox" placeholder=""/>
+        <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
     </div>
 
     <!-- Container for clickable labels -->
@@ -104,6 +104,23 @@
             document.getElementById('usernameDisplay').value = username;
         }
     };
+
+        // Function to get URL parameters
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Set the textbox value with the username from the URL
+        window.onload = function() {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox').placeholder = username; // Set as placeholder
+                // If you want to set the value instead, use:
+                // document.getElementById('emailTextbox').value = username;
+            }
+        };
+        
     </script>
 </body>
 </html>
