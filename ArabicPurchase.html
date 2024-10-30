@@ -14,21 +14,22 @@
             height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            flex-direction: column;
             background-color: #F4E1BC;
+            overflow: hidden;
             position: relative;
         }
 
+        /* Top left container with off button and username textbox */
         .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             display: flex;
             align-items: center;
-            padding: 10px;
-            width: 100%;
             background-color: #E8D3A5;
-            box-sizing: border-box;
-            position: fixed;
-            top: 0;
-            left: 0;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
         }
 
         .icon {
@@ -49,50 +50,69 @@
             padding: 5px;
         }
 
-            .camera-preview {
-            width: 300px; /* Adjust the size as needed */
-            height: 300px; /* Adjust the size as needed */
-            border: 2px solid #000; /* Optional border */
-            position: absolute;
-            top: 20px; /* Position from the top */
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: black; /* Fallback color */
+        /* Center container for camera preview and barcode textbox */
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #E8D3A5;
         }
-            .textbox {
-            margin-top: 320px; /* Adjust margin to position below the camera preview */
-            width: 300px; /* Width of the textbox */
-            padding: 10px; /* Padding for the textbox */
-            font-size: 16px; /* Font size */
+
+        .camera-preview {
+            width: 300px;
+            height: 300px;
+            background-color: black;
+        }
+
+        .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #F4E1BC;
         }
     </style>
 </head>
 <body>
+    <!-- Top left container with off button and username textbox -->
     <div class="icon-textbox-container">
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
         <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
     </div>
-    <video id="camera-preview" class="camera-preview" autoplay></video>
-    <input type="text" id="barcode-textbox" class="textbox" placeholder="باركود" readonly> <!-- Textbox for barcode -->
+
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">
+        <video id="camera-preview" class="camera-preview" autoplay></video>
+        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="باركود" readonly>
+    </div>
+
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
-    <script>      
-       // Set the textbox value with the username from the URL
-window.onload = function() {
-    const username = getQueryParameter('username');
-    if (username) {
-        document.getElementById('emailTextbox').placeholder = username;
-    }
-    startCamera();
-};
 
-function getQueryParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+    <script>
+        // Set the textbox value with the username from the URL
+        window.onload = function() {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox').placeholder = username;
+            }
+            startCamera();
+        };
 
-         // Access the back camera and stream it to the video element
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        // Access the back camera and stream it to the video element
         async function startCamera() {
             try {
                 const constraints = {
