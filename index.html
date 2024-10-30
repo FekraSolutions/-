@@ -292,37 +292,6 @@ document.getElementById("newAccountButton").onclick = function() {
         window.open("https://docs.google.com/forms/d/e/1FAIpQLSeLhQAgAvIzXVDW2QIuMP6EHusQpL9UOBnOi6KQun7bUXy1Cw/viewform?usp=sharing", "_blank");
     }
 };
-
-document.getElementById('loginButton').onclick = function() {
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-    var selectedLanguage = document.getElementById('languageSelect').value;
-    
-    var url = `https://script.google.com/macros/s/AKfycbx37r_lVEHeu1mDbCGl4RllNok0GNpoGZZS2l6NsIio_UT3GV1fQh4s8TOWUBi01wkF/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-
-    fetch(url, { method: 'GET' })
-        .then(response => response.text())
-        .then(data => {
-            if (data === "Match") {
-                document.getElementById('username').value = '';
-                document.getElementById('password').value = '';
-
-                if (selectedLanguage === "ar") {
-                    window.location.href = 'ArabicHome.html';
-                } else if (selectedLanguage === "en") {
-                    window.location.href = 'EnglishHome.html';
-                }
-            } else {
-                alert("INCORRECT INFORMATION");
-            }
-        })
-        .catch(() => {
-            // Handle errors silently, if needed
-        });
-};
-
-
-
     </script>
 </body>
 </html>
