@@ -297,8 +297,8 @@ document.getElementById('loginButton').onclick = function() {
     var username = document.getElementById('username').value;
     var password = document.getElementById('password').value;
     var selectedLanguage = document.getElementById('languageSelect').value;
-
-    var url = `https://script.google.com/macros/s/AKfycbwM85aRmSFvzVRirThLbM5ngQvmNNf5T2OUejE1nAQdqc4oL67LNC7wCdB-q7HMtycU/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
+    
+    var url = https://script.google.com/macros/s/AKfycbwM85aRmSFvzVRirThLbM5ngQvmNNf5T2OUejE1nAQdqc4oL67LNC7wCdB-q7HMtycU/exec?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)};
 
     fetch(url, { method: 'GET' })
         .then(response => response.text())
@@ -307,9 +307,11 @@ document.getElementById('loginButton').onclick = function() {
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
 
-                // Pass the username in the URL
-                var redirectUrl = selectedLanguage === "ar" ? `ArabicHome.html?username=${encodeURIComponent(username)}` : 'EnglishHome.html';
-                window.location.href = redirectUrl;
+                if (selectedLanguage === "ar") {
+                    window.location.href = 'ArabicHome.html';
+                } else if (selectedLanguage === "en") {
+                    window.location.href = 'EnglishHome.html';
+                }
             } else {
                 alert("INCORRECT INFORMATION");
             }
