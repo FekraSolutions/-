@@ -102,19 +102,39 @@
         <label for="barcode-textbox" class="form-label">باركود (اختياري)</label>
         <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="باركود" readonly>
         <label for="barcode-textbox" class="form-label">اختار الفئة</label>
+        <input type="text" id="category-dropdown" list="categories" placeholder="اختار الفئة" />
+        <datalist id="categories"></datalist>
     </div>
 
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
     <script>
-        // Set the textbox value with the username from the URL
-        window.onload = function() {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox').placeholder = username;
-            }
-            startCamera();
-        };
+         // Set the textbox value with the username from the URL
+    window.onload = function() {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox').placeholder = username;
+        }
+        startCamera();
+        fetchCategories(); // Call the function to fetch categories
+    };
+
+    function fetchCategories() {
+        const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
+        fetch(url)
+            .then(response => response.json())
+            .then(data => populateCategories(data))
+            .catch(error => console.error('Error fetching categories:', error));
+    }
+
+    function populateCategories(categories) {
+        const datalist = document.getElementById('categories');
+        categories.forEach(function(category) {
+            const option = document.createElement('option');
+            option.value = category;
+            datalist.appendChild(option);
+        });
+    }
 
         function getQueryParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
