@@ -119,7 +119,7 @@
         <video id="camera-preview" class="camera-preview" autoplay></video>
         
         <label for="barcode-textbox" class="form-label">باركود</label>
-        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="باركود" readonly>
+        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
 
         <!-- Dropdown menu with custom style -->
         <label for="category-dropdown" class="form-label">الفئة</label>
@@ -128,6 +128,10 @@
             <!-- Options will be populated by JavaScript -->
         </select>
         <label for="category-dropdown" class="form-label">اسم الصنف</label>
+        <input type="text" id="item-name-textbox" class="barcode-textbox" placeholder="اكتب اسم الصنف">
+        <label for="category-dropdown" class="form-label">اسم المورد</label>
+        <input type="text" id="vendor-name-textbox" class="barcode-textbox" placeholder="اكتب اسم المورد">
+        <label for="category-dropdown" class="form-label">طريقة الدفع</label>
     </div>
 
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
