@@ -85,57 +85,6 @@
     width: 100%;
     margin-bottom: 0; /* Remove space between label and textbox */
 }
-
-        .dropdown-input {
-    width: 300px; /* Width of the input */
-    height: 40px; /* Height of the input */
-    font-size: 18px; /* Font size */
-    padding: 8px 40px 8px 10px; /* Padding: top, right (space for arrow), bottom, left */
-    text-align: right; /* Right-aligned text */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #F4E1BC; /* Background color */
-    position: relative; /* Position for the arrow */
-    appearance: none; /* Remove default styling */
-}
-
-/* Arrow for the dropdown */
-.dropdown-input::after {
-    content: ''; /* Creates the arrow */
-    position: absolute; /* Positioning for the arrow */
-    right: 10px; /* Position the arrow */
-    top: 50%; /* Center vertically */
-    transform: translateY(-50%); /* Centering adjustment */
-    border: solid transparent; /* Border for the arrow */
-    border-width: 6px 6px 0; /* Triangle shape */
-    border-top-color: #333; /* Color of the arrow */
-    pointer-events: none; /* Prevent clicks on the arrow */
-}
-
-/* Style the datalist dropdown */
-datalist {
-    max-height: 150px; /* Maximum height of the dropdown */
-    overflow-y: auto; /* Scroll if too many options */
-    border: 1px solid #ccc; /* Border for the datalist */
-    border-radius: 5px; /* Rounded corners for the dropdown */
-    background-color: #F4E1BC; /* Background color for the dropdown */
-    z-index: 1000; /* Ensure the dropdown appears above other elements */
-}
-
-/* Style for the options in the datalist */
-datalist option {
-    padding: 8px; /* Padding for the options */
-    background-color: #F4E1BC; /* Background color for the options */
-    color: #333; /* Text color for the options */
-}
-
-/* Highlight option on hover */
-datalist option:hover {
-    background-color: #ddd; /* Background color on hover */
-    cursor: pointer; /* Pointer cursor on hover */
-}
-
-        
     </style>
 </head>
 <body>
@@ -152,8 +101,8 @@ datalist option:hover {
         <video id="camera-preview" class="camera-preview" autoplay></video>
         <label for="barcode-textbox" class="form-label">باركود (اختياري)</label>
         <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="باركود" readonly>
-        <label for="barcode-textbox" class="form-label">الفئة</label>
-        <input type="text" id="category-dropdown" list="categories" placeholder="اختار أو اكتب الفئة" class="dropdown-input" />
+        <label for="barcode-textbox" class="form-label">اختار الفئة</label>
+        <input type="text" id="category-dropdown" list="categories" placeholder="اختار الفئة" />
         <datalist id="categories"></datalist>
     </div>
 
