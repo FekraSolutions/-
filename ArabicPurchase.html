@@ -158,7 +158,10 @@
             <!-- Options will be populated by JavaScript -->
         </select>
         <label for="category-dropdown" class="form-label">اسم الصنف</label>
-        <input type="text" id="item-name-textbox" class="barcode-textbox">
+        <input type="text" id="item-name-textbox" class="barcode-textbox" list="suggestions">
+        <datalist id="suggestions">
+        <!-- Dynamic suggestions will be added here by JavaScript -->
+        </datalist>
         <label for="category-dropdown" class="form-label">وحدة القياس</label>
         <select id="measurement-unit-dropdown" class="custom-dropdown">
         <option value="" disabled selected></option>
@@ -285,6 +288,31 @@
                 beepSound.play();
             });
         }
+
+        const categoryDropdown = document.getElementById("category-dropdown");
+const itemTextbox = document.getElementById("item-name-textbox");
+const suggestionsList = document.getElementById("suggestions");
+
+categoryDropdown.addEventListener("change", async function() {
+  const selectedCategory = categoryDropdown.value;
+  
+  if (selectedCategory) {
+    // Fetch suggestions from Google Apps Script
+    const response = await fetch(`YOUR_WEB_APP_URL?category=${encodeURIComponent(selectedCategory)}`);
+    const suggestions = await response.json();
+    
+    // Clear previous suggestions
+    suggestionsList.innerHTML = '';
+
+    // Populate new suggestions in the datalist
+    suggestions.forEach(item => {
+      const option = document.createElement("option");
+      option.value = item;
+      suggestionsList.appendChild(option);
+    });
+  }
+});
+
     </script>
 </body>
 </html>
