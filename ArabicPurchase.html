@@ -326,7 +326,7 @@
         });
     }
 
-    document.getElementById('another-item-button').addEventListener('click', function() {
+document.getElementById('another-item-button').addEventListener('click', async function() {
     // Select necessary elements
     const category = document.getElementById('category-dropdown').value;
     const itemName = document.getElementById('item-name-textbox').value;
@@ -343,9 +343,29 @@
         return;
     }
 
-    // Display the placeholder value of the emailTextbox if all fields are filled
-    alert(`القيمة الحالية في البريد الإلكتروني: ${sheetName}`);
+    // Check if the sheet exists
+    const sheetExists = await checkSheetExists(sheetName);
+    if (sheetExists) {
+        alert(`Sheet with the name "${sheetName}" exists.`);
+    } else {
+        alert(`No sheet found with the name "${sheetName}".`);
+    }
 });
+
+// Function to check if a sheet exists using Google Apps Script web app
+async function checkSheetExists(sheetName) {
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbyCxPCL9IVu7lA4_yzkLeOn9nJXANDSwOODFb2wq57Cfq2oB7hNL2qL9txItNpaa981/exec'; // Replace with your actual web app URL
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error fetching from web app: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data.exists;
+}
 
 </script>
 
