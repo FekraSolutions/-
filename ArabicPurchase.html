@@ -328,24 +328,35 @@
 
 document.getElementById('another-item-button').addEventListener('click', async function() {
     // Select necessary elements
-    const category = document.getElementById('category-dropdown').value;
-    const itemName = document.getElementById('item-name-textbox').value;
-    const unit = document.getElementById('measurement-unit-dropdown').value;
-    const quantity = document.getElementById('quantity').value;
-    const purchasePrice = document.getElementById('purchase-price-textbox').value;
-    const sellPrice = document.getElementById('sell-price-textbox').value;
-    const barcode = document.getElementById('barcode-textbox').value || document.getElementById('barcode-textbox').placeholder;
+    const categoryDropdown = document.getElementById('category-dropdown');
+    const itemNameTextbox = document.getElementById('item-name-textbox');
+    const unitDropdown = document.getElementById('measurement-unit-dropdown');
+    const quantityTextbox = document.getElementById('quantity');
+    const purchasePriceTextbox = document.getElementById('purchase-price-textbox');
+    const sellPriceTextbox = document.getElementById('sell-price-textbox');
+    const barcodeTextbox = document.getElementById('barcode-textbox');
     const sheetName = document.getElementById('emailTextbox').placeholder;
 
     // Check for empty fields (barcode is optional)
-    if (!category || !itemName || !unit || !quantity || !purchasePrice || !sellPrice) {
+    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
         alert("البيانات غير كاملة، فقط الباركود اختياري");
         return;
     }
 
     // Check if the sheet exists and copy all values
-    const { exists, message } = await checkSheetExists(sheetName, barcode, category, itemName, unit, quantity, purchasePrice, sellPrice);
-    alert(message);
+    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
+    
+    // Notify the user
+    alert("تم الحفظ بنجاح");
+
+    // Clear the input fields
+    categoryDropdown.selectedIndex = 0; // Reset category dropdown
+    itemNameTextbox.value = "";          // Clear item name textbox
+    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
+    quantityTextbox.value = "";           // Clear quantity textbox
+    purchasePriceTextbox.value = "";      // Clear purchase price textbox
+    sellPriceTextbox.value = "";          // Clear sell price textbox
+    barcodeTextbox.value = "";             // Clear barcode textbox (optional)
 });
 
 // Function to check if a sheet exists and copy multiple values using Google Apps Script web app
@@ -362,8 +373,6 @@ async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemName
     const data = await response.json();
     return data;
 }
-
-</script>
 
 </body>
 </html>
