@@ -325,58 +325,6 @@
             beepSound.play();
         });
     }
-
-    document.getElementById('another-item-button').addEventListener('click', function() {
-    // Check if all fields are filled
-    const categoryDropdown = document.getElementById('category-dropdown');
-    const itemNameTextbox = document.getElementById('item-name-textbox');
-    const measurementUnitDropdown = document.getElementById('measurement-unit-dropdown');
-    const quantityTextbox = document.getElementById('quantity');
-    const purchasePriceTextbox = document.getElementById('purchase-price-textbox');
-    const sellPriceTextbox = document.getElementById('sell-price-textbox');
-    
-    if (!categoryDropdown.value || !itemNameTextbox.value || !measurementUnitDropdown.value || 
-        !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
-        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
-        return;
-    }
-
-    // If all fields are filled, get the barcode value
-    const barcodeValue = document.getElementById('barcode-textbox').value;
-    const sheetName = document.getElementById('emailTextbox').value;
-
-    // Call Google Apps Script to add the value to the specified sheet
-    addToSheet(sheetName, barcodeValue);
-});
-
-// Function to call Google Apps Script
-async function addToSheet(sheetName, barcodeValue) {
-    const url = 'https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec'; // Replace with your Google Apps Script web app URL
-    const data = {
-        sheetName: sheetName,
-        barcodeValue: barcodeValue,
-    };
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        console.log('Data added to sheet:', result);
-    } catch (error) {
-        console.error('Error adding data to sheet:', error);
-    }
-}
-
 </script>
 
 </body>
