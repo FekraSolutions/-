@@ -345,20 +345,6 @@
 
     // Display the placeholder value of the emailTextbox if all fields are filled
     alert(`القيمة الحالية في البريد الإلكتروني: ${sheetName}`);
-
-    // Call Google Apps Script function to save data if all fields are filled
-    const url = `https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec?sheetName=${encodeURIComponent(sheetName)}&barcode=${encodeURIComponent(barcode)}`;
-   
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert("تم إضافة الصنف بنجاح!");
-            } else {
-                alert("حدث خطأ أثناء الإضافة، الرجاء المحاولة مجددًا.");
-            }
-        })
-        .catch(error => console.error('Error:', error));
 });
 
 </script>
