@@ -325,6 +325,69 @@
             beepSound.play();
         });
     }
+
+    document.getElementById('another-item-button').addEventListener('click', async function() {
+    // Validate inputs
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
+    const quantity = document.getElementById('quantity').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
+    const barcode = document.getElementById('barcode-textbox').value;
+    const email = document.getElementById('emailTextbox').value;
+
+    if (!category || !itemName || !measurementUnit || !quantity || !purchasePrice || !sellPrice) {
+        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
+        return; // Stop execution if validation fails
+    }
+
+    // Prepare data to send to the Google Sheets web app
+    const data = {
+        email: email,
+        barcode: barcode,
+        category: category,
+        itemName: itemName,
+        measurementUnit: measurementUnit,
+        quantity: quantity,
+        purchasePrice: purchasePrice,
+        sellPrice: sellPrice
+    };
+
+    // Send data to the Google Sheets web app
+    const url = 'https://script.google.com/macros/s/AKfycbzf9f4P6Gz-pTGoIz2uweZJRzSSNFY1Z-B_OIBJ2i6_EFLO6k2snsE_vD1VBFWbrD6R/exec'; // Replace with your Google Sheets web app URL
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        alert('Data saved successfully!');
+        
+        // Clear the inputs
+        clearInputs();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was a problem saving the data. Please try again.');
+    }
+});
+
+// Function to clear inputs
+function clearInputs() {
+    document.getElementById('barcode-textbox').value = '';
+    document.getElementById('category-dropdown').selectedIndex = 0;
+    document.getElementById('item-name-textbox').value = '';
+    document.getElementById('measurement-unit-dropdown').selectedIndex = 0;
+    document.getElementById('quantity').value = '';
+    document.getElementById('purchase-price-textbox').value = '';
+    document.getElementById('sell-price-textbox').value = '';
+}
+
 </script>
 
 </body>
