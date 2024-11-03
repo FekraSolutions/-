@@ -343,16 +343,16 @@ document.getElementById('another-item-button').addEventListener('click', async f
         return;
     }
 
-    // Check if the sheet exists
-    const sheetExists = await checkSheetExists(sheetName);
-    if (sheetExists) {
-        alert(`Sheet with the name "${sheetName}" exists.`);
+    // Check if the sheet exists and get the first available cell
+    const { exists, firstAvailableCell } = await checkSheetExists(sheetName);
+    if (exists) {
+        alert(`Sheet with the name "${sheetName}" exists. First available cell in column A: A${firstAvailableCell}.`);
     } else {
         alert(`No sheet found with the name "${sheetName}".`);
     }
 });
 
-// Function to check if a sheet exists using Google Apps Script web app
+// Function to check if a sheet exists and get the first available cell using Google Apps Script web app
 async function checkSheetExists(sheetName) {
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbyCxPCL9IVu7lA4_yzkLeOn9nJXANDSwOODFb2wq57Cfq2oB7hNL2qL9txItNpaa981/exec'; // Replace with your actual web app URL
     const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`, {
@@ -364,8 +364,9 @@ async function checkSheetExists(sheetName) {
     }
 
     const data = await response.json();
-    return data.exists;
+    return data;
 }
+
 
 </script>
 
