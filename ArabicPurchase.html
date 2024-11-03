@@ -330,17 +330,23 @@
     const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
     const purchasePrice = document.getElementById('purchase-price-textbox').value;
     const sellPrice = document.getElementById('sell-price-textbox').value;
-    const email = document.getElementById('emailTextbox').value;
+    const email = document.getElementById('emailTextbox').value; // This holds the sheet name
 
-    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice) {
+    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice || !email) {
         alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
         return;
     }
 
     // Step 2: Get the first available row
-    const url = 'https://script.google.com/macros/s/AKfycbwbpBo9lfYbJSGNi3Umbt9k6GL01B4qS-hOvP7XNJugojac-ZYSBSV-bkICOyeoDZQ/exec?action=getFirstAvailableRow'; // Replace with your web app URL
+    const url = 'YOUR_WEB_APP_URL?action=getFirstAvailableRow&sheetName=' + encodeURIComponent(email); // Pass sheet name
     const rowResponse = await fetch(url);
     const rowData = await rowResponse.json();
+
+    if (rowData.error) {
+        alert(rowData.error); // Handle sheet not found error
+        return;
+    }
+
     const firstAvailableRow = rowData.firstAvailableRow;
 
     // Step 3: Prepare values to update
@@ -354,7 +360,7 @@
     ];
 
     // Step 4: Update the sheet with the new values
-    const updateUrl = `https://script.google.com/macros/s/AKfycbwbpBo9lfYbJSGNi3Umbt9k6GL01B4qS-hOvP7XNJugojac-ZYSBSV-bkICOyeoDZQ/exec?action=updateSheet&row=${firstAvailableRow}&values=${JSON.stringify(values)}`; // Replace with your web app URL
+    const updateUrl = `YOUR_WEB_APP_URL?action=updateSheet&row=${firstAvailableRow}&sheetName=${encodeURIComponent(email)}&values=${JSON.stringify(values)}`; // Pass sheet name
     await fetch(updateUrl);
 
     // Step 5: Clear input values
