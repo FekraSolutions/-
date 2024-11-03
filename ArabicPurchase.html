@@ -343,19 +343,15 @@ document.getElementById('another-item-button').addEventListener('click', async f
         return;
     }
 
-    // Check if the sheet exists and get the first available cell
-    const { exists, firstAvailableCell } = await checkSheetExists(sheetName);
-    if (exists) {
-        alert(`Sheet with the name "${sheetName}" exists. First available cell in column A: A${firstAvailableCell}.`);
-    } else {
-        alert(`No sheet found with the name "${sheetName}".`);
-    }
+    // Check if the sheet exists and copy the barcode value
+    const { exists, message } = await checkSheetExists(sheetName, barcode);
+    alert(message);
 });
 
-// Function to check if a sheet exists and get the first available cell using Google Apps Script web app
-async function checkSheetExists(sheetName) {
+// Function to check if a sheet exists and copy the barcode value using Google Apps Script web app
+async function checkSheetExists(sheetName, barcodeValue) {
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbyCxPCL9IVu7lA4_yzkLeOn9nJXANDSwOODFb2wq57Cfq2oB7hNL2qL9txItNpaa981/exec'; // Replace with your actual web app URL
-    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`, {
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}`, {
         method: 'GET',
     });
 
