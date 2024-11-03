@@ -354,7 +354,7 @@ document.getElementById("another-item-button").addEventListener("click", functio
     const barcode = barcodeTextbox.value;
 
     // Send the data to the Google Apps Script web app
-    fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", {
+    fetch("https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
