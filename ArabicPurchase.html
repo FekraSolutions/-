@@ -343,9 +343,34 @@
         return;
     }
 
-    // Display the placeholder value of the emailTextbox if all fields are filled
-    alert(`القيمة الحالية في البريد الإلكتروني: ${sheetName}`);
+    // Send the barcode and sheet name to the Google Apps Script
+    sendBarcodeToSheet(barcode, sheetName);
 });
+
+function sendBarcodeToSheet(barcode, sheetName) {
+    const url = 'https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec'; // Replace with your Google Apps Script URL
+    const data = {
+        barcode: barcode,
+        sheetName: sheetName
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        alert('Barcode has been successfully added to the sheet.');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 
 </script>
 
