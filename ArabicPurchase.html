@@ -339,7 +339,7 @@
     }
 
     // Step 2: Get the first available row
-    const url = 'YOUR_WEB_APP_URL?action=getFirstAvailableRow'; // Replace with your web app URL
+    const url = 'https://script.google.com/macros/s/AKfycbwbpBo9lfYbJSGNi3Umbt9k6GL01B4qS-hOvP7XNJugojac-ZYSBSV-bkICOyeoDZQ/exec?action=getFirstAvailableRow'; // Replace with your web app URL
     const rowResponse = await fetch(url);
     const rowData = await rowResponse.json();
     const firstAvailableRow = rowData.firstAvailableRow;
@@ -355,7 +355,7 @@
     ];
 
     // Step 4: Update the sheet with the new values
-    const updateUrl = `YOUR_WEB_APP_URL?action=updateSheet&row=${firstAvailableRow}&values=${JSON.stringify(values)}`; // Replace with your web app URL
+    const updateUrl = `https://script.google.com/macros/s/AKfycbwbpBo9lfYbJSGNi3Umbt9k6GL01B4qS-hOvP7XNJugojac-ZYSBSV-bkICOyeoDZQ/exec?action=updateSheet&row=${firstAvailableRow}&values=${JSON.stringify(values)}`; // Replace with your web app URL
     await fetch(updateUrl);
 
     // Step 5: Clear input values
