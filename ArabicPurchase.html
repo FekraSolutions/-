@@ -209,15 +209,14 @@
 
 <script>
     // Set the textbox value with the username from the URL
-window.onload = function() {
-    const username = getQueryParameter('username');
-    if (username) {
-        document.getElementById('emailTextbox').placeholder = username;
-    }
-    document.getElementById('another-item-button').addEventListener('click', handleAddItem); // Moved here for clarity
-    startCamera();
-    fetchCategories(); // Call the function to fetch categories
-};
+    window.onload = function() {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox').placeholder = username;
+        }
+        startCamera();
+        fetchCategories(); // Call the function to fetch categories
+    };
 
     function fetchCategories() {
         const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
@@ -324,66 +323,6 @@ window.onload = function() {
             beepSound.play();
         });
     }
-
-async function handleAddItem() {
-    // Step 1: Check if fields are not empty
-    const category = document.getElementById('category-dropdown').value;
-    const itemName = document.getElementById('item-name-textbox').value;
-    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
-    const purchasePrice = document.getElementById('purchase-price-textbox').value;
-    const sellPrice = document.getElementById('sell-price-textbox').value;
-    const barcode = document.getElementById('barcode-textbox').value;
-    const email = document.getElementById('emailTextbox').value;
-
-    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice) {
-        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
-        return; // Exit the function if any fields are empty
-    }
-
-    try {
-        // Step 2: Prepare the data to send to Google Sheets
-        const data = {
-            barcode: barcode,
-            category: category,
-            itemName: itemName,
-            measurementUnit: measurementUnit,
-            purchasePrice: purchasePrice,
-            sellPrice: sellPrice,
-            sheetName: email // This assumes you want to use the email as the sheet name
-        };
-
-        // Step 3: Make a POST request to your Google Sheets web app
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIKZU-dvUi_eQcFBqM2tshoDNY92wmhPNwuui5e2MjVGjzli6bBaxIK2MjLyzU-PDZ/exec', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        // Step 4: Handle the response
-        if (response.ok) {
-            const result = await response.json();
-            console.log('Data stored successfully:', result);
-            // Optionally clear the fields after successful submission
-            clearFields();
-        } else {
-            console.error('Error storing data:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-// Function to clear fields after submission
-function clearFields() {
-    document.getElementById('barcode-textbox').value = '';
-    document.getElementById('category-dropdown').selectedIndex = 0; // Reset to the first option
-    document.getElementById('item-name-textbox').value = '';
-    document.getElementById('measurement-unit-dropdown').selectedIndex = 0; // Reset to the first option
-    document.getElementById('purchase-price-textbox').value = '';
-    document.getElementById('sell-price-textbox').value = '';
-}
 </script>
 
 </body>
