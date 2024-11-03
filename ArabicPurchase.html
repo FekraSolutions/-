@@ -209,14 +209,15 @@
 
 <script>
     // Set the textbox value with the username from the URL
-    window.onload = function() {
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox').placeholder = username;
-        }
-        startCamera();
-        fetchCategories(); // Call the function to fetch categories
-    };
+window.onload = function() {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox').placeholder = username;
+    }
+    document.getElementById('another-item-button').addEventListener('click', handleAddItem); // Moved here for clarity
+    startCamera();
+    fetchCategories(); // Call the function to fetch categories
+};
 
     function fetchCategories() {
         const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
@@ -323,6 +324,52 @@
             beepSound.play();
         });
     }
+
+async function handleAddItem() {
+    // Check if any required fields are empty
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
+    const barcode = document.getElementById('barcode-textbox').value;
+    const email = document.getElementById('emailTextbox').value;
+
+    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice) {
+        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
+        return; // Exit the function if validation fails
+    }
+
+    // Send data to Google Sheets
+    const sheetName = email; // Use the email value as the sheet name
+    const rowData = [barcode, category, itemName, measurementUnit, purchasePrice, sellPrice];
+
+    try {
+        const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ sheetName: sheetName, rowData: rowData }),
+        });
+
+        if (response.ok) {
+            console.log('Data sent successfully');
+        } else {
+            console.error('Error sending data:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+
+    // Clear the input fields
+    document.getElementById('barcode-textbox').value = '';
+    document.getElementById('category-dropdown').value = '';
+    document.getElementById('item-name-textbox').value = '';
+    document.getElementById('measurement-unit-dropdown').value = '';
+    document.getElementById('purchase-price-textbox').value = '';
+    document.getElementById('sell-price-textbox').value = '';
+}
 </script>
 
 </body>
