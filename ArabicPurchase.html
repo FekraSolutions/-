@@ -327,7 +327,6 @@
     }
 
 //lets post
-    // JavaScript Code
 document.getElementById("another-item-button").addEventListener("click", function () {
   // Get references to all input fields
   const categoryDropdown = document.getElementById("category-dropdown");
@@ -349,8 +348,9 @@ document.getElementById("another-item-button").addEventListener("click", functio
   ) {
     alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
   } else {
-    // If all fields have values, show the email textbox value in a message box
-    alert(`Email: ${emailTextbox.value}`);
+    // If all fields have values, show the email textbox value or placeholder in a message box
+    const emailValue = emailTextbox.value || emailTextbox.placeholder;
+    alert(`Email: ${emailValue}`);
   }
 });
 
