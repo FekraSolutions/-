@@ -158,10 +158,8 @@
             <!-- Options will be populated by JavaScript -->
         </select>
         <label for="category-dropdown" class="form-label">اسم الصنف</label>
-        <input type="text" id="item-name-textbox" class="barcode-textbox" list="suggestions">
-        <datalist id="suggestions">
-        <!-- Dynamic suggestions will be added here by JavaScript -->
-        </datalist>
+<input type="text" id="item-name-textbox" list="suggestions-list" class="barcode-textbox">
+<datalist id="suggestions-list"></datalist>
         <label for="category-dropdown" class="form-label">وحدة القياس</label>
         <select id="measurement-unit-dropdown" class="custom-dropdown">
         <option value="" disabled selected></option>
@@ -289,8 +287,11 @@
             });
         }
 
-        const categoryDropdown = document.getElementById("category-dropdown");
-const suggestionsList = document.getElementById("suggestions");
+// to suggest items
+
+
+const categoryDropdown = document.getElementById("category-dropdown");
+const suggestionsList = document.getElementById("suggestions-list");
 
 categoryDropdown.addEventListener("change", async function() {
   const selectedCategory = categoryDropdown.value;
@@ -303,7 +304,7 @@ categoryDropdown.addEventListener("change", async function() {
     const suggestions = await response.json();
     suggestionsList.innerHTML = ''; // Clear previous suggestions
 
-    // Populate new suggestions
+    // Populate new suggestions as <option> elements within <datalist>
     suggestions.forEach(item => {
       const option = document.createElement("option");
       option.value = item;
@@ -313,6 +314,6 @@ categoryDropdown.addEventListener("change", async function() {
     console.error("Error fetching suggestions:", error);
   }
 });
-    </script>
+</script>
 </body>
 </html>
