@@ -158,8 +158,7 @@
             <!-- Options will be populated by JavaScript -->
         </select>
         <label for="category-dropdown" class="form-label">اسم الصنف</label>
-<input type="text" id="item-name-textbox" list="suggestions-list" class="barcode-textbox">
-<datalist id="suggestions-list"></datalist>
+        <input type="text" id="item-name-textbox" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">وحدة القياس</label>
         <select id="measurement-unit-dropdown" class="custom-dropdown">
         <option value="" disabled selected></option>
@@ -286,34 +285,6 @@
                 beepSound.play();
             });
         }
-
-// to suggest items
-
-
-const categoryDropdown = document.getElementById("category-dropdown");
-const suggestionsList = document.getElementById("suggestions-list");
-
-categoryDropdown.addEventListener("change", async function() {
-  const selectedCategory = categoryDropdown.value;
-  
-  try {
-    const response = await fetch(`https://script.google.com/macros/s/AKfycbz4S9FmB-lgczYeRnX6PRtun5h2FLGmUNt3FkKEzGJHa-Oruh6SdqY_nbEzGXiI7da9/exec?category=${encodeURIComponent(selectedCategory)}`);
-    
-    if (!response.ok) throw new Error("Network response was not ok");
-
-    const suggestions = await response.json();
-    suggestionsList.innerHTML = ''; // Clear previous suggestions
-
-    // Populate new suggestions as <option> elements within <datalist>
-    suggestions.forEach(item => {
-      const option = document.createElement("option");
-      option.value = item;
-      suggestionsList.appendChild(option);
-    });
-  } catch (error) {
-    console.error("Error fetching suggestions:", error);
-  }
-});
-</script>
+    </script>
 </body>
 </html>
