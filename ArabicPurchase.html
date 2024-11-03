@@ -323,55 +323,6 @@
             beepSound.play();
         });
     }
-    document.getElementById('another-item-button').addEventListener('click', async function() {
-    // Step 1: Validate Inputs
-    const category = document.getElementById('category-dropdown').value;
-    const itemName = document.getElementById('item-name-textbox').value;
-    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
-    const purchasePrice = document.getElementById('purchase-price-textbox').value;
-    const sellPrice = document.getElementById('sell-price-textbox').value;
-    const email = document.getElementById('emailTextbox').value; // This holds the sheet name
-
-    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice || !email) {
-        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
-        return;
-    }
-
-    // Step 2: Get the first available row
-    const url = 'https://script.google.com/macros/s/AKfycbwqBIy4vz3ntMhFFeBXPgKcqz15c7iprtFMuap72o0myw726JXpK4Tf3NBkm-nz1smv/exec?action=getFirstAvailableRow&sheetName=' + encodeURIComponent(email); // Pass sheet name
-    const rowResponse = await fetch(url);
-    const rowData = await rowResponse.json();
-
-    if (rowData.error) {
-        alert(rowData.error); // Handle sheet not found error
-        return;
-    }
-
-    const firstAvailableRow = rowData.firstAvailableRow;
-
-    // Step 3: Prepare values to update
-    const values = [
-        document.getElementById('barcode-textbox').value, // A: Barcode
-        category,                                          // B: Category
-        itemName,                                         // C: Item Name
-        measurementUnit,                                  // D: Measurement Unit
-        purchasePrice,                                    // E: Purchase Price
-        sellPrice                                         // F: Sell Price
-    ];
-
-    // Step 4: Update the sheet with the new values
-    const updateUrl = `https://script.google.com/macros/s/AKfycbwqBIy4vz3ntMhFFeBXPgKcqz15c7iprtFMuap72o0myw726JXpK4Tf3NBkm-nz1smv/exec?action=updateSheet&row=${firstAvailableRow}&sheetName=${encodeURIComponent(email)}&values=${JSON.stringify(values)}`; // Pass sheet name
-    await fetch(updateUrl);
-
-    // Step 5: Clear input values
-    document.getElementById('barcode-textbox').value = '';
-    document.getElementById('category-dropdown').value = '';
-    document.getElementById('item-name-textbox').value = '';
-    document.getElementById('measurement-unit-dropdown').value = '';
-    document.getElementById('purchase-price-textbox').value = '';
-    document.getElementById('sell-price-textbox').value = '';
-});
-
 </script>
 
 </body>
