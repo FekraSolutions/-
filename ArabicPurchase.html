@@ -326,7 +326,7 @@
         });
     }
 
-    document.getElementById('another-item-button').addEventListener('click', function() {
+document.getElementById('another-item-button').addEventListener('click', function() {
     // Select necessary elements
     const category = document.getElementById('category-dropdown').value;
     const itemName = document.getElementById('item-name-textbox').value;
@@ -343,9 +343,25 @@
         return;
     }
 
-    // Display the placeholder value of the emailTextbox if all fields are filled
-    alert(`القيمة الحالية في البريد الإلكتروني: ${sheetName}`);
+    // Send a request to the Google Apps Script to check if the sheet exists
+    fetch('https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec', { // Replace with your script URL
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sheetName: sheetName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'found') {
+            alert("A sheet found with the same name.");
+        } else {
+            alert("No match found.");
+        }
+    })
+    .catch(error => console.error('Error:', error));
 });
+
 
 </script>
 
