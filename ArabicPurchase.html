@@ -194,8 +194,6 @@
         <option value="جردل">جردل</option>
         <option value="كرتون">كرتون</option>
     </select>
-        <label for="category-dropdown" class="form-label">الكمية</label>
-        <input type="number" id="quantity" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">سعر الشراء</label>
         <input type="number" id="purchase-price-textbox" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">سعر البيع</label>
@@ -325,71 +323,6 @@
             beepSound.play();
         });
     }
-
-document.getElementById('another-item-button').addEventListener('click', async function() {
-    // Validate inputs
-    const category = document.getElementById('category-dropdown').value;
-    const itemName = document.getElementById('item-name-textbox').value;
-    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
-    const quantity = document.getElementById('quantity').value;
-    const purchasePrice = document.getElementById('purchase-price-textbox').value;
-    const sellPrice = document.getElementById('sell-price-textbox').value;
-    const barcode = document.getElementById('barcode-textbox').value;
-    const email = document.getElementById('emailTextbox').value;
-
-    if (!category || !itemName || !measurementUnit || !quantity || !purchasePrice || !sellPrice) {
-        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
-        return; // Stop execution if validation fails
-    }
-
-    // Prepare data to send to the Google Sheets web app
-    const data = {
-        email: email,
-        barcode: barcode,
-        category: category,
-        itemName: itemName,
-        measurementUnit: measurementUnit,
-        quantity: quantity,
-        purchasePrice: purchasePrice,
-        sellPrice: sellPrice
-    };
-
-    const formData = new URLSearchParams(data).toString();
-
-    // Send data to the Google Sheets web app
-    const url = 'https://script.google.com/macros/s/AKfycbx1CiNP8n1swvYWC0-9uno21Dt__9h7ZbTcsA2XRYkDHDGudLVpSJNX_PJSOZVOphh4/exec'; // Replace with your Google Sheets web app URL
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formData,
-        });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        alert('Data saved successfully!');
-        
-        // Clear the inputs
-        clearInputs();
-    } catch (error) {
-        console.error('Error:', error);
-        alert('There was a problem saving the data. Please try again.');
-    }
-});
-
-// Function to clear inputs
-function clearInputs() {
-    document.getElementById('barcode-textbox').value = '';
-    document.getElementById('category-dropdown').selectedIndex = 0;
-    document.getElementById('item-name-textbox').value = '';
-    document.getElementById('measurement-unit-dropdown').selectedIndex = 0;
-    document.getElementById('quantity').value = '';
-    document.getElementById('purchase-price-textbox').value = '';
-    document.getElementById('sell-price-textbox').value = '';
-}
-
 </script>
 
 </body>
