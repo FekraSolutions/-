@@ -354,15 +354,17 @@ document.getElementById('another-item-button').addEventListener('click', async f
         sellPrice: sellPrice
     };
 
+    const formData = new URLSearchParams(data).toString();
+
     // Send data to the Google Sheets web app
-    const url = 'https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec'; // Replace with your Google Sheets web app URL
+    const url = 'https://script.google.com/macros/s/AKfycbx1CiNP8n1swvYWC0-9uno21Dt__9h7ZbTcsA2XRYkDHDGudLVpSJNX_PJSOZVOphh4/exec'; // Replace with your Google Sheets web app URL
     try {
         const response = await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify(data),
+            body: formData,
         });
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -387,6 +389,7 @@ function clearInputs() {
     document.getElementById('purchase-price-textbox').value = '';
     document.getElementById('sell-price-textbox').value = '';
 }
+
 </script>
 
 </body>
