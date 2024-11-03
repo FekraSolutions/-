@@ -323,6 +323,56 @@
             beepSound.play();
         });
     }
+
+ // Function for adding another item
+    document.getElementById("another-item-button").addEventListener("click", function() {
+        // Retrieve the values from the form
+        const category = document.getElementById("category-dropdown").value;
+        const itemName = document.getElementById("item-name-textbox").value;
+        const measurementUnit = document.getElementById("measurement-unit-dropdown").value;
+        const purchasePrice = document.getElementById("purchase-price-textbox").value;
+        const sellPrice = document.getElementById("sell-price-textbox").value;
+        const barcode = document.getElementById("barcode-textbox").value;
+        const sheetName = document.getElementById("emailTextbox").value;
+
+        // Check if required fields are filled
+        if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice) {
+            alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
+            return;
+        }
+
+        // Data to send to Google Sheets
+        const itemData = {
+            category: category,
+            itemName: itemName,
+            measurementUnit: measurementUnit,
+            purchasePrice: purchasePrice,
+            sellPrice: sellPrice,
+            barcode: barcode,
+            sheetName: sheetName
+        };
+
+        // Replace YOUR_WEB_APP_URL with your Google Apps Script Web App URL
+        fetch("https://script.google.com/macros/s/AKfycbwKkYgZFV1TD6Tx5l-mQ2fdVcyUtXYvlZfOlwl4yFWB5B4EykJ3H0bH5ViQfRRWoBhp/exec", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(itemData)
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData.status === "success") {
+                alert("Data added successfully!");
+            } else {
+                alert("An error occurred: " + responseData.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while adding data.");
+        });
+    });
 </script>
 
 </body>
