@@ -325,6 +325,35 @@
             beepSound.play();
         });
     }
+
+//lets post
+    // JavaScript Code
+document.getElementById("another-item-button").addEventListener("click", function () {
+  // Get references to all input fields
+  const categoryDropdown = document.getElementById("category-dropdown");
+  const itemNameTextbox = document.getElementById("item-name-textbox");
+  const measurementUnitDropdown = document.getElementById("measurement-unit-dropdown");
+  const quantityTextbox = document.getElementById("quantity");
+  const purchasePriceTextbox = document.getElementById("purchase-price-textbox");
+  const sellPriceTextbox = document.getElementById("sell-price-textbox");
+  const emailTextbox = document.getElementById("emailTextbox");
+
+  // Check if any required field is empty
+  if (
+    categoryDropdown.value === "" ||
+    itemNameTextbox.value === "" ||
+    measurementUnitDropdown.value === "" ||
+    quantityTextbox.value === "" ||
+    purchasePriceTextbox.value === "" ||
+    sellPriceTextbox.value === ""
+  ) {
+    alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
+  } else {
+    // If all fields have values, show the email textbox value in a message box
+    alert(`Email: ${emailTextbox.value}`);
+  }
+});
+
 </script>
 
 </body>
