@@ -194,8 +194,6 @@
         <option value="جردل">جردل</option>
         <option value="كرتون">كرتون</option>
     </select>
-        <label for="category-dropdown" class="form-label">الكمية</label>
-        <input type="number" id="quantity" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">سعر الشراء</label>
         <input type="number" id="purchase-price-textbox" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">سعر البيع</label>
@@ -325,59 +323,6 @@
             beepSound.play();
         });
     }
-
-//lets post
-document.getElementById("another-item-button").addEventListener("click", function () {
-  // Get references to all input fields
-  const categoryDropdown = document.getElementById("category-dropdown");
-  const itemNameTextbox = document.getElementById("item-name-textbox");
-  const measurementUnitDropdown = document.getElementById("measurement-unit-dropdown");
-  const quantityTextbox = document.getElementById("quantity");
-  const purchasePriceTextbox = document.getElementById("purchase-price-textbox");
-  const sellPriceTextbox = document.getElementById("sell-price-textbox");
-  const emailTextbox = document.getElementById("emailTextbox");
-  const barcodeTextbox = document.getElementById("barcode-textbox");
-
-  // Check if any required field is empty
-  if (
-    categoryDropdown.value === "" ||
-    itemNameTextbox.value === "" ||
-    measurementUnitDropdown.value === "" ||
-    quantityTextbox.value === "" ||
-    purchasePriceTextbox.value === "" ||
-    sellPriceTextbox.value === ""
-  ) {
-    alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
-  } else {
-    // Get the email placeholder as the sheet name and barcode value
-    const sheetName = emailTextbox.value || emailTextbox.placeholder;
-    const barcode = barcodeTextbox.value;
-
-    // Send the data to the Google Apps Script web app
-    fetch("https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        sheetName: sheetName,
-        barcode: barcode
-      })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === "success") {
-        alert("Barcode saved successfully!");
-      } else {
-        alert("Failed to save barcode.");
-      }
-    })
-    .catch(error => console.error("Error:", error));
-  }
-});
-
-});
-
 </script>
 
 </body>
