@@ -336,6 +336,7 @@ document.getElementById("another-item-button").addEventListener("click", functio
   const purchasePriceTextbox = document.getElementById("purchase-price-textbox");
   const sellPriceTextbox = document.getElementById("sell-price-textbox");
   const emailTextbox = document.getElementById("emailTextbox");
+  const barcodeTextbox = document.getElementById("barcode-textbox");
 
   // Check if any required field is empty
   if (
@@ -348,10 +349,33 @@ document.getElementById("another-item-button").addEventListener("click", functio
   ) {
     alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
   } else {
-    // If all fields have values, show the email textbox value or placeholder in a message box
-    const emailValue = emailTextbox.value || emailTextbox.placeholder;
-    alert(`Email: ${emailValue}`);
+    // Get the email placeholder as the sheet name and barcode value
+    const sheetName = emailTextbox.value || emailTextbox.placeholder;
+    const barcode = barcodeTextbox.value;
+
+    // Send the data to the Google Apps Script web app
+    fetch("YOUR_GOOGLE_SCRIPT_WEB_APP_URL", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        sheetName: sheetName,
+        barcode: barcode
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === "success") {
+        alert("Barcode saved successfully!");
+      } else {
+        alert("Failed to save barcode.");
+      }
+    })
+    .catch(error => console.error("Error:", error));
   }
+});
+
 });
 
 </script>
