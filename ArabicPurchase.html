@@ -359,6 +359,41 @@
         .catch(error => console.error('Error:', error));
 });
 
+    document.getElementById('another-item-button').addEventListener('click', function() {
+    // Select necessary elements
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const unit = document.getElementById('measurement-unit-dropdown').value;
+    const quantity = document.getElementById('quantity').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
+    const barcode = document.getElementById('barcode-textbox').value || document.getElementById('barcode-textbox').placeholder;
+    const sheetName = document.getElementById('emailTextbox').placeholder;
+
+    // Check for empty fields (barcode is optional)
+    if (!category || !itemName || !unit || !quantity || !purchasePrice || !sellPrice) {
+        alert("البيانات غير كاملة، فقط الباركود اختياري");
+        return;
+    }
+
+    // Display the placeholder value of the emailTextbox if all fields are filled
+    alert(`القيمة الحالية في البريد الإلكتروني: ${sheetName}`);
+
+    // Call Google Apps Script function to save data if all fields are filled
+    const url = `https://script.google.com/macros/s/AKfycbzH7CQkl0LjbCmPuWcVN8Si7lZ7YveRrTGO2eCOGSbMNbmYC7aLV53b0Q_bCIe6F9vr/exec?sheetName=${encodeURIComponent(sheetName)}&barcode=${encodeURIComponent(barcode)}`;
+   
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert("تم إضافة الصنف بنجاح!");
+            } else {
+                alert("حدث خطأ أثناء الإضافة، الرجاء المحاولة مجددًا.");
+            }
+        })
+        .catch(error => console.error('Error:', error));
+});
+
 </script>
 
 </body>
