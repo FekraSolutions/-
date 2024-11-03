@@ -323,6 +323,50 @@
             beepSound.play();
         });
     }
+
+    document.getElementById('another-item-button').addEventListener('click', async function() {
+    // Step 1: Validate Inputs
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
+    const email = document.getElementById('emailTextbox').value;
+
+    if (!category || !itemName || !measurementUnit || !purchasePrice || !sellPrice) {
+        alert("البيانات غير كاملة، يجب ادخال كل البيانات، فقط الباركود هو الاختياري");
+        return;
+    }
+
+    // Step 2: Get the first available row
+    const url = 'YOUR_WEB_APP_URL?action=getFirstAvailableRow'; // Replace with your web app URL
+    const rowResponse = await fetch(url);
+    const rowData = await rowResponse.json();
+    const firstAvailableRow = rowData.firstAvailableRow;
+
+    // Step 3: Prepare values to update
+    const values = [
+        document.getElementById('barcode-textbox').value, // A: Barcode
+        category,                                          // B: Category
+        itemName,                                         // C: Item Name
+        measurementUnit,                                  // D: Measurement Unit
+        purchasePrice,                                    // E: Purchase Price
+        sellPrice                                         // F: Sell Price
+    ];
+
+    // Step 4: Update the sheet with the new values
+    const updateUrl = `YOUR_WEB_APP_URL?action=updateSheet&row=${firstAvailableRow}&values=${JSON.stringify(values)}`; // Replace with your web app URL
+    await fetch(updateUrl);
+
+    // Step 5: Clear input values
+    document.getElementById('barcode-textbox').value = '';
+    document.getElementById('category-dropdown').value = '';
+    document.getElementById('item-name-textbox').value = '';
+    document.getElementById('measurement-unit-dropdown').value = '';
+    document.getElementById('purchase-price-textbox').value = '';
+    document.getElementById('sell-price-textbox').value = '';
+});
+
 </script>
 
 </body>
