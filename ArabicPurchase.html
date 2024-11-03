@@ -343,15 +343,15 @@ document.getElementById('another-item-button').addEventListener('click', async f
         return;
     }
 
-    // Check if the sheet exists and copy the barcode value
-    const { exists, message } = await checkSheetExists(sheetName, barcode);
+    // Check if the sheet exists and copy all values
+    const { exists, message } = await checkSheetExists(sheetName, barcode, category, itemName, unit, quantity, purchasePrice, sellPrice);
     alert(message);
 });
 
-// Function to check if a sheet exists and copy the barcode value using Google Apps Script web app
-async function checkSheetExists(sheetName, barcodeValue) {
+// Function to check if a sheet exists and copy multiple values using Google Apps Script web app
+async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemNameValue, unitValue, quantityValue, purchasePriceValue, sellPriceValue) {
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbyCxPCL9IVu7lA4_yzkLeOn9nJXANDSwOODFb2wq57Cfq2oB7hNL2qL9txItNpaa981/exec'; // Replace with your actual web app URL
-    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}`, {
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}&categoryValue=${encodeURIComponent(categoryValue)}&itemNameValue=${encodeURIComponent(itemNameValue)}&unitValue=${encodeURIComponent(unitValue)}&quantityValue=${encodeURIComponent(quantityValue)}&purchasePriceValue=${encodeURIComponent(purchasePriceValue)}&sellPriceValue=${encodeURIComponent(sellPriceValue)}`, {
         method: 'GET',
     });
 
@@ -362,7 +362,6 @@ async function checkSheetExists(sheetName, barcodeValue) {
     const data = await response.json();
     return data;
 }
-
 
 </script>
 
