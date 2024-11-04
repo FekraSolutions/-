@@ -152,20 +152,13 @@
             <option value="نقدي">نقدي</option>
             <option value="آجل">آجل</option>    
             </select>
-        <label for="category-dropdown" class="form-label">الكمية</label>
-        <input type="number" id="quantity" class="barcode-textbox">
-        <label for="category-dropdown" class="form-label">سعر الشراء</label>
-        <input type="number" id="purchase-price-textbox" class="barcode-textbox">
-        <label for="category-dropdown" class="form-label">سعر البيع</label>
-        <input type="number" id="sell-price-textbox" class="barcode-textbox">
-        <!-- Buttons at the bottom -->
-    <div class="button-container">
-        <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
-        <button id="another-item-button" class="another-item-button">حفظ الصنف</button>
+        <!-- Dynamic Section for "آجل" -->
+    <div id="deferredPaymentSection" style="display: none;">
+    <label for="paid" class="form-label">تم دفع</label>
+    <input type="number" id="paid" class="barcode-textbox">
+    <label for="dueDate" class="form-label">تاريخ الاستحقاق</label>
+    <input type="date" id="dueDate" class="barcode-textbox">
     </div>
-    </div>
-
-    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
     window.onload = function() {
@@ -184,6 +177,15 @@
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
+        // Show or hide the deferred payment section based on selection
+    document.getElementById('paymethod').addEventListener('change', function() {
+        const deferredSection = document.getElementById('deferredPaymentSection');
+        if (this.value === 'آجل') {
+            deferredSection.style.display = 'block';
+        } else {
+            deferredSection.style.display = 'none';
+        }
+    });
 </script>
 
 </body>
