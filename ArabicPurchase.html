@@ -374,7 +374,10 @@ async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemName
     return data;
 }
 
-
+ // Event listener for the submit button
+    document.getElementById('submit-button').addEventListener('click', function() {
+        window.location.href = 'ArabicPostPurchase.html';
+    });
 </script>
 
 </body>
