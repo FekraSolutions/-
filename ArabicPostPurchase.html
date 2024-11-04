@@ -1,1 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حفظ فاتورة مشتريات - تطبيق محلات أدوات البناء</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #BCF4D8;
+            overflow: auto; /* Enable scrolling for the whole page */
+            position: relative;
+        }
 
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #E8D3A5;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #F4E1BC;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #E8D3A5;
+        }
+
+        .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #F4E1BC;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        /* Custom style for dropdown menu */
+        .custom-dropdown {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #F4E1BC;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5H7z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 20px;
+        }
+
+        .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add some space above the buttons */
+    gap: 50px; /* Add gap between buttons */
+}
+
+.submit-button {
+    background-color: #006400; /* Dark green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.another-item-button {
+    background-color: #EE9090;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.submit-button:hover,
+.another-item-button:hover {
+    opacity: 0.8; /* Optional: Add hover effect */
+}
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
+    </div>
+
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">  
+        <label for="barcode-textbox" class="form-label">التاريخ</label>
+        <input type="text" id="Date" class="barcode-textbox" placeholder="" readonly>
+        <label for="category-dropdown" class="form-label">رقم الفاتورة</label>
+        <select id="category-dropdown" class="custom-dropdown">
+        <input type="text" id="invoiceNumber" class="barcode-textbox">
+        
+          
+          <label for="category-dropdown" class="form-label">اسم الصنف</label>
+        <input type="text" id="item-name-textbox" class="barcode-textbox" list="item-suggestion-list">
+        <label for="category-dropdown" class="form-label">وحدة القياس</label>
+        <select id="measurement-unit-dropdown" class="custom-dropdown">
+        <option value="" disabled selected></option>
+        <option value="وحدة">وحدة</option>
+        <option value="كيلو">كيلو</option>
+        <option value="متر">متر</option>
+        <option value="متر مربع">متر مربع</option>
+        <option value="كيس">كيس</option>
+        <option value="علبة">علبة</option>
+        <option value="زجاجة">زجاجة</option>
+        <option value="كرتونة">كرتونة</option>
+        <option value="شكارة">شكارة</option>
+        <option value="لفة">لفة</option>
+        <option value="دستة">دستة</option>
+        <option value="شنطة">شنطة</option>
+        <option value="قطعة">قطعة</option>
+        <option value="طن">طن</option>
+        <option value="جرام">جرام</option>
+        <option value="سيخ">سيخ</option>
+        <option value="رول">رول</option>
+        <option value="صندوق">صندوق</option>
+        <option value="عبوة">عبوة</option>
+        <option value="لوح">لوح</option>
+        <option value="برميل">برميل</option>
+        <option value="طرد">طرد</option>
+        <option value="قالب">قالب</option>
+        <option value="حزمة">حزمة</option>
+        <option value="باكو">باكو</option>
+        <option value="أنبوبة">أنبوبة</option>
+        <option value="جالون">جالون</option>
+        <option value="جركن">جركن</option>
+        <option value="شوال">شوال</option>
+        <option value="جردل">جردل</option>
+        <option value="كرتون">كرتون</option>
+    </select>
+        <label for="category-dropdown" class="form-label">الكمية</label>
+        <input type="number" id="quantity" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">سعر الشراء</label>
+        <input type="number" id="purchase-price-textbox" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">سعر البيع</label>
+        <input type="number" id="sell-price-textbox" class="barcode-textbox">
+        <!-- Buttons at the bottom -->
+    <div class="button-container">
+        <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
+        <button id="another-item-button" class="another-item-button">حفظ الصنف</button>
+    </div>
+    </div>
+
+    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
+
+<script>
+    window.onload = function() {
+        // Set the email textbox placeholder with the username from the URL
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox').placeholder = username;
+        }
+
+        // Set the Date textbox with today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('Date').value = today;
+    };
+
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+</script>
+
+</body>
+</html>
