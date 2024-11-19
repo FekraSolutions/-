@@ -201,6 +201,7 @@ window.onload = async function () {
     document.getElementById('Date').value = today;
     // Make the invoicetotal textbox read-only
     invoiceTotalTextbox.readOnly = true;
+    updateDueField();
 };
 
 // Function to get a query parameter from the URL
