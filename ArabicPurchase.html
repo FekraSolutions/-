@@ -437,7 +437,7 @@ document.getElementById('submit-button').addEventListener('click', async functio
     barcodeTextbox.value = "";           // Clear barcode textbox (optional)
 
     // Redirect to another page
-    const username = document.getElementById('emailTextbox').placeholder;
+    const username = document.getElementById('emailTextbox').value;
     window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
 });
 
