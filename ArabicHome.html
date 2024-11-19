@@ -86,34 +86,35 @@
         <div class="label">رصيد الآجل</div>
     </div>
 
-    <script>
-        function redirectToPage() {
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-                location.href = 'ArabicCashierMobile.html';
-            } else {
-                location.href = 'ArabicCashier.html';
-            }
+  <script>
+    function redirectToPage() {
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            location.href = 'ArabicCashierMobile.html';
+        } else {
+            location.href = 'ArabicCashier.html';
         }
+    }
 
-            function goToPurchasePage() {
+    function goToPurchasePage() {
         // Get the username from the placeholder in the textbox
         const username = document.getElementById('emailTextbox').placeholder;
         // Redirect to ArabicPurchase.html with the username in the URL
         window.location.href = `ArabicPurchase.html?username=${encodeURIComponent(username)}`;
     }
-       
-        // Set the textbox value with the username from the URL
-        window.onload = function() {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox').placeholder = username;
-            }
-        };
 
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
+    // Set the textbox value with the username from the URL
+    window.onload = function() {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox').placeholder = username;
         }
-    </script>
+    };
+
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+</script>
+
 </body>
 </html>
