@@ -235,52 +235,8 @@ function getQueryParameter(name) {
   // Initial calculation in case there is a prefilled value
   updateDueField();
 
-
+    //postpurchase
 });
-        //postpurchase
-      document.getElementById('submit').addEventListener('click', function () {
-    const invoiceNumber = document.getElementById('invoiceNumber').value.trim();
-    const vendor = document.getElementById('vendor').value.trim();
-    const paymethod = document.getElementById('paymethod').value.trim();
-    const emailTextbox = document.getElementById('emailTextbox').value.trim();
-
-    if (!invoiceNumber || !vendor || !paymethod || !emailTextbox) {
-      alert("البيانات غير كاملة، يجب كتابة كل البيانات");
-      return;
-    }
-
-    const data = {
-      date: document.getElementById('Date').value.trim(),
-      invoiceNumber,
-      vendor,
-      paymethod,
-      invoicetotal: document.getElementById('invoicetotal').value.trim(),
-      paid: document.getElementById('paid').value.trim() || document.getElementById('invoicetotal').value.trim(),
-      due: document.getElementById('due').value.trim(),
-      dueDate: document.getElementById('dueDate').value.trim(),
-      sheetName: emailTextbox,
-    };
-
-    fetch('https://script.google.com/macros/s/AKfycbxHte-156itl-VApFkZKdjb5-2-inDp9Z1i-SrhRzgXTMkQOgLJ2qtTxfuBHHVmIH9j/exec', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(response => response.json())
-      .then(result => {
-        if (result.success) {
-          alert("تم حفظ الفاتورة بنجاح");
-        } else {
-          alert("حدث خطأ أثناء الحفظ");
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert("حدث خطأ أثناء الحفظ");
-      });
-  });
 </script>
 
 </body>
