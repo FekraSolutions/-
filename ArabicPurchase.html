@@ -382,7 +382,7 @@ document.getElementById('another-item-button').addEventListener('click', async f
 
 // Function to check if a sheet exists and copy multiple values using Google Apps Script web app
 async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemNameValue, unitValue, quantityValue, purchasePriceValue, sellPriceValue) {
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbyIZxaMlGSUGVDeC3_EkH4e-1RGYqr0td-9IZWaYcXmUZXRnq5ZSCnyNmjH_JBHkwQi/exec'; // Replace with your actual web app URL
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycby-AE0RaEjh8Qu3y_iCSTBgAHKmh8JcixGcp3C67dj3TC5vNfHLcSmXa_51Dhw1eo1s/exec'; // Replace with your actual web app URL
     const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}&categoryValue=${encodeURIComponent(categoryValue)}&itemNameValue=${encodeURIComponent(itemNameValue)}&unitValue=${encodeURIComponent(unitValue)}&quantityValue=${encodeURIComponent(quantityValue)}&purchasePriceValue=${encodeURIComponent(purchasePriceValue)}&sellPriceValue=${encodeURIComponent(sellPriceValue)}`, {
         method: 'GET',
     });
