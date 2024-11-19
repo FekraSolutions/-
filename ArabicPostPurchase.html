@@ -169,22 +169,28 @@
     </div>
     </div>
 <script>
-    window.onload = function() {
-        // Set the email textbox placeholder with the username from the URL
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox').placeholder = username;
-        }
-
-        // Set the Date textbox with today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('Date').value = today;
-    };
-
-    function getQueryParameter(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
+window.onload = function () {
+    // Set the email textbox placeholder with the username from the URL
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox').placeholder = username;
     }
+
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('Date').value = today;
+
+    // Call other initialization functions if needed
+    startCamera();
+    fetchCategories(); // Call the function to fetch categories
+};
+
+// Function to get a query parameter from the URL
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
         // Show or hide the deferred payment section based on selection
     document.getElementById('paymethod').addEventListener('change', function() {
         const deferredSection = document.getElementById('deferredPaymentSection');
