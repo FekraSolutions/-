@@ -198,6 +198,8 @@
         <input type="number" id="quantity" class="barcode-textbox">
         <label for="category-dropdown" class="form-label">سعر الشراء</label>
         <input type="number" id="purchase-price-textbox" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">الإجمالي</label>
+        <input type="number" id="itemtotal" class="barcode-textbox" readonly>
         <label for="category-dropdown" class="form-label">سعر البيع</label>
         <input type="number" id="sell-price-textbox" class="barcode-textbox">
         <!-- Buttons at the bottom -->
@@ -210,16 +212,34 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-    // Set the textbox value with the username from the URL
-    window.onload = function() {
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox').placeholder = username;
-        }
-        startCamera();
-        fetchCategories(); // Call the function to fetch categories
-    };
+   // Set the textbox value with the username from the URL and initialize events
+        window.onload = function () {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+            }
+            startCamera();
+            fetchCategories();
 
+            // Add event listeners for real-time calculation
+            const quantityField = document.getElementById('quantity');
+            const priceField = document.getElementById('purchase-price-textbox');
+
+            quantityField.addEventListener('input', updateTotal);
+            priceField.addEventListener('input', updateTotal);
+
+            // Ensure total is updated on page load
+            updateTotal();
+        };
+
+            // Update the total value based on quantity and purchase price
+        function updateTotal() {
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const purchasePrice = parseFloat(document.getElementById('purchase-price-textbox').value) || 0;
+            const itemTotal = document.getElementById('itemtotal');
+            itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
+        }
+    
     function fetchCategories() {
         const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
         fetch(url)
