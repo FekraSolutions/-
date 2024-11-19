@@ -196,7 +196,9 @@ window.onload = async function () {
         console.error("Error fetching data:", error);
         invoiceTotalTextbox.value = "Error fetching data";
     }
-
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('Date').value = today;
     // Make the invoicetotal textbox read-only
     invoiceTotalTextbox.readOnly = true;
 };
