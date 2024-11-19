@@ -252,7 +252,7 @@ document.getElementById("submit").addEventListener("click", function() {
     var dueDate = document.getElementById("dueDate").value;
 
     // Validate that all required fields are filled
-    if (!invoiceNumber || !vendor || !paymethod || !emailTextbox) {
+    if (!invoiceNumber || !vendor || !paymethod) {
         alert("البيانات غير كاملة، يجب كتابة كل البيانات");
         return;
     }
