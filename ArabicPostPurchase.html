@@ -234,6 +234,69 @@ function getQueryParameter(name) {
 
   // Initial calculation in case there is a prefilled value
   updateDueField();
+
+    //postpurchase
+<button id="submit" class="submit-button">حفظ الفاتورة</button>
+// Replace this URL with your actual Google Apps Script Web App URL
+const webAppUrl = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+
+document.getElementById("submit").addEventListener("click", function() {
+    // Get the values from the form fields
+    var invoiceNumber = document.getElementById("invoiceNumber").value;
+    var vendor = document.getElementById("vendor").value;
+    var paymethod = document.getElementById("paymethod").value;
+    var emailTextbox = document.getElementById("emailTextbox").value;
+    var Date = document.getElementById("Date").value;
+    var invoicetotal = document.getElementById("invoicetotal").value;
+    var paid = document.getElementById("paid").value;
+    var due = document.getElementById("due").value;
+    var dueDate = document.getElementById("dueDate").value;
+
+    // Validate that all required fields are filled
+    if (!invoiceNumber || !vendor || !paymethod || !emailTextbox) {
+        alert("البيانات غير كاملة، يجب كتابة كل البيانات");
+        return;
+    }
+
+    // Determine if 'paid' is empty and set its value accordingly
+    if (!paid) {
+        paid = invoicetotal;
+    }
+
+    // Prepare data to be sent to Google Sheets
+    var data = {
+        Date: Date,
+        invoiceNumber: invoiceNumber,
+        vendor: vendor,
+        paymethod: paymethod,
+        invoicetotal: invoicetotal,
+        paid: paid,
+        due: due,
+        dueDate: dueDate,
+        emailTextbox: emailTextbox
+    };
+
+    // Use fetch to send data to the Google Apps Script web app
+    fetch(webAppUrl, {
+        method: 'POST', // Method itself
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data) // Send the data as JSON
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log('Success:', result);
+        alert("تم حفظ الفاتورة بنجاح");
+
+        // Redirect to another page after successful submission
+        window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(emailTextbox)}`;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("حدث خطأ أثناء حفظ الفاتورة");
+    });
+});
 </script>
 
 </body>
