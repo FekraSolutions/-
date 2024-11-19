@@ -86,22 +86,31 @@
         <div class="label">رصيد الآجل</div>
     </div>
 
-</script>
-        function goToPurchasePage() {
-        // Get the username from the placeholder in the textbox
-        const username = document.getElementById('emailTextbox').placeholder;
+ <script>
+        // Redirect to another page
+        function redirectToPage() {
+            alert("Functionality for الكاشير is not yet defined.");
+        }
+
         // Redirect to ArabicPurchase.html with the username in the URL
-        window.location.href = ArabicPurchase.html?username=${encodeURIComponent(username)};
-    }
-       
+        function goToPurchasePage() {
+            const username = document.getElementById('emailTextbox').value;
+            if (username) {
+                window.location.href = `ArabicPurchase.html?username=${encodeURIComponent(username)}`;
+            } else {
+                alert("يرجى إدخال اسم المستخدم قبل المتابعة.");
+            }
+        }
+
         // Set the textbox value with the username from the URL
-        window.onload = function() {
+        window.onload = function () {
             const username = getQueryParameter('username');
             if (username) {
-                document.getElementById('emailTextbox').placeholder = username;
+                document.getElementById('emailTextbox').value = username;
             }
         };
 
+        // Function to get query parameters
         function getQueryParameter(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
