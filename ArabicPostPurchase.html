@@ -218,6 +218,21 @@ function getQueryParameter(name) {
             deferredSection.style.display = 'none';
         }
     });
+
+     // Function to update the due field
+  function updateDueField() {
+    const invoicetotal = parseFloat(document.getElementById('invoicetotal').value) || 0;
+    const paid = parseFloat(document.getElementById('paid').value) || 0;
+    const due = invoicetotal - paid;
+
+    document.getElementById('due').value = due.toFixed(2); // Set the due field value
+  }
+
+  // Add event listener to update due when the paid field changes
+  document.getElementById('paid').addEventListener('input', updateDueField);
+
+  // Initial calculation in case there is a prefilled value
+  updateDueField();
 </script>
 
 </body>
