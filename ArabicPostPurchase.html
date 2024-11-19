@@ -153,7 +153,7 @@
             <option value="آجل">آجل</option>    
             </select>
         <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-        <input type="text" id="invoicetotal" class="barcode-textbox">  
+        <input type="text" id="invoicetotal" class="barcode-textbox" readonly />  
         <!-- Dynamic Section for "آجل" -->
     <div id="deferredPaymentSection" style="display: none;">
     <label for="paid" class="form-label">تم دفع</label>
@@ -169,20 +169,36 @@
     </div>
     </div>
 <script>
-window.onload = function () {
+window.onload = async function () {
     // Set the email textbox placeholder with the username from the URL
     const username = getQueryParameter('username');
+    const emailTextbox = document.getElementById('emailTextbox');
+    const invoiceTotalTextbox = document.getElementById('invoicetotal');
+
     if (username) {
-        document.getElementById('emailTextbox').placeholder = username;
+        emailTextbox.placeholder = username;
     }
 
-    // Set the Date textbox with today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('Date').value = today;
+    // Fetch the invoicetotal value
+    const sheetName = emailTextbox.placeholder; // Use the username as the sheet name
+    const webAppUrl = "YOUR_WEB_APP_URL"; // Replace with your Apps Script web app URL
 
-    // Call other initialization functions if needed
-    startCamera();
-    fetchCategories(); // Call the function to fetch categories
+    try {
+        const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
+        const data = await response.json();
+
+        if (data.invoicetotal !== undefined) {
+            invoiceTotalTextbox.value = data.invoicetotal;
+        } else {
+            invoiceTotalTextbox.value = "Error fetching data";
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        invoiceTotalTextbox.value = "Error fetching data";
+    }
+
+    // Make the invoicetotal textbox read-only
+    invoiceTotalTextbox.readOnly = true;
 };
 
 // Function to get a query parameter from the URL
