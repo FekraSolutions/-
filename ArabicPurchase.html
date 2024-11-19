@@ -357,7 +357,12 @@ document.getElementById('another-item-button').addEventListener('click', async f
     const barcodeTextbox = document.getElementById('barcode-textbox');
     const sheetName = document.getElementById('emailTextbox').placeholder;
 
-    // Check for empty fields (barcode is optional)
+    // If the barcode textbox is empty, set it to "NA"
+    if (!barcodeTextbox.value) {
+        barcodeTextbox.value = "NA";
+    }
+
+    // Check for empty fields (barcode is now ensured to have a value)
     if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
         alert("البيانات غير كاملة، فقط الباركود اختياري");
         return;
@@ -373,12 +378,13 @@ document.getElementById('another-item-button').addEventListener('click', async f
     categoryDropdown.selectedIndex = 0; // Reset category dropdown
     itemNameTextbox.value = "";          // Clear item name textbox
     unitDropdown.selectedIndex = 0;      // Reset unit dropdown
-    quantityTextbox.value = "";           // Clear quantity textbox
-    purchasePriceTextbox.value = "";      // Clear purchase price textbox
-    sellPriceTextbox.value = "";          // Clear sell price textbox
-    barcodeTextbox.value = "";             // Clear barcode textbox (optional)
+    quantityTextbox.value = "";          // Clear quantity textbox
+    purchasePriceTextbox.value = "";     // Clear purchase price textbox
+    sellPriceTextbox.value = "";         // Clear sell price textbox
+    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
 
 });
+
 
 // Function to check if a sheet exists and copy multiple values using Google Apps Script web app
 async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemNameValue, unitValue, quantityValue, purchasePriceValue, sellPriceValue) {
