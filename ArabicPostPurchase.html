@@ -134,7 +134,7 @@
         <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
-        <input type="text" class="textbox" id="emailTextbox" placeholder=""/>
+        <input type="text" class="textbox" id="emailTextbox" readonly />
     </div>
 
     <!-- Center container with camera preview and barcode textbox -->
@@ -159,7 +159,7 @@
     <label for="paid" class="form-label">تم دفع</label>
     <input type="number" id="paid" class="barcode-textbox">
     <label for="paid" class="form-label">المبلغ المستحق</label>
-    <input type="number" id="due" class="barcode-textbox">
+    <input type="number" id="due" class="barcode-textbox" readonly />
     <label for="dueDate" class="form-label">تاريخ الاستحقاق</label>
     <input type="date" id="dueDate" class="barcode-textbox">
     </div>
@@ -201,6 +201,7 @@ window.onload = async function () {
     document.getElementById('Date').value = today;
     // Make the invoicetotal textbox read-only
     invoiceTotalTextbox.readOnly = true;
+    updateDueField();
 };
 
 // Function to get a query parameter from the URL
@@ -218,6 +219,24 @@ function getQueryParameter(name) {
             deferredSection.style.display = 'none';
         }
     });
+
+     // Function to update the due field
+  function updateDueField() {
+    const invoicetotal = parseFloat(document.getElementById('invoicetotal').value) || 0;
+    const paid = parseFloat(document.getElementById('paid').value) || 0;
+    const due = invoicetotal - paid;
+
+    document.getElementById('due').value = due.toFixed(2); // Set the due field value
+  }
+
+  // Add event listener to update due when the paid field changes
+  document.getElementById('paid').addEventListener('input', updateDueField);
+
+  // Initial calculation in case there is a prefilled value
+  updateDueField();
+
+    //postpurchase
+});
 </script>
 
 </body>
