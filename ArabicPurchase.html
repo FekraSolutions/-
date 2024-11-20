@@ -412,7 +412,7 @@ document.getElementById('submit-button').addEventListener('click', function () {
     const sellPrice = document.getElementById('sell-price-textbox').value;
 
     // Get the username from the placeholder in the textbox
-    const username = document.getElementById('emailTextbox').placeholder;
+    const username = document.getElementById('emailTextbox').value;
 
     // Check if all required fields are filled (barcode is optional)
     if (category && itemName && measurementUnit && quantity && purchasePrice && sellPrice) {
