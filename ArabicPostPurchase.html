@@ -237,6 +237,50 @@ function getQueryParameter(name) {
 
     //postpurchase
 });
+    //postpurchase?
+    document.getElementById("submit").addEventListener("click", function () {
+    // Validate required fields
+    const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+    const vendor = document.getElementById("vendor").value.trim();
+    const paymethod = document.getElementById("paymethod").value.trim();
+    const emailTextbox = document.getElementById("emailTextbox").value.trim();
+
+    if (!invoiceNumber || !vendor || !paymethod || !emailTextbox) {
+      alert("البيانات غير كاملة، يجب كتابة كل البيانات");
+      return;
+    }
+
+    // Prepare data for submission
+    const formData = {
+      Date: document.getElementById("Date").value,
+      invoiceNumber,
+      vendor,
+      paymethod,
+      invoicetotal: document.getElementById("invoicetotal").value.trim(),
+      paid: document.getElementById("paid").value.trim(),
+      due: document.getElementById("due").value.trim(),
+      dueDate: document.getElementById("dueDate").value.trim(),
+      emailTextbox,
+    };
+
+    // Send data to Google Apps Script
+    fetch("https://script.google.com/macros/s/AKfycbxZeiuHoAcTrAk3-INVyxiRiJuuy-dHv16Fla-vT6vqvI9yKakEgQNOTZhzbQ_K4z8M/exec", {
+      method: "POST",
+      body: new URLSearchParams(formData),
+    })
+      .then((response) => response.text())
+      .then((result) => {
+        if (result.includes("successfully")) {
+          alert("Data saved successfully!");
+        } else {
+          alert("Failed to save data. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("Error saving data. Check console for details.");
+      });
+  });
 </script>
 
 </body>
