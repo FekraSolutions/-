@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حفظ فاتورة مشتريات - تطبيق محلات أدوات البناء</title>
+    <title>شراء المخزون - تطبيق محلات أدوات البناء</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
     <style>
         body {
             display: flex;
@@ -13,7 +14,7 @@
             height: 100vh;
             margin: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: #BCF4D8;
+            background-color: #F4E1BC;
             overflow: auto; /* Enable scrolling for the whole page */
             position: relative;
         }
@@ -55,6 +56,12 @@
             padding: 20px;
             border-radius: 8px;
             background-color: #E8D3A5;
+        }
+
+        .camera-preview {
+            width: 300px;
+            height: 300px;
+            background-color: black;
         }
 
         .barcode-textbox {
@@ -113,7 +120,7 @@
 }
 
 .another-item-button {
-    background-color: #EE9090;
+    background-color: #90EE90; /* Light green */
     color: black;
     border: none;
     padding: 10px 20px;
@@ -138,102 +145,285 @@
     </div>
 
     <!-- Center container with camera preview and barcode textbox -->
-    <div class="center-container">  
-        <label for="barcode-textbox" class="form-label">التاريخ</label>
-        <input type="text" id="Date" class="barcode-textbox" placeholder="" readonly>
-        <label for="category-dropdown" class="form-label">رقم الفاتورة</label>
-        <input type="text" id="invoiceNumber" class="barcode-textbox">   
+    <div class="center-container">
+        <video id="camera-preview" class="camera-preview" autoplay></video>
         
-        <label for="category-dropdown" class="form-label">اسم المورد</label>
-        <input type="text" id="vendor" class="barcode-textbox">  
-        <label for="category-dropdown" class="form-label">طريقة الدفع</label>
-        <select id="paymethod" class="custom-dropdown">
+        <label for="barcode-textbox" class="form-label">باركود</label>
+        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
+
+        <!-- Dropdown menu with custom style -->
+        <label for="category-dropdown" class="form-label">الفئة</label>
+        <select id="category-dropdown" class="custom-dropdown">
+            <option value="" disabled selected></option>
+            <!-- Options will be populated by JavaScript -->
+        </select>
+        <label for="category-dropdown" class="form-label">اسم الصنف</label>
+        <input type="text" id="item-name-textbox" class="barcode-textbox" list="item-suggestion-list">
+        <label for="category-dropdown" class="form-label">وحدة القياس</label>
+        <select id="measurement-unit-dropdown" class="custom-dropdown">
         <option value="" disabled selected></option>
-            <option value="نقدي">نقدي</option>
-            <option value="آجل">آجل</option>    
-            </select>
-        <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-        <input type="text" id="invoicetotal" class="barcode-textbox" readonly />  
-        <!-- Dynamic Section for "آجل" -->
-    <div id="deferredPaymentSection" style="display: none;">
-    <label for="paid" class="form-label">تم دفع</label>
-    <input type="number" id="paid" class="barcode-textbox">
-    <label for="paid" class="form-label">المبلغ المستحق</label>
-    <input type="number" id="due" class="barcode-textbox" readonly />
-    <label for="dueDate" class="form-label">تاريخ الاستحقاق</label>
-    <input type="date" id="dueDate" class="barcode-textbox">
-    </div>
+        <option value="وحدة">وحدة</option>
+        <option value="كيلو">كيلو</option>
+        <option value="متر">متر</option>
+        <option value="متر مربع">متر مربع</option>
+        <option value="كيس">كيس</option>
+        <option value="علبة">علبة</option>
+        <option value="زجاجة">زجاجة</option>
+        <option value="كرتونة">كرتونة</option>
+        <option value="شكارة">شكارة</option>
+        <option value="لفة">لفة</option>
+        <option value="دستة">دستة</option>
+        <option value="شنطة">شنطة</option>
+        <option value="قطعة">قطعة</option>
+        <option value="طن">طن</option>
+        <option value="جرام">جرام</option>
+        <option value="سيخ">سيخ</option>
+        <option value="رول">رول</option>
+        <option value="صندوق">صندوق</option>
+        <option value="عبوة">عبوة</option>
+        <option value="لوح">لوح</option>
+        <option value="برميل">برميل</option>
+        <option value="طرد">طرد</option>
+        <option value="قالب">قالب</option>
+        <option value="حزمة">حزمة</option>
+        <option value="باكو">باكو</option>
+        <option value="أنبوبة">أنبوبة</option>
+        <option value="جالون">جالون</option>
+        <option value="جركن">جركن</option>
+        <option value="شوال">شوال</option>
+        <option value="جردل">جردل</option>
+        <option value="كرتون">كرتون</option>
+    </select>
+        <label for="category-dropdown" class="form-label">الكمية</label>
+        <input type="number" id="quantity" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">سعر الشراء</label>
+        <input type="number" id="purchase-price-textbox" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">الإجمالي</label>
+        <input type="number" id="itemtotal" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">سعر البيع</label>
+        <input type="number" id="sell-price-textbox" class="barcode-textbox">
+        <!-- Buttons at the bottom -->
     <div class="button-container">
-        <button id="submit" class="submit-button">حفظ الفاتورة</button>
-        <button id="cancel" class="another-item-button" onclick="window.history.back()">إلغاء</button>
+        <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
+        <button id="another-item-button" class="another-item-button">صنف آخر</button>
     </div>
     </div>
+
+    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
+
 <script>
-window.onload = async function () {
-    // Set the email textbox placeholder with the username from the URL
-    const username = getQueryParameter('username');
-    const emailTextbox = document.getElementById('emailTextbox');
-    const invoiceTotalTextbox = document.getElementById('invoicetotal');
+   // Set the textbox value with the username from the URL and initialize events
+        window.onload = function () {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+            }
+            startCamera();
+            fetchCategories();
 
-    if (username) {
-        emailTextbox.placeholder = username;
+            // Add event listeners for real-time calculation
+            const quantityField = document.getElementById('quantity');
+            const priceField = document.getElementById('purchase-price-textbox');
+
+            quantityField.addEventListener('input', updateTotal);
+            priceField.addEventListener('input', updateTotal);
+
+            // Ensure total is updated on page load
+            updateTotal();
+        };
+
+            // Update the total value based on quantity and purchase price
+        function updateTotal() {
+            const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+            const purchasePrice = parseFloat(document.getElementById('purchase-price-textbox').value) || 0;
+            const itemTotal = document.getElementById('itemtotal');
+            itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
+        }
+    
+    function fetchCategories() {
+        const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
+        fetch(url)
+            .then(response => response.json())
+            .then(data => populateCategories(data))
+            .catch(error => console.error('Error fetching categories:', error));
     }
 
-    // Fetch the invoicetotal value
-    const sheetName = emailTextbox.placeholder; // Use the username as the sheet name
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbwMA623pp2oJv_gxxeRvgR5QyjHdXMKO0XlHfNrOyCuE8lIO14bipY2Sbg3SiY0qpo-/exec"; // Replace with your Apps Script web app URL
+    function populateCategories(categories) {
+        const select = document.getElementById('category-dropdown');
+        categories.forEach(function(category) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+        });
 
-    try {
-        const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
-        const data = await response.json();
-
-        if (data.invoicetotal !== undefined) {
-            invoiceTotalTextbox.value = data.invoicetotal;
-        } else {
-            invoiceTotalTextbox.value = "Error fetching data";
-        }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        invoiceTotalTextbox.value = "Error fetching data";
+        // Add event listener to update item suggestions when a category is selected
+        select.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            console.log('Selected Category:', selectedCategory); // Debugging log
+            fetchItems(selectedCategory); // Call fetchItems function on category change
+        });
     }
-    // Set the Date textbox with today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('Date').value = today;
-    // Make the invoicetotal textbox read-only
-    invoiceTotalTextbox.readOnly = true;
-    updateDueField();
-};
 
-// Function to get a query parameter from the URL
-function getQueryParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+    function fetchItems(category) {
+        const url = `https://script.google.com/macros/s/AKfycbxW1_9To32ui_ttahQBm8x0Ltt9VLlwwN5dWFZ3-QxrttJnURA761U7LkZSbHlRKjl9/exec?category=${encodeURIComponent(category)}`; // Replace with your Google Apps Script web app URL
+        fetch(url)
+            .then(response => response.json())
+            .then(data => updateItemSuggestions(data))
+            .catch(error => console.error('Error fetching items:', error));
+    }
 
-        // Show or hide the deferred payment section based on selection
-    document.getElementById('paymethod').addEventListener('change', function() {
-        const deferredSection = document.getElementById('deferredPaymentSection');
-        if (this.value === 'آجل') {
-            deferredSection.style.display = 'block';
-        } else {
-            deferredSection.style.display = 'none';
+    function updateItemSuggestions(items) {
+        const textbox = document.getElementById('item-name-textbox');
+        textbox.setAttribute('list', 'item-suggestion-list');
+
+        // Create a datalist to hold suggestions
+        let dataList = document.getElementById('item-suggestion-list');
+        if (!dataList) {
+            dataList = document.createElement('datalist');
+            dataList.id = 'item-suggestion-list';
+            document.body.appendChild(dataList);
         }
+
+        // Clear previous options
+        dataList.innerHTML = '';
+
+        // Add new options
+        items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            dataList.appendChild(option);
+        });
+    }
+
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    async function startCamera() {
+        try {
+            const constraints = {
+                video: {
+                    facingMode: 'environment',
+                },
+            };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            const videoElement = document.getElementById('camera-preview');
+            videoElement.srcObject = stream;
+            startBarcodeDetection();
+        } catch (error) {
+            console.error('Error accessing the camera:', error);
+        }
+    }
+
+    function startBarcodeDetection() {
+        Quagga.init({
+            inputStream: {
+                type: 'LiveStream',
+                target: document.querySelector('#camera-preview'),
+            },
+            decoder: {
+                readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'],
+            },
+        }, (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            Quagga.start();
+            console.log('Barcode detection started');
+        });
+
+        Quagga.onDetected((data) => {
+            const code = data.codeResult.code;
+            const barcodeTextbox = document.getElementById('barcode-textbox');
+            barcodeTextbox.value = code;
+
+            const beepSound = document.getElementById('beep-sound');
+            beepSound.currentTime = 0;
+            beepSound.play();
+        });
+    }
+
+document.getElementById('another-item-button').addEventListener('click', async function() {
+    // Select necessary elements
+    const categoryDropdown = document.getElementById('category-dropdown');
+    const itemNameTextbox = document.getElementById('item-name-textbox');
+    const unitDropdown = document.getElementById('measurement-unit-dropdown');
+    const quantityTextbox = document.getElementById('quantity');
+    const purchasePriceTextbox = document.getElementById('purchase-price-textbox');
+    const sellPriceTextbox = document.getElementById('sell-price-textbox');
+    const barcodeTextbox = document.getElementById('barcode-textbox');
+    const sheetName = document.getElementById('emailTextbox').placeholder;
+
+    // If the barcode textbox is empty, set it to "NA"
+    if (!barcodeTextbox.value) {
+        barcodeTextbox.value = "NA";
+    }
+
+    // Check for empty fields (barcode is now ensured to have a value)
+    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
+        alert("البيانات غير كاملة، فقط الباركود اختياري");
+        return;
+    }
+
+    // Check if the sheet exists and copy all values
+    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
+    
+    // Notify the user
+    alert("تم الحفظ بنجاح");
+
+    // Clear the input fields
+    categoryDropdown.selectedIndex = 0; // Reset category dropdown
+    itemNameTextbox.value = "";          // Clear item name textbox
+    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
+    quantityTextbox.value = "";          // Clear quantity textbox
+    purchasePriceTextbox.value = "";     // Clear purchase price textbox
+    sellPriceTextbox.value = "";         // Clear sell price textbox
+    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
+updateTotal();
+});
+
+
+// Function to check if a sheet exists and copy multiple values using Google Apps Script web app
+async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemNameValue, unitValue, quantityValue, purchasePriceValue, sellPriceValue) {
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycby-AE0RaEjh8Qu3y_iCSTBgAHKmh8JcixGcp3C67dj3TC5vNfHLcSmXa_51Dhw1eo1s/exec'; // Replace with your actual web app URL
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}&categoryValue=${encodeURIComponent(categoryValue)}&itemNameValue=${encodeURIComponent(itemNameValue)}&unitValue=${encodeURIComponent(unitValue)}&quantityValue=${encodeURIComponent(quantityValue)}&purchasePriceValue=${encodeURIComponent(purchasePriceValue)}&sellPriceValue=${encodeURIComponent(sellPriceValue)}`, {
+        method: 'GET',
     });
 
-     // Function to update the due field
-  function updateDueField() {
-    const invoicetotal = parseFloat(document.getElementById('invoicetotal').value) || 0;
-    const paid = parseFloat(document.getElementById('paid').value) || 0;
-    const due = invoicetotal - paid;
+    if (!response.ok) {
+        throw new Error(`Error fetching from web app: ${response.statusText}`);
+    }
 
-    document.getElementById('due').value = due.toFixed(2); // Set the due field value
-  }
+    const data = await response.json();
+    return data;
+}
 
-  // Add event listener to update due when the paid field changes
-  document.getElementById('paid').addEventListener('input', updateDueField);
+// Event listener for the submit button
+document.getElementById('submit-button').addEventListener('click', function () {
+    // Get values from the form fields
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
+    const quantity = document.getElementById('quantity').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
 
-  // Initial calculation in case there is a prefilled value
-  updateDueField();
+    // Get the username from the placeholder in the textbox
+    const username = document.getElementById('emailTextbox').placeholder;
+
+    // Check if all required fields are filled (barcode is optional)
+    if (category && itemName && measurementUnit && quantity && purchasePrice && sellPrice) {
+        // Redirect to the next page with the username in the URL
+        window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+    } else {
+        // Display an alert message in Arabic
+        alert("البيانات غير كاملة، فقط الباركود هو الاختياري، يجب كتابة كل البيانات الأخرى على الاقل");
+    }
+});
+
 </script>
 
 </body>
