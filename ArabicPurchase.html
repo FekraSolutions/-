@@ -346,7 +346,7 @@
         });
     }
 
-document.getElementById('another-item-button').addEventListener('click', async function() {
+document.getElementById('another-item-button').addEventListener('click', async function () {
     // Select necessary elements
     const categoryDropdown = document.getElementById('category-dropdown');
     const itemNameTextbox = document.getElementById('item-name-textbox');
@@ -357,52 +357,77 @@ document.getElementById('another-item-button').addEventListener('click', async f
     const barcodeTextbox = document.getElementById('barcode-textbox');
     const sheetName = document.getElementById('emailTextbox').placeholder;
 
-    // If the barcode textbox is empty, set it to "NA"
-    if (!barcodeTextbox.value) {
-        barcodeTextbox.value = "NA";
-    }
+    // Ensure barcode has a value
+    barcodeTextbox.value = barcodeTextbox.value || "NA";
 
-    // Check for empty fields (barcode is now ensured to have a value)
-    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
+    // Check for empty fields (barcode is already handled)
+    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || 
+        !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
         alert("البيانات غير كاملة، فقط الباركود اختياري");
         return;
     }
 
-    // Check if the sheet exists and copy all values
-    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
-    
-    // Notify the user
-    alert("تم الحفظ بنجاح");
+    try {
+        // Check if the sheet exists and copy all values
+        const { exists, message } = await checkSheetExists(
+            sheetName,
+            barcodeTextbox.value,
+            categoryDropdown.value,
+            itemNameTextbox.value,
+            unitDropdown.value,
+            quantityTextbox.value,
+            purchasePriceTextbox.value,
+            sellPriceTextbox.value
+        );
 
-    // Clear the input fields
-    categoryDropdown.selectedIndex = 0; // Reset category dropdown
-    itemNameTextbox.value = "";          // Clear item name textbox
-    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
-    quantityTextbox.value = "";          // Clear quantity textbox
-    purchasePriceTextbox.value = "";     // Clear purchase price textbox
-    sellPriceTextbox.value = "";         // Clear sell price textbox
-    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
-updateTotal();
+        if (!exists) {
+            alert(message || "An error occurred while saving data.");
+            return;
+        }
+
+        alert("تم الحفظ بنجاح");
+
+        // Clear the input fields
+        categoryDropdown.selectedIndex = 0;
+        itemNameTextbox.value = "";
+        unitDropdown.selectedIndex = 0;
+        quantityTextbox.value = "";
+        purchasePriceTextbox.value = "";
+        sellPriceTextbox.value = "";
+        barcodeTextbox.value = "";
+
+        // Update totals
+        updateTotal();
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
 });
-
 
 // Function to check if a sheet exists and copy multiple values using Google Apps Script web app
 async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemNameValue, unitValue, quantityValue, purchasePriceValue, sellPriceValue) {
     const webAppUrl = 'https://script.google.com/macros/s/AKfycby-AE0RaEjh8Qu3y_iCSTBgAHKmh8JcixGcp3C67dj3TC5vNfHLcSmXa_51Dhw1eo1s/exec'; // Replace with your actual web app URL
-    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&barcodeValue=${encodeURIComponent(barcodeValue)}&categoryValue=${encodeURIComponent(categoryValue)}&itemNameValue=${encodeURIComponent(itemNameValue)}&unitValue=${encodeURIComponent(unitValue)}&quantityValue=${encodeURIComponent(quantityValue)}&purchasePriceValue=${encodeURIComponent(purchasePriceValue)}&sellPriceValue=${encodeURIComponent(sellPriceValue)}`, {
-        method: 'GET',
+    const params = new URLSearchParams({
+        sheetName,
+        barcodeValue,
+        categoryValue,
+        itemNameValue,
+        unitValue,
+        quantityValue,
+        purchasePriceValue,
+        sellPriceValue
     });
+
+    const response = await fetch(`${webAppUrl}?${params.toString()}`, { method: 'GET' });
 
     if (!response.ok) {
         throw new Error(`Error fetching from web app: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
 }
 
 // Event listener for the submit button
-document.getElementById('submit-button').addEventListener('click', function () {
+document.getElementById('submit-button').addEventListener('click', async function () {
     // Select necessary elements
     const categoryDropdown = document.getElementById('category-dropdown');
     const itemNameTextbox = document.getElementById('item-name-textbox');
@@ -413,33 +438,54 @@ document.getElementById('submit-button').addEventListener('click', function () {
     const barcodeTextbox = document.getElementById('barcode-textbox');
     const sheetName = document.getElementById('emailTextbox').placeholder;
 
-    // If the barcode textbox is empty, set it to "NA"
-    if (!barcodeTextbox.value) {
-        barcodeTextbox.value = "NA";
+    // Ensure barcode has a value
+    barcodeTextbox.value = barcodeTextbox.value || "NA";
+
+    // Check for empty fields
+    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || 
+        !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
+        alert("البيانات غير كاملة، فقط الباركود اختياري");
+        return;
     }
-// Check for empty fields (barcode is now ensured to have a value)
-if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
-    alert("البيانات غير كاملة، فقط الباركود اختياري");
-    return;
-} else {
-     // Check if the sheet exists and copy all values
-    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
+
+    try {
+        // Check if the sheet exists and copy all values
+        const { exists, message } = await checkSheetExists(
+            sheetName,
+            barcodeTextbox.value,
+            categoryDropdown.value,
+            itemNameTextbox.value,
+            unitDropdown.value,
+            quantityTextbox.value,
+            purchasePriceTextbox.value,
+            sellPriceTextbox.value
+        );
+
+        if (!exists) {
+            alert(message || "An error occurred while saving data.");
+            return;
+        }
+
         // Clear the input fields
-    categoryDropdown.selectedIndex = 0; // Reset category dropdown
-    itemNameTextbox.value = "";          // Clear item name textbox
-    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
-    quantityTextbox.value = "";          // Clear quantity textbox
-    purchasePriceTextbox.value = "";     // Clear purchase price textbox
-    sellPriceTextbox.value = "";         // Clear sell price textbox
-    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
-updateTotal();
-    
-    // Replace 'username' with the actual username variable or value
-    const username = "YourUsername"; // Use the actual username value here
-    window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
-}
-    
+        categoryDropdown.selectedIndex = 0;
+        itemNameTextbox.value = "";
+        unitDropdown.selectedIndex = 0;
+        quantityTextbox.value = "";
+        purchasePriceTextbox.value = "";
+        sellPriceTextbox.value = "";
+        barcodeTextbox.value = "";
+
+        // Update totals
+        updateTotal();
+
+        // Navigate to another page
+        const username = "YourUsername"; // Replace with actual username value
+        window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+    } catch (error) {
+        alert(`Error: ${error.message}`);
+    }
 });
+
 
 </script>
 
