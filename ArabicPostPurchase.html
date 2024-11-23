@@ -271,7 +271,7 @@ function getQueryParameter(name) {
     };
 
     // Send data to Google Sheets
-    fetch('YOUR_GOOGLE_SCRIPT_DEPLOYMENT_URL', {
+    fetch('https://script.google.com/macros/s/AKfycbyXvVaWAlwHK9FD2-eDE2_poLvFIVVpOKnlcaXwKkQ5D1a-MwTxJw2wzY_oSUmjhFID/exec', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
