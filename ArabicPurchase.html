@@ -422,7 +422,8 @@ if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || 
     alert("البيانات غير كاملة، فقط الباركود اختياري");
     return;
 } else {
-    
+     // Check if the sheet exists and copy all values
+    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
         // Clear the input fields
     categoryDropdown.selectedIndex = 0; // Reset category dropdown
     itemNameTextbox.value = "";          // Clear item name textbox
