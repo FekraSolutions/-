@@ -402,7 +402,7 @@ async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemName
 }
 
 // Event listener for the submit button
-document.getElementById('submit-button').addEventListener('click', function () {
+document.getElementById('submit-button').addEventListener('click', async function () {
     // Select necessary elements
     const categoryDropdown = document.getElementById('category-dropdown');
     const itemNameTextbox = document.getElementById('item-name-textbox');
@@ -424,23 +424,38 @@ document.getElementById('submit-button').addEventListener('click', function () {
         return;
     }
 
-    // Check if the sheet exists and copy all values
-    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
-    
-    // Clear the input fields
-    categoryDropdown.selectedIndex = 0; // Reset category dropdown
-    itemNameTextbox.value = "";          // Clear item name textbox
-    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
-    quantityTextbox.value = "";          // Clear quantity textbox
-    purchasePriceTextbox.value = "";     // Clear purchase price textbox
-    sellPriceTextbox.value = "";         // Clear sell price textbox
-    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
-    updateTotal();
-    
-    // Get the username from the placeholder in the textbox
-    const username = document.getElementById('emailTextbox').placeholder;
+    try {
+        // Wait for the checkSheetExists function to complete
+        const { exists, message } = await checkSheetExists(
+            sheetName,
+            barcodeTextbox.value,
+            categoryDropdown.value,
+            itemNameTextbox.value,
+            unitDropdown.value,
+            quantityTextbox.value,
+            purchasePriceTextbox.value,
+            sellPriceTextbox.value
+        );
 
-    window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+        // Clear the input fields
+        categoryDropdown.selectedIndex = 0; // Reset category dropdown
+        itemNameTextbox.value = "";          // Clear item name textbox
+        unitDropdown.selectedIndex = 0;      // Reset unit dropdown
+        quantityTextbox.value = "";          // Clear quantity textbox
+        purchasePriceTextbox.value = "";     // Clear purchase price textbox
+        sellPriceTextbox.value = "";         // Clear sell price textbox
+        barcodeTextbox.value = "";           // Clear barcode textbox (optional)
+        updateTotal();
+
+        // Get the username from the placeholder in the textbox
+        const username = document.getElementById('emailTextbox').placeholder;
+
+        // Redirect after saving
+        window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+    } catch (error) {
+        console.error("Error saving data:", error);
+        alert("حدث خطأ أثناء الحفظ. حاول مرة أخرى.");
+    }
 });
 
 </script>
