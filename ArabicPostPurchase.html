@@ -237,53 +237,58 @@ function getQueryParameter(name) {
 
 //post
   document.getElementById('submit').addEventListener('click', function() {
-    // Get values from the inputs
-    let invoiceNumber = document.getElementById('invoiceNumber').value;
-    let vendor = document.getElementById('vendor').value;
-    let paymethod = document.getElementById('paymethod').value;
-    let date = document.getElementById('Date').value;
-    let invoicetotal = document.getElementById('invoicetotal').value;
-    let paid = document.getElementById('paid').value;
-    let due = document.getElementById('due').value;
-    let dueDate = document.getElementById('dueDate').value;
-    let emailTextbox = document.getElementById('emailTextbox').value;
+    // Fetch input values
+    let invoiceNumber = document.getElementById('invoiceNumber').value.trim();
+    let vendor = document.getElementById('vendor').value.trim();
+    let paymethod = document.getElementById('paymethod').value.trim();
+    let date = document.getElementById('Date').value.trim();
+    let invoicetotal = document.getElementById('invoicetotal').value.trim();
+    let paid = document.getElementById('paid').value.trim();
+    let due = document.getElementById('due').value.trim();
+    let dueDate = document.getElementById('dueDate').value.trim();
+    let emailTextbox = document.getElementById('emailTextbox').value.trim();
 
-    // Check if all required fields are filled
+    // Validation: Ensure required fields are filled
     if (!invoiceNumber || !vendor || !paymethod) {
       alert("البيانات غير كاملة، يجب كتابة كل البيانات");
-      return; // Exit the function if any required field is empty
+      return; // Stop execution if validation fails
     }
 
-    // Determine the row based on Column I in Google Sheets
-    fetchGoogleScriptData(invoiceNumber, vendor, paymethod, date, invoicetotal, paid, due, dueDate, emailTextbox);
-  });
+    // Default 'paid' to 'invoicetotal' if empty
+    paid = paid || invoicetotal;
 
-  function fetchGoogleScriptData(invoiceNumber, vendor, paymethod, date, invoicetotal, paid, due, dueDate, emailTextbox) {
-    fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbxbIiI0cG15Wc8Sp2KRaJz1ieqiZNqGWyVqK9q6G3ejXNSylyGkKPN2why_mDrH7GMA/exec', {
+    // Prepare the data payload
+    const payload = {
+      invoiceNumber: invoiceNumber,
+      vendor: vendor,
+      paymethod: paymethod,
+      date: date,
+      invoicetotal: invoicetotal,
+      paid: paid,
+      due: due,
+      dueDate: dueDate,
+      sheetName: emailTextbox,
+    };
+
+    // Send data to Google Sheets
+    fetch('YOUR_GOOGLE_SCRIPT_DEPLOYMENT_URL', {
       method: 'POST',
-      body: JSON.stringify({
-        invoiceNumber: invoiceNumber,
-        vendor: vendor,
-        paymethod: paymethod,
-        date: date,
-        invoicetotal: invoicetotal,
-        paid: paid || invoicetotal, // Use invoicetotal if paid is empty
-        due: due,
-        dueDate: dueDate,
-        sheetName: emailTextbox
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(response => response.json())
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(response => response.json())
       .then(data => {
-        alert("تم حفظ الفاتورة بنجاح");
+        if (data.result === 'success') {
+          alert("تم حفظ الفاتورة بنجاح");
+        } else {
+          alert("حدث خطأ أثناء حفظ الفاتورة");
+        }
       })
       .catch(error => {
-        alert("حدث خطأ أثناء حفظ الفاتورة");
-        console.error(error);
+        console.error("Error:", error);
+        alert("فشل الاتصال بخادم Google");
       });
-
+  });
 </script>
 
 </body>
