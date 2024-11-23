@@ -403,42 +403,25 @@ async function checkSheetExists(sheetName, barcodeValue, categoryValue, itemName
 
 // Event listener for the submit button
 document.getElementById('submit-button').addEventListener('click', function () {
- // Select necessary elements
-    const categoryDropdown = document.getElementById('category-dropdown');
-    const itemNameTextbox = document.getElementById('item-name-textbox');
-    const unitDropdown = document.getElementById('measurement-unit-dropdown');
-    const quantityTextbox = document.getElementById('quantity');
-    const purchasePriceTextbox = document.getElementById('purchase-price-textbox');
-    const sellPriceTextbox = document.getElementById('sell-price-textbox');
-    const barcodeTextbox = document.getElementById('barcode-textbox');
-    const sheetName = document.getElementById('emailTextbox').placeholder;
+    // Get values from the form fields
+    const category = document.getElementById('category-dropdown').value;
+    const itemName = document.getElementById('item-name-textbox').value;
+    const measurementUnit = document.getElementById('measurement-unit-dropdown').value;
+    const quantity = document.getElementById('quantity').value;
+    const purchasePrice = document.getElementById('purchase-price-textbox').value;
+    const sellPrice = document.getElementById('sell-price-textbox').value;
 
-    // If the barcode textbox is empty, set it to "NA"
-    if (!barcodeTextbox.value) {
-        barcodeTextbox.value = "NA";
-    }
-
-    // Check for empty fields (barcode is now ensured to have a value)
-    if (!categoryDropdown.value || !itemNameTextbox.value || !unitDropdown.value || !quantityTextbox.value || !purchasePriceTextbox.value || !sellPriceTextbox.value) {
-        alert("البيانات غير كاملة، فقط الباركود اختياري");
-        return;
-    }
-
-    // Check if the sheet exists and copy all values
-    const { exists, message } = await checkSheetExists(sheetName, barcodeTextbox.value || barcodeTextbox.placeholder, categoryDropdown.value, itemNameTextbox.value, unitDropdown.value, quantityTextbox.value, purchasePriceTextbox.value, sellPriceTextbox.value);
-    
-    // Clear the input fields
-    categoryDropdown.selectedIndex = 0; // Reset category dropdown
-    itemNameTextbox.value = "";          // Clear item name textbox
-    unitDropdown.selectedIndex = 0;      // Reset unit dropdown
-    quantityTextbox.value = "";          // Clear quantity textbox
-    purchasePriceTextbox.value = "";     // Clear purchase price textbox
-    sellPriceTextbox.value = "";         // Clear sell price textbox
-    barcodeTextbox.value = "";           // Clear barcode textbox (optional)
-    updateTotal();
     // Get the username from the placeholder in the textbox
+    const username = document.getElementById('emailTextbox').placeholder;
 
-    window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+    // Check if all required fields are filled (barcode is optional)
+    if (category && itemName && measurementUnit && quantity && purchasePrice && sellPrice) {
+        // Redirect to the next page with the username in the URL
+        window.location.href = `ArabicPostPurchase.html?username=${encodeURIComponent(username)}`;
+    } else {
+        // Display an alert message in Arabic
+        alert("البيانات غير كاملة، فقط الباركود هو الاختياري، يجب كتابة كل البيانات الأخرى على الاقل");
+    }
 });
 
 </script>
