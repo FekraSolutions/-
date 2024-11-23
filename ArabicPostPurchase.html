@@ -236,8 +236,7 @@ function getQueryParameter(name) {
   updateDueField();
 
 //post
-  document.getElementById('submit').addEventListener('click', function() {
-    // Fetch input values
+document.getElementById('submit').addEventListener('click', function() {
     let invoiceNumber = document.getElementById('invoiceNumber').value.trim();
     let vendor = document.getElementById('vendor').value.trim();
     let paymethod = document.getElementById('paymethod').value.trim();
@@ -248,47 +247,42 @@ function getQueryParameter(name) {
     let dueDate = document.getElementById('dueDate').value.trim();
     let emailTextbox = document.getElementById('emailTextbox').value.trim();
 
-    // Validation: Ensure required fields are filled
     if (!invoiceNumber || !vendor || !paymethod) {
-      alert("البيانات غير كاملة، يجب كتابة كل البيانات");
-      return; // Stop execution if validation fails
+        alert("البيانات غير كاملة، يجب كتابة كل البيانات");
+        return;
     }
 
-    // Default 'paid' to 'invoicetotal' if empty
     paid = paid || invoicetotal;
 
-    // Prepare the data payload
     const payload = {
-      invoiceNumber: invoiceNumber,
-      vendor: vendor,
-      paymethod: paymethod,
-      date: date,
-      invoicetotal: invoicetotal,
-      paid: paid,
-      due: due,
-      dueDate: dueDate,
-      sheetName: emailTextbox,
+        invoiceNumber, vendor, paymethod, date, invoicetotal, paid, due, dueDate, sheetName: emailTextbox
     };
 
-    // Send data to Google Sheets
     fetch('https://script.google.com/macros/s/AKfycbyXvVaWAlwHK9FD2-eDE2_poLvFIVVpOKnlcaXwKkQ5D1a-MwTxJw2wzY_oSUmjhFID/exec', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
     })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === 'success') {
-          alert("تم حفظ الفاتورة بنجاح");
+    .then(response => {
+        if (response.ok) {
+            return response.json();
         } else {
-          alert("حدث خطأ أثناء حفظ الفاتورة");
+            throw new Error("خطأ في الاتصال بالخادم. تأكد من إعدادات Google Apps Script.");
         }
-      })
-      .catch(error => {
+    })
+    .then(data => {
+        if (data.result === 'success') {
+            alert("تم حفظ الفاتورة بنجاح");
+        } else {
+            alert("حدث خطأ أثناء الحفظ: " + (data.error || "غير معروف"));
+        }
+    })
+    .catch(error => {
         console.error("Error:", error);
-        alert("فشل الاتصال بخادم Google");
-      });
-  });
+        alert("فشل في الاتصال بخادم Google: " + error.message);
+    });
+});
+
 </script>
 
 </body>
