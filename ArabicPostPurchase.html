@@ -234,55 +234,6 @@ function getQueryParameter(name) {
 
   // Initial calculation in case there is a prefilled value
   updateDueField();
-
-//post
-document.getElementById('submit').addEventListener('click', function() {
-    let invoiceNumber = document.getElementById('invoiceNumber').value.trim();
-    let vendor = document.getElementById('vendor').value.trim();
-    let paymethod = document.getElementById('paymethod').value.trim();
-    let date = document.getElementById('Date').value.trim();
-    let invoicetotal = document.getElementById('invoicetotal').value.trim();
-    let paid = document.getElementById('paid').value.trim();
-    let due = document.getElementById('due').value.trim();
-    let dueDate = document.getElementById('dueDate').value.trim();
-    let emailTextbox = document.getElementById('emailTextbox').value.trim();
-
-    if (!invoiceNumber || !vendor || !paymethod) {
-        alert("البيانات غير كاملة، يجب كتابة كل البيانات");
-        return;
-    }
-
-    paid = paid || invoicetotal;
-
-    const payload = {
-        invoiceNumber, vendor, paymethod, date, invoicetotal, paid, due, dueDate, sheetName: emailTextbox
-    };
-
-    fetch('https://script.google.com/macros/s/AKfycbyXvVaWAlwHK9FD2-eDE2_poLvFIVVpOKnlcaXwKkQ5D1a-MwTxJw2wzY_oSUmjhFID/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error("خطأ في الاتصال بالخادم. تأكد من إعدادات Google Apps Script.");
-        }
-    })
-    .then(data => {
-        if (data.result === 'success') {
-            alert("تم حفظ الفاتورة بنجاح");
-        } else {
-            alert("حدث خطأ أثناء الحفظ: " + (data.error || "غير معروف"));
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        alert("فشل في الاتصال بخادم Google: " + error.message);
-    });
-});
-
 </script>
 
 </body>
