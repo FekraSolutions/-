@@ -234,6 +234,55 @@ function getQueryParameter(name) {
 
   // Initial calculation in case there is a prefilled value
   updateDueField();
+
+document.getElementById("submit").addEventListener("click", async function () {
+  const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+  const vendor = document.getElementById("vendor").value.trim();
+  const paymethod = document.getElementById("paymethod").value.trim();
+  const emailTextbox = document.getElementById("emailTextbox").placeholder;
+
+  // Check if all required fields are filled
+  if (!invoiceNumber || !vendor || !paymethod) {
+    alert("البيانات غير كاملة، يجب كتابة كل البيانات");
+    return;
+  }
+
+  // Prepare data to send
+  const data = {
+    sheetName: emailTextbox,
+    Date: document.getElementById("Date").value,
+    invoiceNumber,
+    vendor,
+    paymethod,
+    invoicetotal: document.getElementById("invoicetotal").value || "0",
+    paid: document.getElementById("paid").value,
+    due: document.getElementById("due").value,
+    dueDate: document.getElementById("dueDate").value,
+  };
+
+  try {
+    // Replace with your Web App URL
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyybxMc8cV2fMhM44lJxFH9hVZd4zjDl4zzxEjgzr-fffyI7fHG7dsACp5o3YZ5mRNx/exec";
+
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      alert("الفاتورة تم حفظها بنجاح");
+    } else {
+      alert("حدث خطأ أثناء حفظ الفاتورة: " + result.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("حدث خطأ أثناء الاتصال بالسيرفر");
+  }
+});
+
+
 </script>
 
 </body>
