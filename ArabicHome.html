@@ -87,20 +87,26 @@
     </div>
 
  <script>
-        // Redirect to another page
-        function redirectToPage() {
-            alert("Functionality for الكاشير is not yet defined.");
-        }
+// Redirect to ArabicCashier page based on device type with the username in the URL
+function goToCashierPage() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent); // Check if user is on mobile
+        const targetPage = isMobile ? "ArabicCashierMobile.html" : "ArabicCashier.html";
+        window.location.href = `${targetPage}?username=${encodeURIComponent(username)}`;
+    }
+}
 
-        // Redirect to ArabicPurchase.html with the username in the URL
-        function goToPurchasePage() {
-            const username = document.getElementById('emailTextbox').value;
-            if (username) {
-                window.location.href = `ArabicPurchase.html?username=${encodeURIComponent(username)}`;
-            } else {
-                alert("يرجى إدخال اسم المستخدم قبل المتابعة.");
-            }
-        }
+
+
+// Redirect to ArabicPurchase.html with the username in the URL
+function goToPurchasePage() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        window.location.href = `ArabicPurchase.html?username=${encodeURIComponent(username)}`;
+    }
+}
+
 
         // Set the textbox value with the username from the URL
         window.onload = function () {
