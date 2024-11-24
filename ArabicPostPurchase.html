@@ -260,7 +260,7 @@ document.getElementById("submit").addEventListener("click", async function () {
     dueDate: document.getElementById("dueDate").value,
   };
 
-try {
+  try {
     // Replace with your Web App URL
     const webAppUrl = "https://script.google.com/macros/s/AKfycbyybxMc8cV2fMhM44lJxFH9hVZd4zjDl4zzxEjgzr-fffyI7fHG7dsACp5o3YZ5mRNx/exec";
 
@@ -272,15 +272,15 @@ try {
     const result = await response.json();
 
     if (result.status === "success") {
-        alert("الفاتورة تم حفظها بنجاح");
-        history.back(); // Navigate back after successful post
+      alert(" تم حفظ الفاتورة بنجاح");
+    history.back(); // Navigate back after successful post
     } else {
-        alert("حدث خطأ أثناء حفظ الفاتورة: " + result.message);
+      alert("حدث خطأ أثناء حفظ الفاتورة: " + result.message);
     }
-} catch (error) {
+  } catch (error) {
     console.error("Error:", error);
     alert("حدث خطأ أثناء الاتصال بالسيرفر");
-}
+  }
 });
 
 
