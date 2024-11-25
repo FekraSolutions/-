@@ -181,15 +181,13 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
- // Set the textbox value with the username from the URL and initialize events
+// Set the textbox value with the username from the URL and initialize events
 window.onload = function () {
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
     startCamera();
-
-    const priceField = document.getElementById('purchase-price-textbox');
 };
 
 // Function to get query parameters
@@ -245,23 +243,29 @@ function startBarcodeDetection() {
         const username = document.getElementById('emailTextbox').value;
         const sheetName = username;  // Use username as the sheet name
 
-        const response = await fetch(`https://script.google.com/macros/s/AKfycbybppNe29GU0Y6ntS-Mg6j2f_TwbI9HyiuPjMc-lOlBNjJJvB_0dHitVNDu3w6Y6MQo/exec?barcode=${barcode}&sheetName=${sheetName}`);
-        const dataFromSheet = await response.json();
+        try {
+            // Make the request to your Google Sheets web app
+            const response = await fetch(`https://script.google.com/macros/s/AKfycbybppNe29GU0Y6ntS-Mg6j2f_TwbI9HyiuPjMc-lOlBNjJJvB_0dHitVNDu3w6Y6MQo/exec?barcode=${barcode}&sheetName=${sheetName}`);
+            const dataFromSheet = await response.json();
 
-        if (dataFromSheet) {
-            // Populate corresponding values in the input fields
-            document.getElementById('category').value = dataFromSheet.category;
-            document.getElementById('item').value = dataFromSheet.item;
-            document.getElementById('uom').value = dataFromSheet.uom;
-            document.getElementById('price').value = dataFromSheet.price;
-            document.getElementById('quantity').value = 1;
-        } else {
-            console.log('Barcode not found');
+            if (dataFromSheet && dataFromSheet.category) {
+                // Populate corresponding values in the input fields
+                document.getElementById('category').value = dataFromSheet.category || '';
+                document.getElementById('item').value = dataFromSheet.item || '';
+                document.getElementById('uom').value = dataFromSheet.uom || '';
+                document.getElementById('price').value = dataFromSheet.price || '';
+                document.getElementById('quantity').value = 1;
+                // You can add more fields as needed
+            } else {
+                console.log('Barcode not found or data is incomplete');
+            }
+        } catch (error) {
+            console.error('Error fetching data from Google Sheets:', error);
         }
     });
 }
-
 </script>
+
 
 </body>
 </html>
