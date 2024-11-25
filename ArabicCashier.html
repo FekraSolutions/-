@@ -212,7 +212,7 @@ async function startCamera() {
     }
 }
 
-function startBarcodeDetection() {
+async function startBarcodeDetection() {
     Quagga.init({
         inputStream: {
             type: 'LiveStream',
@@ -264,6 +264,7 @@ function startBarcodeDetection() {
         }
     });
 }
+
 </script>
 
 
