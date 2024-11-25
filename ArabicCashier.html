@@ -144,32 +144,39 @@
         <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
     </div>
 
-    <!-- Center container with camera preview and barcode textbox -->
-    <div class="center-container">
-        <video id="camera-preview" class="camera-preview" autoplay></video>
-        
-        <label for="barcode-textbox" class="form-label">باركود</label>
-        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
+<!-- Center container with camera preview and barcode textbox -->
+<div class="center-container">
+    <video id="camera-preview" class="camera-preview" autoplay></video>
+    
+    <label for="barcode-textbox" class="form-label">باركود</label>
+    <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
 
-        <!-- Dropdown menu with custom style -->
-        <label for="category-dropdown" class="form-label">الفئة</label>
-<input type="text" id="category" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">اسم الصنف</label>
-<input type="text" id="item" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">وحدة القياس</label>
-<input type="text" id="uom" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">الكمية</label>
-<input type="number" id="quantity" class="barcode-textbox">
-        <label for="category-dropdown" class="form-label">سعر البيع</label>
-<input type="number" id="price" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">الإجمالي</label>
-<input type="number" id="itemtotal" class="barcode-textbox" readonly>
-        <!-- Buttons at the bottom -->
+    <!-- Fields remain readonly -->
+    <label for="category-dropdown" class="form-label">الفئة</label>
+    <input type="text" id="category" class="barcode-textbox" readonly>
+    
+    <label for="category-dropdown" class="form-label">اسم الصنف</label>
+    <input type="text" id="item" class="barcode-textbox" readonly>
+
+    <label for="category-dropdown" class="form-label">وحدة القياس</label>
+    <input type="text" id="uom" class="barcode-textbox" readonly>
+    
+    <label for="category-dropdown" class="form-label">الكمية</label>
+    <input type="number" id="quantity" class="barcode-textbox" readonly>
+    
+    <label for="category-dropdown" class="form-label">سعر البيع</label>
+    <input type="number" id="price" class="barcode-textbox" readonly>
+    
+    <label for="category-dropdown" class="form-label">الإجمالي</label>
+    <input type="number" id="itemtotal" class="barcode-textbox" readonly>
+
+    <!-- Buttons at the bottom -->
     <div class="button-container">
         <button id="another-item-button" class="another-item-button">إلغاء</button>
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
-    </div>
+</div>
+
 
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
