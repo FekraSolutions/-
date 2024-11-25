@@ -91,9 +91,7 @@
 function goToCashierPage() {
     const username = document.getElementById('emailTextbox').value;
     if (username) {
-        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent); // Check if user is on mobile
-        const targetPage = isMobile ? "ArabicCashierMobile.html" : "ArabicCashier.html";
-        window.location.href = `${targetPage}?username=${encodeURIComponent(username)}`;
+        window.location.href = `ArabicCashier.html?username=${encodeURIComponent(username)}`;
     }
 }
 
