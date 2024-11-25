@@ -240,7 +240,7 @@
     }
 
 async function lookupCategory(sheetName, barcode) {
-    const url = `YOUR_WEB_APP_URL?sheetName=${encodeURIComponent(sheetName)}&barcode=${encodeURIComponent(barcode)}`;
+    const url = `https://script.google.com/macros/s/AKfycbxsPbTzuoySoWeaUIftpgEVSuO2Afggf8g0ftmGlsrE7OcKVYappuPGy7gc9F6UEfLN/exec?sheetName=${encodeURIComponent(sheetName)}&barcode=${encodeURIComponent(barcode)}`;
     console.log("Fetching URL:", url); // Log the URL to ensure it's correct
     try {
         const response = await fetch(url);
