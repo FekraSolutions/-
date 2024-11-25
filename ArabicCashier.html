@@ -184,7 +184,11 @@
                 document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
             }
             startCamera();
-
+    
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('Date').value = today;
+            
             const priceField = document.getElementById('purchase-price-textbox');
         };
 
