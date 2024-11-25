@@ -177,21 +177,16 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-   // Set the textbox value with the username from the URL and initialize events
-        window.onload = function () {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-            }
-            startCamera();
-    
-    // Set the Date textbox with today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').value = today;
-            
-            const priceField = document.getElementById('purchase-price-textbox');
-        };
+    window.onload = function () {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+        }
+        startCamera();
 
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+    };
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -232,17 +227,35 @@
             console.log('Barcode detection started');
         });
 
-        Quagga.onDetected((data) => {
+        Quagga.onDetected(async (data) => {
             const code = data.codeResult.code;
-            const barcodeTextbox = document.getElementById('barcode-textbox');
-            barcodeTextbox.value = code;
+            document.getElementById('barcode-textbox').value = code;
 
-            const beepSound = document.getElementById('beep-sound');
-            beepSound.currentTime = 0;
-            beepSound.play();
+            const sheetName = document.getElementById('emailTextbox')?.getAttribute('placeholder');
+            if (sheetName) {
+                const category = await lookupCategory(sheetName, code);
+                document.getElementById('category').value = category || "Not Found";
+            }
         });
     }
+
+    async function lookupCategory(sheetName, barcode) {
+        const url = `YOUR_WEB_APP_URL?sheetName=${encodeURIComponent(sheetName)}&barcode=${encodeURIComponent(barcode)}`;
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                return await response.text();
+            } else {
+                console.error("Error fetching category:", response.status);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error during fetch:", error);
+            return null;
+        }
+    }
 </script>
+
 
 </body>
 </html>
