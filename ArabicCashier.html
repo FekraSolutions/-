@@ -178,17 +178,24 @@
 
 <script>
    // Set the textbox value with the username from the URL and initialize events
-window.onload = function () {
+window.onload = async function () {
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-        
-        // Display the username in a message box
-        alert(`${username}`);
+
+        // Check if the sheet exists
+        const response = await fetch('Yhttps://script.google.com/macros/s/AKfycbzYgcTbRFfnoo1A7kFIlxuwJwmaTsYgXAtd2SCk-CFHVfRsNuii7_o1VPH3r10z0IsS/exec?username=' + encodeURIComponent(username));
+        const exists = await response.text();
+
+        // Show an alert based on the result
+        if (exists === "true") {
+            alert(`A sheet with the name "${username}" exists.`);
+        } else {
+            alert(`No sheet with the name "${username}" found.`);
+        }
     }
     startCamera();
 
-    // Set the Date textbox with today's date
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
 
