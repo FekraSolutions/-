@@ -249,7 +249,7 @@
     function checkBarcodeInGoogleSheet(barcode) {
         const email = document.getElementById('emailTextbox').value; // Retrieve the email from the textbox
 
-        const url = `https://script.google.com/macros/s/your-web-app-deployment-id/exec?email=${encodeURIComponent(email)}&barcode=${encodeURIComponent(barcode)}`;
+        const url = `https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec?email=${encodeURIComponent(email)}&barcode=${encodeURIComponent(barcode)}`;
         
         fetch(url)
             .then(response => response.text())
