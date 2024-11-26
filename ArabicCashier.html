@@ -247,13 +247,18 @@ function startBarcodeDetection() {
 }
 
 async function checkBarcodeInSheet(barcode) {
-    const response = await fetch('https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec?barcode=' + barcode);
-    const result = await response.json();
-    
-    if (result.exists) {
-        alert('Barcode exists in Google Sheets.');
-    } else {
-        alert('Barcode does not exist in Google Sheets.');
+    try {
+        const response = await fetch('https://script.google.com/macros/s/your-web-app-id/exec?barcode=' + barcode);
+        const result = await response.json();
+        
+        if (result.exists) {
+            alert('Barcode exists in Google Sheets.');
+        } else {
+            alert('Barcode does not exist in Google Sheets.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error checking the barcode.');
     }
 }
 
