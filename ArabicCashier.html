@@ -177,76 +177,74 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-    // Set the textbox value with the username from the URL and initialize events
-    window.onload = function () {
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-        }
-        startCamera();
-
-        // Set the Date textbox with today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
-
-        const priceField = document.getElementById('purchase-price-textbox');
-    };
-
-    function getQueryParameter(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
+window.onload = function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
+    startCamera();
 
-    async function startCamera() {
-        try {
-            const constraints = {
-                video: {
-                    facingMode: 'environment',
-                },
-            };
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            const videoElement = document.getElementById('camera-preview');
-            videoElement.srcObject = stream;
-            startBarcodeDetection();
-        } catch (error) {
-            console.error('Error accessing the camera:', error);
-        }
-    }
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
 
-    function startBarcodeDetection() {
-        Quagga.init({
-            inputStream: {
-                type: 'LiveStream',
-                target: document.querySelector('#camera-preview'),
+    const priceField = document.getElementById('purchase-price-textbox');
+};
+
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+async function startCamera() {
+    try {
+        const constraints = {
+            video: {
+                facingMode: 'environment',
             },
-            decoder: {
-                readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'],
-            },
-        }, (err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            Quagga.start();
-            console.log('Barcode detection started');
-        });
-
-        Quagga.onDetected((data) => {
-            const code = data.codeResult.code;
-            const barcodeTextbox = document.getElementById('barcode-textbox');
-            barcodeTextbox.value = code;
-
-            const beepSound = document.getElementById('beep-sound');
-            beepSound.currentTime = 0;
-            beepSound.play();
-
-            // Call function to display message box
-            showMessageBox();
-        });
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const videoElement = document.getElementById('camera-preview');
+        videoElement.srcObject = stream;
+        startBarcodeDetection();
+    } catch (error) {
+        console.error('Error accessing the camera:', error);
     }
+}
 
-    // Function to show the message box with captured username and barcode
-    // Function to show the message box with captured username and barcode
+function startBarcodeDetection() {
+    Quagga.init({
+        inputStream: {
+            type: 'LiveStream',
+            target: document.querySelector('#camera-preview'),
+        },
+        decoder: {
+            readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'],
+        },
+    }, (err) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        Quagga.start();
+        console.log('Barcode detection started');
+    });
+
+    Quagga.onDetected((data) => {
+        const code = data.codeResult.code;
+        const barcodeTextbox = document.getElementById('barcode-textbox');
+        barcodeTextbox.value = code;
+
+        const beepSound = document.getElementById('beep-sound');
+        beepSound.currentTime = 0;
+        beepSound.play();
+
+        // Call function to display message box
+        showMessageBox();
+    });
+}
+
+// Function to show the message box with captured username, barcode, and sheet status
 async function showMessageBox() {
     const username = document.getElementById('emailTextbox')?.value || "No username";
     const barcode = document.getElementById('barcode-textbox')?.value || "No barcode";
@@ -274,9 +272,6 @@ async function checkSheetExists(username) {
 }
 
 </script>
-
-
-
 
 </body>
 </html>
