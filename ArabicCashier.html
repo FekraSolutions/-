@@ -177,9 +177,11 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
+    // URL for your Apps Script web app
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
 
     // Global flag to prevent spamming messageboxes
+    let lastDetectedBarcode = '';
     let isChecking = false;
 
     // Set the textbox value with the username from the URL and initialize events
@@ -242,46 +244,44 @@
             }
         );
 
-Quagga.onDetected(async (data) => {
-    const code = data.codeResult.code;
-    const barcodeTextbox = document.getElementById('barcode-textbox');
+        Quagga.onDetected(async (data) => {
+            const code = data.codeResult.code;
 
-    if (barcodeTextbox.value === code) return; // No change, skip
-    barcodeTextbox.value = code; // Update the textbox with the new barcode
+            // Prevent redundant detections
+            if (code === lastDetectedBarcode || isChecking) return;
+            lastDetectedBarcode = code;
 
-    const beepSound = document.getElementById('beep-sound');
-    beepSound.currentTime = 0;
-    beepSound.play();
+            // Update barcode textbox
+            const barcodeTextbox = document.getElementById('barcode-textbox');
+            barcodeTextbox.value = code;
 
-    const emailValue = document.getElementById('emailTextbox').placeholder;
-    console.log("Email Value: ", emailValue); // Debugging
+            // Play beep sound
+            const beepSound = document.getElementById('beep-sound');
+            beepSound.currentTime = 0;
+            beepSound.play();
 
-    if (emailValue) {
-        isChecking = true;
-        const isMatched = await checkSheetExists(emailValue, code); // Pass the barcode value
-        alert(isMatched ? 'Matched' : 'Non-Matched');
-        isChecking = false;
-    } else {
-        alert("Error: Email value is missing or not set!");
+            // Check sheet match
+            const emailValue = document.getElementById('emailTextbox').placeholder;
+            if (emailValue) {
+                isChecking = true;
+                const isMatched = await checkSheetExists(emailValue);
+                alert(isMatched ? 'Matched' : 'Non-Matched');
+                isChecking = false;
+            }
+        });
     }
-});
 
+    async function checkSheetExists(emailValue) {
+        try {
+            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}`);
+            return await response.json(); // Assume the Apps Script returns true/false
+        } catch (error) {
+            console.error('Error checking sheet:', error);
+            return false;
+        }
     }
-
-async function checkSheetExists(emailValue, barcodeValue) {
-    try {
-        const response = await fetch(
-            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
-        );
-        const result = await response.json();
-        return result.exists; // Return true if the barcode exists
-    } catch (error) {
-        console.error('Error checking sheet:', error);
-        return false;
-    }
-}
-
 </script>
+
 
 </body>
 </html>
