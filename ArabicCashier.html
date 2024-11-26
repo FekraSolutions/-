@@ -274,6 +274,13 @@ Quagga.onDetected(async (data) => {
             document.getElementById('item').value = T;
             document.getElementById('uom').value = U;
             document.getElementById('price').value = X;
+
+            // Set quantity to 1
+            const quantityInput = document.getElementById('quantity');
+            quantityInput.value = 1;
+
+            // Calculate item total
+            updateItemTotal();
         } else {
             alert(`Email: ${emailValue}\nMatched: No`);
         }
@@ -281,6 +288,17 @@ Quagga.onDetected(async (data) => {
     }
 });
 
+// Calculate item total (quantity × price)
+function updateItemTotal() {
+    const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+    const price = parseFloat(document.getElementById('price').value) || 0;
+    const itemTotal = document.getElementById('itemtotal');
+
+    itemTotal.value = (quantity * price).toFixed(2); // Ensure 2 decimal places
+}
+
+// Add event listener for quantity change
+document.getElementById('quantity').addEventListener('input', updateItemTotal);
     }
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
