@@ -177,11 +177,9 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-    // URL for your Apps Script web app
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
 
     // Global flag to prevent spamming messageboxes
-    let lastDetectedBarcode = '';
     let isChecking = false;
 
     // Set the textbox value with the username from the URL and initialize events
@@ -246,14 +244,11 @@
 
         Quagga.onDetected(async (data) => {
             const code = data.codeResult.code;
-
-            // Prevent redundant detections
-            if (code === lastDetectedBarcode || isChecking) return;
-            lastDetectedBarcode = code;
-
-            // Update barcode textbox
             const barcodeTextbox = document.getElementById('barcode-textbox');
-            barcodeTextbox.value = code;
+
+            // Check if the value of the barcode textbox has changed
+            if (barcodeTextbox.value === code) return; // No change, skip
+            barcodeTextbox.value = code; // Update the textbox with the new barcode
 
             // Play beep sound
             const beepSound = document.getElementById('beep-sound');
@@ -281,7 +276,6 @@
         }
     }
 </script>
-
 
 </body>
 </html>
