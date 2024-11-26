@@ -178,19 +178,20 @@
 
 <script>
    // Set the textbox value with the username from the URL and initialize events
-   window.onload = function () {
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-        }
-        startCamera();
-
-        // Set the Date textbox with today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
+        window.onload = function () {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+            }
+            startCamera();
+    
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
             
-        const priceField = document.getElementById('purchase-price-textbox');
-    };
+            const priceField = document.getElementById('purchase-price-textbox');
+        };
+
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -239,35 +240,9 @@
             const beepSound = document.getElementById('beep-sound');
             beepSound.currentTime = 0;
             beepSound.play();
-
-            // Now call the function to check the barcode in the Google Sheet
-            checkBarcodeInGoogleSheet(code);
         });
     }
-
-    // Add this function to call your Google Apps Script Web App and show a message based on the barcode check
-    function checkBarcodeInGoogleSheet(barcode) {
-        const email = document.getElementById('emailTextbox').value; // Retrieve the email from the textbox
-
-        const url = `https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec?email=${encodeURIComponent(email)}&barcode=${encodeURIComponent(barcode)}`;
-        
-        fetch(url)
-            .then(response => response.text())
-            .then(result => {
-                // Show a message box based on the result
-                if (result === "Barcode found") {
-                    alert('The barcode was found!');
-                } else {
-                    alert('The barcode was not found!');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error checking the barcode.');
-            });
-    }
 </script>
-
 
 </body>
 </html>
