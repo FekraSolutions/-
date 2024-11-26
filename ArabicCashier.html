@@ -245,31 +245,16 @@
         });
     }
 
-    // Function to show the message box with captured username, barcode, and sheet status
-    async function showMessageBox() {
+    // Function to show the message box with captured username and barcode
+    function showMessageBox() {
         const username = document.getElementById('emailTextbox')?.value || "No username";
         const barcode = document.getElementById('barcode-textbox')?.value || "No barcode";
 
-        // Check if the Google Sheets tab exists by calling the Google Apps Script
-        const sheetExists = await checkSheetExists(username);
-
         // Create the message content
-        const message = `Username: ${username}\nBarcode: ${barcode}\nSheet exists: ${sheetExists ? 'Yes' : 'No'}`;
+        const message = Username: ${username}\nBarcode: ${barcode};
         
         // Display the message box with the information
         alert(message);
-    }
-
-    // Function to call the Google Apps Script to check if the sheet exists
-    async function checkSheetExists(username) {
-        try {
-            const response = await fetch('https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec?username=' + encodeURIComponent(username));
-            const result = await response.json();
-            return result.exists;
-        } catch (error) {
-            console.error('Error checking sheet:', error);
-            return false;
-        }
     }
 </script>
 
