@@ -260,20 +260,20 @@
             beepSound.currentTime = 0;
             beepSound.play();
 
-            // Check sheet match
+            // Check if the barcode exists in the user's sheet
             const emailValue = document.getElementById('emailTextbox').placeholder;
             if (emailValue) {
                 isChecking = true;
-                const isMatched = await checkSheetExists(emailValue);
+                const isMatched = await checkBarcodeExists(emailValue, code);
                 alert(isMatched ? 'Matched' : 'Non-Matched');
                 isChecking = false;
             }
         });
     }
 
-    async function checkSheetExists(emailValue) {
+    async function checkBarcodeExists(emailValue, barcodeValue) {
         try {
-            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}`);
+            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`);
             return await response.json(); // Assume the Apps Script returns true/false
         } catch (error) {
             console.error('Error checking sheet:', error);
