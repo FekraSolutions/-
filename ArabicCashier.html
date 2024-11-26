@@ -187,12 +187,6 @@ window.onload = async function () {
         const response = await fetch('https://script.google.com/macros/s/AKfycbxXswY7tpEQlRKUM1FJgCPp3D4G9qsJ1VkeV9BeNwviKG2Lm4q08rcZRMqM6SPcYqYV/exec?username=' + encodeURIComponent(username));
         const exists = await response.text();
 
-        // Show an alert based on the result
-        if (exists === "true") {
-            alert(`A sheet with the name "${username}" exists.`);
-        } else {
-            alert(`No sheet with the name "${username}" found.`);
-        }
     }
     startCamera();
 
