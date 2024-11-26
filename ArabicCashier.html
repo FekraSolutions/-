@@ -267,17 +267,13 @@ Quagga.onDetected(async (data) => {
         const result = await checkBarcodeExists(emailValue, code);
 
         if (result.matched) {
-            const { S, T, U, V, X } = result.values;
-            const message = `
-                Email: ${emailValue}
-                Matched: Yes
-                Value in Column S: ${S}
-                Value in Column T: ${T}
-                Value in Column U: ${U}
-                Value in Column V: ${V}
-                Value in Column X: ${X}
-            `;
-            alert(message);
+            const { S, T, U, X } = result.values;
+
+            // Update input fields with the matched values
+            document.getElementById('category').value = S;
+            document.getElementById('item').value = T;
+            document.getElementById('uom').value = U;
+            document.getElementById('price').value = X;
         } else {
             alert(`Email: ${emailValue}\nMatched: No`);
         }
