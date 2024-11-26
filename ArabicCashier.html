@@ -254,13 +254,18 @@ Quagga.onDetected(async (data) => {
     beepSound.play();
 
     const emailValue = document.getElementById('emailTextbox').placeholder;
+    console.log("Email Value: ", emailValue); // Debugging
+
     if (emailValue) {
         isChecking = true;
         const isMatched = await checkSheetExists(emailValue, code); // Pass the barcode value
         alert(isMatched ? 'Matched' : 'Non-Matched');
         isChecking = false;
+    } else {
+        alert("Error: Email value is missing or not set!");
     }
 });
+
     }
 
 async function checkSheetExists(emailValue, barcodeValue) {
