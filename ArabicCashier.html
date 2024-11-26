@@ -244,43 +244,55 @@
             }
         );
 
-        Quagga.onDetected(async (data) => {
-            const code = data.codeResult.code;
+Quagga.onDetected(async (data) => {
+    const code = data.codeResult.code;
 
-            // Prevent redundant detections
-            if (code === lastDetectedBarcode || isChecking) return;
-            lastDetectedBarcode = code;
+    // Prevent redundant detections
+    if (code === lastDetectedBarcode || isChecking) return;
+    lastDetectedBarcode = code;
 
-            // Update barcode textbox
-            const barcodeTextbox = document.getElementById('barcode-textbox');
-            barcodeTextbox.value = code;
+    // Update barcode textbox
+    const barcodeTextbox = document.getElementById('barcode-textbox');
+    barcodeTextbox.value = code;
 
-            // Play beep sound
-            const beepSound = document.getElementById('beep-sound');
-            beepSound.currentTime = 0;
-            beepSound.play();
+    // Play beep sound
+    const beepSound = document.getElementById('beep-sound');
+    beepSound.currentTime = 0;
+    beepSound.play();
 
-            // Check if the barcode exists in the user's sheet
-            const emailValue = document.getElementById('emailTextbox').placeholder;
-            if (emailValue) {
-                isChecking = true;
-                const isMatched = await checkBarcodeExists(emailValue, code);
-                // Display a message box with the username and the matched/non-matched result
-                alert(`Username: ${emailValue}\nBarcode Match: ${isMatched ? 'Matched' : 'Non-Matched'}`);
-                isChecking = false;
-            }
-        });
+    // Check sheet match
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+    if (emailValue) {
+        isChecking = true;
+        const result = await checkBarcodeExists(emailValue, code);
+        const message = result.matched
+            ? `${emailValue}\nMatched: Yes\nValue in Column X: ${result.value}`
+            : `${emailValue}\nMatched: No\nValue in Column X: N/A`;
+        alert(message);
+        isChecking = false;
+    }
+});
+
     }
 
-    async function checkBarcodeExists(emailValue, barcodeValue) {
-        try {
-            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`);
-            return await response.json(); // Assume the Apps Script returns true/false
-        } catch (error) {
-            console.error('Error checking sheet:', error);
-            return false;
+async function checkBarcodeExists(emailValue, barcodeValue) {
+    try {
+        const response = await fetch(
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
+        );
+        const result = await response.json();
+
+        if (result.matched) {
+            return { matched: true, value: result.value };
+        } else {
+            return { matched: false };
         }
+    } catch (error) {
+        console.error('Error checking sheet:', error);
+        return { matched: false };
     }
+}
+
 </script>
 
 
