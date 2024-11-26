@@ -177,21 +177,20 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-   // Set the textbox value with the username from the URL and initialize events
-        window.onload = function () {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-            }
-            startCamera();
-    
-    // Set the Date textbox with today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').value = today;
-            
-            const priceField = document.getElementById('purchase-price-textbox');
-        };
+    // Set the textbox value with the username from the URL and initialize events
+    window.onload = function () {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+        }
+        startCamera();
 
+        // Set the Date textbox with today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+
+        const priceField = document.getElementById('purchase-price-textbox');
+    };
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -240,9 +239,25 @@
             const beepSound = document.getElementById('beep-sound');
             beepSound.currentTime = 0;
             beepSound.play();
+
+            // Call function to display message box
+            showMessageBox();
         });
     }
+
+    // Function to show the message box with captured username and barcode
+    function showMessageBox() {
+        const username = document.getElementById('emailTextbox')?.value || "No username";
+        const barcode = document.getElementById('barcode-textbox')?.value || "No barcode";
+
+        // Create the message content
+        const message = `Username: ${username}\nBarcode: ${barcode}`;
+        
+        // Display the message box with the information
+        alert(message);
+    }
 </script>
+
 
 </body>
 </html>
