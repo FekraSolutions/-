@@ -177,21 +177,21 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-   // Set the textbox value with the username from the URL and initialize events
-        window.onload = function () {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-            }
-            startCamera();
-    
-    // Set the Date textbox with today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').value = today;
-            
-            const priceField = document.getElementById('purchase-price-textbox');
-        };
+    // URL for your Apps Script web app
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
 
+    // Set the textbox value with the username from the URL and initialize events
+    window.onload = function () {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+        }
+        startCamera();
+
+        // Set the Date textbox with today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+    };
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -200,11 +200,7 @@
 
     async function startCamera() {
         try {
-            const constraints = {
-                video: {
-                    facingMode: 'environment',
-                },
-            };
+            const constraints = { video: { facingMode: 'environment' } };
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
             const videoElement = document.getElementById('camera-preview');
             videoElement.srcObject = stream;
@@ -215,34 +211,65 @@
     }
 
     function startBarcodeDetection() {
-        Quagga.init({
-            inputStream: {
-                type: 'LiveStream',
-                target: document.querySelector('#camera-preview'),
+        Quagga.init(
+            {
+                inputStream: {
+                    type: 'LiveStream',
+                    target: document.querySelector('#camera-preview'),
+                },
+                decoder: {
+                    readers: [
+                        'code_128_reader',
+                        'ean_reader',
+                        'ean_8_reader',
+                        'code_39_reader',
+                        'code_39_vin_reader',
+                        'upc_reader',
+                        'upc_e_reader',
+                        'i2of5_reader',
+                    ],
+                },
             },
-            decoder: {
-                readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'],
-            },
-        }, (err) => {
-            if (err) {
-                console.error(err);
-                return;
+            (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                Quagga.start();
+                console.log('Barcode detection started');
             }
-            Quagga.start();
-            console.log('Barcode detection started');
-        });
+        );
 
-        Quagga.onDetected((data) => {
+        Quagga.onDetected(async (data) => {
             const code = data.codeResult.code;
             const barcodeTextbox = document.getElementById('barcode-textbox');
             barcodeTextbox.value = code;
 
+            // Play beep sound
             const beepSound = document.getElementById('beep-sound');
             beepSound.currentTime = 0;
             beepSound.play();
+
+            // Check sheet match
+            const emailValue = document.getElementById('emailTextbox').placeholder;
+            if (emailValue) {
+                const isMatched = await checkSheetExists(emailValue);
+                alert(isMatched ? 'Matched' : 'Non-Matched');
+            }
         });
     }
+
+    async function checkSheetExists(emailValue) {
+        try {
+            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}`);
+            return await response.json(); // Assume the Apps Script returns true/false
+        } catch (error) {
+            console.error('Error checking sheet:', error);
+            return false;
+        }
+    }
 </script>
+
 
 </body>
 </html>
