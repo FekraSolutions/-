@@ -264,7 +264,7 @@ async function showMessageBox() {
 // Function to call the Google Apps Script to check if the sheet exists
 async function checkSheetExists(username) {
     try {
-        const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL?username=' + encodeURIComponent(username));
+        const response = await fetch('https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec?username=' + encodeURIComponent(username));
         const result = await response.json();
         return result.exists;
     } catch (error) {
