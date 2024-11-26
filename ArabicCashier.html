@@ -242,39 +242,40 @@
             }
         );
 
-        Quagga.onDetected(async (data) => {
-            const code = data.codeResult.code;
-            const barcodeTextbox = document.getElementById('barcode-textbox');
+Quagga.onDetected(async (data) => {
+    const code = data.codeResult.code;
+    const barcodeTextbox = document.getElementById('barcode-textbox');
 
-            // Check if the value of the barcode textbox has changed
-            if (barcodeTextbox.value === code) return; // No change, skip
-            barcodeTextbox.value = code; // Update the textbox with the new barcode
+    if (barcodeTextbox.value === code) return; // No change, skip
+    barcodeTextbox.value = code; // Update the textbox with the new barcode
 
-            // Play beep sound
-            const beepSound = document.getElementById('beep-sound');
-            beepSound.currentTime = 0;
-            beepSound.play();
+    const beepSound = document.getElementById('beep-sound');
+    beepSound.currentTime = 0;
+    beepSound.play();
 
-            // Check sheet match
-            const emailValue = document.getElementById('emailTextbox').placeholder;
-            if (emailValue) {
-                isChecking = true;
-                const isMatched = await checkSheetExists(emailValue);
-                alert(isMatched ? 'Matched' : 'Non-Matched');
-                isChecking = false;
-            }
-        });
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+    if (emailValue) {
+        isChecking = true;
+        const isMatched = await checkSheetExists(emailValue, code); // Pass the barcode value
+        alert(isMatched ? 'Matched' : 'Non-Matched');
+        isChecking = false;
+    }
+});
     }
 
-    async function checkSheetExists(emailValue) {
-        try {
-            const response = await fetch(`${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}`);
-            return await response.json(); // Assume the Apps Script returns true/false
-        } catch (error) {
-            console.error('Error checking sheet:', error);
-            return false;
-        }
+async function checkSheetExists(emailValue, barcodeValue) {
+    try {
+        const response = await fetch(
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
+        );
+        const result = await response.json();
+        return result.exists; // Return true if the barcode exists
+    } catch (error) {
+        console.error('Error checking sheet:', error);
+        return false;
     }
+}
+
 </script>
 
 </body>
