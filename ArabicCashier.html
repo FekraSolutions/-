@@ -214,44 +214,60 @@
         }
     }
 
-    function startBarcodeDetection() {
-        Quagga.init({
-            inputStream: {
-                type: 'LiveStream',
-                target: document.querySelector('#camera-preview'),
-            },
-            decoder: {
-                readers: ['code_128_reader', 'ean_reader', 'ean_8_reader', 'code_39_reader', 'code_39_vin_reader', 'upc_reader', 'upc_e_reader', 'i2of5_reader'],
-            },
-        }, (err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            Quagga.start();
-            console.log('Barcode detection started');
-        });
+ function startBarcodeDetection() {
+    Quagga.init({
+        inputStream: {
+            type: 'LiveStream',
+            target: document.querySelector('#camera-preview'),
+        },
+        decoder: {
+            readers: [
+                'code_128_reader',
+                'ean_reader',
+                'ean_8_reader',
+                'code_39_reader',
+                'code_39_vin_reader',
+                'upc_reader',
+                'upc_e_reader',
+                'i2of5_reader'
+            ],
+        },
+    }, (err) => {
+        if (err) {
+            console.error('Error initializing Quagga:', err);
+            return;
+        }
+        Quagga.start();
+        console.log('Barcode detection started');
+    });
 
-Quagga.onDetected(async (data) => {
-    const code = data.codeResult.code;
-    const barcodeTextbox = document.getElementById('barcode-textbox');
-    barcodeTextbox.value = code;
+    Quagga.onDetected(async (data) => {
+        const code = data.codeResult.code;
+        const barcodeTextbox = document.getElementById('barcode-textbox');
+        barcodeTextbox.value = code;
 
-    const beepSound = document.getElementById('beep-sound');
-    beepSound.currentTime = 0;
-    beepSound.play();
+        const beepSound = document.getElementById('beep-sound');
+        beepSound.currentTime = 0;
+        beepSound.play();
 
-    // Fetch the placeholder to get the sheet name
-    const sheetName = document.getElementById('emailTextbox').placeholder;
+        // Fetch the placeholder to get the sheet name
+        const sheetName = document.getElementById('emailTextbox').placeholder;
 
-    // Call Google Apps Script Web App
-    const webAppURL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your actual URL
-    const response = await fetch(`${webAppURL}?barcode=${encodeURIComponent(code)}&sheetName=${encodeURIComponent(sheetName)}`);
-    const result = await response.text();
+        try {
+            // Call Google Apps Script Web App
+            const webAppURL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your actual URL
+            const response = await fetch(`${webAppURL}?barcode=${encodeURIComponent(code)}&sheetName=${encodeURIComponent(sheetName)}`);
+            const result = await response.text();
 
-    // Show a message box
-    alert(`Barcode ${code} is ${result}`);
-});
+            // Show a message box with the result
+            alert(`Barcode ${code} is ${result}`);
+        } catch (error) {
+            console.error('Error checking barcode:', error);
+            alert('An error occurred while verifying the barcode.');
+        }
+    });
+}
+
 
     }
 </script>
