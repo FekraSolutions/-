@@ -180,6 +180,10 @@
     // URL for your Apps Script web app
     const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
 
+    // Global flag to prevent spamming messageboxes
+    let lastDetectedBarcode = '';
+    let isChecking = false;
+
     // Set the textbox value with the username from the URL and initialize events
     window.onload = function () {
         const username = getQueryParameter('username');
@@ -242,6 +246,12 @@
 
         Quagga.onDetected(async (data) => {
             const code = data.codeResult.code;
+
+            // Prevent redundant detections
+            if (code === lastDetectedBarcode || isChecking) return;
+            lastDetectedBarcode = code;
+
+            // Update barcode textbox
             const barcodeTextbox = document.getElementById('barcode-textbox');
             barcodeTextbox.value = code;
 
@@ -253,8 +263,10 @@
             // Check sheet match
             const emailValue = document.getElementById('emailTextbox').placeholder;
             if (emailValue) {
+                isChecking = true;
                 const isMatched = await checkSheetExists(emailValue);
                 alert(isMatched ? 'Matched' : 'Non-Matched');
+                isChecking = false;
             }
         });
     }
