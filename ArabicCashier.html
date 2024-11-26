@@ -178,42 +178,20 @@
 
 <script>
    // Set the textbox value with the username from the URL and initialize events
-window.onload = async function () {
-    const username = getQueryParameter('username');
-    if (username) {
-        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-    }
-    startCamera();
-
+        window.onload = function () {
+            const username = getQueryParameter('username');
+            if (username) {
+                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+            }
+            startCamera();
+    
     // Set the Date textbox with today's date
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
+            
+            const priceField = document.getElementById('purchase-price-textbox');
+        };
 
-    // Barcode category lookup
-    const barcodeTextbox = document.getElementById('barcode-textbox');
-    const categoryTextbox = document.getElementById('category');
-
-    // Listen for barcode changes
-    barcodeTextbox.addEventListener('input', async () => {
-        const barcode = barcodeTextbox.value;
-        const sheetName = document.getElementById('emailTextbox').placeholder;
-
-        const category = await fetchCategoryFromGoogleSheets(barcode, sheetName);
-        categoryTextbox.value = category || "Not Found";
-    });
-};
-
-async function fetchCategoryFromGoogleSheets(barcode, sheetName) {
-    const webAppURL = "https://script.google.com/macros/s/AKfycbzYgcTbRFfnoo1A7kFIlxuwJwmaTsYgXAtd2SCk-CFHVfRsNuii7_o1VPH3r10z0IsS/exec"; // Replace with the Apps Script web app URL
-    try {
-        const response = await fetch(`${webAppURL}?barcode=${barcode}&sheetName=${sheetName}`);
-        const data = await response.json();
-        return data.category;
-    } catch (error) {
-        console.error('Error fetching category:', error);
-        return null;
-    }
-}
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
