@@ -265,7 +265,8 @@
             if (emailValue) {
                 isChecking = true;
                 const isMatched = await checkBarcodeExists(emailValue, code);
-                alert(isMatched ? 'Matched' : 'Non-Matched');
+                // Display a message box with the username and the matched/non-matched result
+                alert(`Username: ${emailValue}\nBarcode Match: ${isMatched ? 'Matched' : 'Non-Matched'}`);
                 isChecking = false;
             }
         });
@@ -281,6 +282,7 @@
         }
     }
 </script>
+
 
 
 </body>
