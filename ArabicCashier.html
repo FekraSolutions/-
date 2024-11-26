@@ -246,16 +246,33 @@
     }
 
     // Function to show the message box with captured username and barcode
-    function showMessageBox() {
-        const username = document.getElementById('emailTextbox')?.value || "No username";
-        const barcode = document.getElementById('barcode-textbox')?.value || "No barcode";
+    // Function to show the message box with captured username and barcode
+async function showMessageBox() {
+    const username = document.getElementById('emailTextbox')?.value || "No username";
+    const barcode = document.getElementById('barcode-textbox')?.value || "No barcode";
 
-        // Create the message content
-        const message = `Username: ${username}\nBarcode: ${barcode}`;
-        
-        // Display the message box with the information
-        alert(message);
+    // Check if the Google Sheets tab exists by calling the Google Apps Script
+    const sheetExists = await checkSheetExists(username);
+
+    // Create the message content
+    const message = `Username: ${username}\nBarcode: ${barcode}\nSheet exists: ${sheetExists ? 'Yes' : 'No'}`;
+    
+    // Display the message box with the information
+    alert(message);
+}
+
+// Function to call the Google Apps Script to check if the sheet exists
+async function checkSheetExists(username) {
+    try {
+        const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL?username=' + encodeURIComponent(username));
+        const result = await response.json();
+        return result.exists;
+    } catch (error) {
+        console.error('Error checking sheet:', error);
+        return false;
     }
+}
+
 </script>
 
 
