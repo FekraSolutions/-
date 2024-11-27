@@ -308,18 +308,16 @@ document.getElementById('quantity').addEventListener('input', updateItemTotal);
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     const additionalValues = {
-        barcode: document.getElementById('barcode-textbox').value || '',
-        invoice: document.getElementById('invoicenumber').value || '',
-        date: document.getElementById('date').value || '',
-        category: document.getElementById('category').value || '',
-        item: document.getElementById('item').value || '',
-        uom: document.getElementById('uom').value || '',
-        quantity: document.getElementById('quantity').value || '',
-        price: document.getElementById('price').value || '',
-        itemTotal: document.getElementById('itemtotal').value || '',
+        barcode: document.getElementById('barcode-textbox').value,
+        invoice: document.getElementById('invoicenumber').value,
+        date: document.getElementById('date').value,
+        category: document.getElementById('category').value,
+        item: document.getElementById('item').value,
+        uom: document.getElementById('uom').value,
+        quantity: document.getElementById('quantity').value,
+        price: document.getElementById('price').value,
+        itemTotal: document.getElementById('itemtotal').value,
     };
-
-    console.log('Sending Additional Values:', additionalValues); // Debugging
 
     try {
         const response = await fetch(
