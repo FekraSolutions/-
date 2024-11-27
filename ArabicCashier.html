@@ -260,6 +260,8 @@ Quagga.onDetected(async (data) => {
     const emailValue = document.getElementById('emailTextbox').placeholder;
     if (emailValue) {
         isChecking = true;
+
+        // Check if the barcode exists in the sheet
         const result = await checkBarcodeExists(emailValue, code);
 
         if (result.matched) {
@@ -275,12 +277,15 @@ Quagga.onDetected(async (data) => {
 
             updateItemTotal();
 
-            // Save data to the sheet
-            const date = document.getElementById('date').value;
-            const invoiceNumber = document.getElementById('invoicenumber').value;
-            const category = S;
-            const item = T;
-            const uom = U;
+            // Wait for the UI to finish updating
+            await new Promise((resolve) => requestAnimationFrame(resolve));
+
+            // Send data to the sheet
+            const date = document.getElementById('date').value || '';
+            const invoiceNumber = document.getElementById('invoicenumber').value || '';
+            const category = S || '';
+            const item = T || '';
+            const uom = U || '';
             const quantity = parseFloat(quantityInput.value) || 0;
             const price = parseFloat(document.getElementById('price').value) || 0;
             const itemTotal = parseFloat(document.getElementById('itemtotal').value) || 0;
@@ -341,7 +346,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
 
 
 
-    async function sendDataToSheet(emailValue, barcode, invoiceNumber, date, category, item, uom, quantity, price, itemTotal) {
+async function sendDataToSheet(emailValue, barcode, invoiceNumber, date, category, item, uom, quantity, price, itemTotal) {
     try {
         const response = await fetch(
             `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcode)}&invoiceNumber=${encodeURIComponent(invoiceNumber)}&date=${encodeURIComponent(date)}&category=${encodeURIComponent(category)}&item=${encodeURIComponent(item)}&uom=${encodeURIComponent(uom)}&quantity=${encodeURIComponent(quantity)}&price=${encodeURIComponent(price)}&itemTotal=${encodeURIComponent(itemTotal)}`
@@ -355,6 +360,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         console.error('Error sending data to sheet:', error);
     }
 }
+
 
 </script>
 
