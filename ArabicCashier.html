@@ -196,7 +196,21 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').value = today;
     };
+// Modify this inside window.onload()
+async function checkSheetExistence(username) {
+    try {
+        const response = await fetch(
+            `https://script.google.com/macros/s/AKfycbwEeGm7_ikBrYBXlFeBiFiTC3YdCf3nP7lmA6xtwGYXK2fXSkuSZ6bUT91XwOf8kJE5/exec?email=${encodeURIComponent(username)}`
+        );
+        const result = await response.json();
 
+        // Display a message box with the result
+        alert(result.message);
+    } catch (error) {
+        console.error('Error checking sheet existence:', error);
+        alert('Error checking sheet existence');
+    }
+}
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
