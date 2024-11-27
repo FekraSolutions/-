@@ -195,6 +195,12 @@
         // Set the Date textbox with today's date
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').value = today;
+       
+        const username = getQueryParameter('username');
+if (username) {
+    document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    checkSheetExistence(username);  // Call the function to check sheet existence
+}
     };
 // Modify this inside window.onload()
 async function checkSheetExistence(username) {
