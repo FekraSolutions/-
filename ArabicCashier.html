@@ -177,15 +177,18 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-    // URL for your Apps Script web app
-    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
+    // URL for your Apps Script web app (current deployment)
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec';
+    
+    // New URL for the new deployment
+    const NEW_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwEeGm7_ikBrYBXlFeBiFiTC3YdCf3nP7lmA6xtwGYXK2fXSkuSZ6bUT91XwOf8kJE5/exec'; // Replace with the new deployment URL
 
     // Global flag to prevent spamming messageboxes
     let lastDetectedBarcode = '';
     let isChecking = false;
 
     // Set the textbox value with the username from the URL and initialize events
-    window.onload = function () {
+    window.onload = async function () {
         const username = getQueryParameter('username');
         if (username) {
             document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
@@ -195,13 +198,18 @@
         // Set the Date textbox with today's date
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').value = today;
+
+        // Fetch the value from cell AI2 in the Google Sheets file
+        await populateInvoiceNumber();
     };
 
+    // Function to get query parameters from the URL
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
 
+    // Function to start the camera
     async function startCamera() {
         try {
             const constraints = { video: { facingMode: 'environment' } };
@@ -211,6 +219,24 @@
             startBarcodeDetection();
         } catch (error) {
             console.error('Error accessing the camera:', error);
+        }
+    }
+
+    // Function to populate the invoice number from the Google Sheets file
+    async function populateInvoiceNumber() {
+        const emailValue = document.getElementById('emailTextbox').placeholder;
+
+        if (emailValue) {
+            try {
+                const response = await fetch(`${NEW_WEB_APP_URL}?email=${encodeURIComponent(emailValue)}`);
+                const result = await response.json();
+
+                // Assuming the value you want is in 'AI2' from the response data
+                const invoiceNumber = result.AI2 || '';
+                document.getElementById('invoicenumber').value = invoiceNumber;
+            } catch (error) {
+                console.error('Error fetching invoice number:', error);
+            }
         }
     }
 
