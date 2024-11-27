@@ -247,20 +247,16 @@
 Quagga.onDetected(async (data) => {
     const code = data.codeResult.code;
 
-    // Prevent redundant detections
     if (code === lastDetectedBarcode || isChecking) return;
     lastDetectedBarcode = code;
 
-    // Update barcode textbox
     const barcodeTextbox = document.getElementById('barcode-textbox');
     barcodeTextbox.value = code;
 
-    // Play beep sound
     const beepSound = document.getElementById('beep-sound');
     beepSound.currentTime = 0;
     beepSound.play();
 
-    // Check sheet match
     const emailValue = document.getElementById('emailTextbox').placeholder;
     if (emailValue) {
         isChecking = true;
@@ -269,18 +265,27 @@ Quagga.onDetected(async (data) => {
         if (result.matched) {
             const { S, T, U, X } = result.values;
 
-            // Update input fields with the matched values
             document.getElementById('category').value = S;
             document.getElementById('item').value = T;
             document.getElementById('uom').value = U;
             document.getElementById('price').value = X;
 
-            // Set quantity to 1
             const quantityInput = document.getElementById('quantity');
             quantityInput.value = 1;
 
-            // Calculate item total
             updateItemTotal();
+
+            // Save data to the sheet
+            const date = document.getElementById('date').value;
+            const invoiceNumber = document.getElementById('invoicenumber').value;
+            const category = S;
+            const item = T;
+            const uom = U;
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const itemTotal = parseFloat(document.getElementById('itemtotal').value) || 0;
+
+            await sendDataToSheet(emailValue, code, invoiceNumber, date, category, item, uom, quantity, price, itemTotal);
         } else {
             alert(`Email: ${emailValue}\nMatched: No`);
         }
@@ -321,6 +326,22 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
+
+    async function sendDataToSheet(emailValue, barcode, invoiceNumber, date, category, item, uom, quantity, price, itemTotal) {
+    try {
+        const response = await fetch(
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcode)}&invoiceNumber=${encodeURIComponent(invoiceNumber)}&date=${encodeURIComponent(date)}&category=${encodeURIComponent(category)}&item=${encodeURIComponent(item)}&uom=${encodeURIComponent(uom)}&quantity=${encodeURIComponent(quantity)}&price=${encodeURIComponent(price)}&itemTotal=${encodeURIComponent(itemTotal)}`
+        );
+
+        const result = await response.json();
+        if (!result.matched) {
+            console.warn('Data saved but no match found.');
+        }
+    } catch (error) {
+        console.error('Error sending data to sheet:', error);
+    }
+}
+
 </script>
 
 
