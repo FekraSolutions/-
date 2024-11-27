@@ -177,47 +177,25 @@
     <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
 
 <script>
-   // Keep the original URL as is for initial functions
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; 
+    // URL for your Apps Script web app
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
 
-// URL for the new Apps Script function to get invoice number
-const INVOICE_APP_URL = 'https://script.google.com/macros/s/AKfycbwEeGm7_ikBrYBXlFeBiFiTC3YdCf3nP7lmA6xtwGYXK2fXSkuSZ6bUT91XwOf8kJE5/exec'; // Replace with your new deployment URL
+    // Global flag to prevent spamming messageboxes
+    let lastDetectedBarcode = '';
+    let isChecking = false;
 
-window.onload = function () {
-    const username = getQueryParameter('username');
-    if (username) {
-        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-    }
-    startCamera();
-
-    // Set today's date
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('date').value = today;
-
-    // Get the invoice number and populate it in the textbox
-    getInvoiceNumberFromSheet();
-};
-
-// New function to fetch the invoice number from Google Sheets
-async function getInvoiceNumberFromSheet() {
-    const emailValue = document.getElementById('emailTextbox').placeholder;
-    if (emailValue) {
-        try {
-            const response = await fetch(`${INVOICE_APP_URL}?email=${encodeURIComponent(emailValue)}`);
-            const result = await response.json();
-
-            if (result.matched) {
-                const invoiceNumber = result.values.AI2; // Assuming AI2 is the cell that holds the invoice number
-                document.getElementById('invoicenumber').value = invoiceNumber;
-            } else {
-                console.log('No matching sheet found for email:', emailValue);
-            }
-        } catch (error) {
-            console.error('Error fetching invoice number:', error);
+    // Set the textbox value with the username from the URL and initialize events
+    window.onload = function () {
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
         }
-    }
-}
+        startCamera();
 
+        // Set the Date textbox with today's date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+    };
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
