@@ -185,17 +185,44 @@
     let isChecking = false;
 
     // Set the textbox value with the username from the URL and initialize events
-    window.onload = function () {
-        const username = getQueryParameter('username');
-        if (username) {
-            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-        }
-        startCamera();
+window.onload = async function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    }
 
-        // Set the Date textbox with today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').value = today;
-    };
+    // Fetch the invoice number from the Google Sheets file
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+    const invoiceNumber = await fetchInvoiceNumber(emailValue);  // Pass email as parameter
+    if (invoiceNumber) {
+        document.getElementById('invoicenumber').value = invoiceNumber;
+    }
+
+    startCamera();
+
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
+};
+
+// Fetch the invoice number from Google Sheets based on email
+async function fetchInvoiceNumber(emailValue) {
+    try {
+        const response = await fetch(`https://script.google.com/macros/s/AKfycbwEeGm7_ikBrYBXlFeBiFiTC3YdCf3nP7lmA6xtwGYXK2fXSkuSZ6bUT91XwOf8kJE5/exec?email=${encodeURIComponent(emailValue)}`);
+        const data = await response.json();
+        
+        if (data.invoiceNumber) {
+            return data.invoiceNumber;  // Return the invoice number
+        } else {
+            console.error('Error: No invoice number found or sheet not found for the email');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching invoice number:', error);
+        return null;
+    }
+}
+
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
