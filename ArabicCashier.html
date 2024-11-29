@@ -302,9 +302,12 @@ Quagga.onDetected(async (data) => {
     }
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
+    const quantity = document.getElementById('quantity').value || 0;
+    const date = document.getElementById('date').value || '';
+    
     try {
         const response = await fetch(
-            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&quantity=${quantity}&date=${date}`
         );
         const result = await response.json();
 
@@ -322,6 +325,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
+
 
 
 function updateItemTotal() {
