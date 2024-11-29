@@ -309,10 +309,14 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         const result = await response.json();
 
         if (result.matched) {
+            // After populating fields, post data to the sheet
+            const fields = getFields(); // Fetch current form data
+            await postValuesToSheet(emailValue, fields);
+
             return {
                 matched: true,
-                values: result.values, // S:X values
-                invoiceNumber: result.invoiceNumber, // AI2 value
+                values: result.values,
+                invoiceNumber: result.invoiceNumber,
             };
         } else {
             return { matched: false };
@@ -322,6 +326,42 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
+
+    async function postValuesToSheet(emailValue, fields) {
+    const params = new URLSearchParams({
+        email: emailValue,
+        barcode: fields.barcode,
+        invoiceNumber: fields.invoiceNumber,
+        date: fields.date,
+        category: fields.category,
+        item: fields.item,
+        uom: fields.uom,
+        quantity: fields.quantity,
+        price: fields.price,
+        itemTotal: fields.itemTotal,
+    });
+
+    try {
+        await fetch(`${WEB_APP_URL}?${params.toString()}`);
+    } catch (error) {
+        console.error('Error posting values to sheet:', error);
+    }
+}
+
+function getFields() {
+    return {
+        barcode: document.getElementById('barcode-textbox').value || '',
+        invoiceNumber: document.getElementById('invoicenumber').value || '',
+        date: document.getElementById('date').value || '',
+        category: document.getElementById('category').value || '',
+        item: document.getElementById('item').value || '',
+        uom: document.getElementById('uom').value || '',
+        quantity: document.getElementById('quantity').value || '',
+        price: document.getElementById('price').value || '',
+        itemTotal: document.getElementById('itemtotal').value || '',
+    };
+}
+
 
 
 function updateItemTotal() {
