@@ -278,6 +278,10 @@ Quagga.onDetected(async (data) => {
             document.getElementById('uom').value = U || '';      // Column U
             document.getElementById('quantity').value = 1;  // Default to 1
             document.getElementById('price').value = X || 0;     // Column X
+
+            // Populate the invoice number field
+            document.getElementById('invoicenumber').value = result.invoiceNumber || '';
+
             // Update the item total dynamically
             updateItemTotal();
         } else {
@@ -287,10 +291,12 @@ Quagga.onDetected(async (data) => {
             document.getElementById('uom').value = '';
             document.getElementById('quantity').value = 0;
             document.getElementById('price').value = 0;
+            document.getElementById('invoicenumber').value = '';
         }
         isChecking = false;
     }
 });
+
 
 
     }
@@ -303,7 +309,11 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         const result = await response.json();
 
         if (result.matched) {
-            return { matched: true, values: result.values }; // Updated to include all values
+            return {
+                matched: true,
+                values: result.values, // S:X values
+                invoiceNumber: result.invoiceNumber, // AI2 value
+            };
         } else {
             return { matched: false };
         }
@@ -312,6 +322,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
+
 
 function updateItemTotal() {
     const quantity = parseFloat(document.getElementById('quantity').value) || 0;
