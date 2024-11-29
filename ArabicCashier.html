@@ -265,13 +265,17 @@ Quagga.onDetected(async (data) => {
     if (emailValue) {
         isChecking = true;
         const result = await checkBarcodeExists(emailValue, code);
-        const message = result.matched
-            ? `${emailValue}\nMatched: Yes\nValue in Column X: ${result.value}`
-            : `${emailValue}\nMatched: No\nValue in Column X: N/A`;
-        alert(message);
+        if (result.matched) {
+            const [S, T, U, V, W, X] = result.values;
+            const message = `${emailValue}\nMatched: Yes\nValues:\nS: ${S}\nT: ${T}\nU: ${U}\nV: ${V}\nW: ${W}\nX: ${X}`;
+            alert(message);
+        } else {
+            alert(`${emailValue}\nMatched: No\nValues: N/A`);
+        }
         isChecking = false;
     }
 });
+
 
     }
 
@@ -283,7 +287,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         const result = await response.json();
 
         if (result.matched) {
-            return { matched: true, value: result.value };
+            return { matched: true, values: result.values }; // Updated to include all values
         } else {
             return { matched: false };
         }
@@ -292,6 +296,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
+
 
 </script>
 
