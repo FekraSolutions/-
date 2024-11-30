@@ -305,7 +305,14 @@ Quagga.onDetected(async (data) => {
 
     }
 
+let barcodeUpdated = false; // Flag to track if the barcode has been updated
+
 async function checkBarcodeExists(emailValue, barcodeValue) {
+    if (barcodeUpdated) {
+        console.log('Barcode already updated. Skipping.');
+        return; // Prevent multiple updates
+    }
+
     try {
         const response = await fetch(
             `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
@@ -332,6 +339,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             const barcodeTextboxValue = document.getElementById('barcode-textbox').value;
             if (barcodeTextboxValue) {
                 await updateColumnZ(emailValue, barcodeTextboxValue);
+                barcodeUpdated = true; // Mark as updated
             }
         } else {
             // Clear the fields if no match is found
@@ -365,6 +373,7 @@ async function updateColumnZ(emailValue, barcodeValue) {
         console.error('Error updating column Z:', error);
     }
 }
+
 
     
 
