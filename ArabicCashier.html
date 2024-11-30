@@ -284,6 +284,9 @@ Quagga.onDetected(async (data) => {
 
             // Update the item total dynamically
             updateItemTotal();
+
+            // Show the message box with the sheet name and first available Z cell
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -296,6 +299,7 @@ Quagga.onDetected(async (data) => {
         isChecking = false;
     }
 });
+
 
 
 
