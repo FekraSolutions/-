@@ -328,11 +328,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             // Update the item total dynamically
             updateItemTotal();
 
-            // Display the message box with the required information
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
-
             // Now, populate the first available cell in column Z with the barcode from the textbox
-            // We send the barcode value (from #barcode-textbox) to update column Z in Google Sheets
             const barcodeTextboxValue = document.getElementById('barcode-textbox').value;
             if (barcodeTextboxValue) {
                 await updateColumnZ(emailValue, barcodeTextboxValue);
@@ -370,7 +366,7 @@ async function updateColumnZ(emailValue, barcodeValue) {
     }
 }
 
-
+    
 
     
 
