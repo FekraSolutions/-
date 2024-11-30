@@ -248,6 +248,11 @@ window.onload = function () {
             }
         );
 
+// Global flag to prevent spamming messageboxes
+let lastDetectedBarcode = '';
+let isChecking = false;
+let barcodeUpdated = false; // Flag to track if the barcode has been updated
+
 Quagga.onDetected(async (data) => {
     const code = data.codeResult.code;
 
@@ -267,7 +272,7 @@ Quagga.onDetected(async (data) => {
     // Check sheet match
     const emailValue = document.getElementById('emailTextbox').placeholder;
     if (emailValue) {
-        isChecking = true;
+        isChecking = true;  // Set isChecking to true to prevent multiple requests
         const result = await checkBarcodeExists(emailValue, code);
         if (result.matched) {
             // Map values to the corresponding fields
@@ -296,7 +301,8 @@ Quagga.onDetected(async (data) => {
             document.getElementById('price').value = 0;
             document.getElementById('invoicenumber').value = '';
         }
-        isChecking = false;
+        isChecking = false;  // Reset isChecking after the request completes
+        barcodeUpdated = false; // Reset the barcodeUpdated flag after completion
     }
 });
 
