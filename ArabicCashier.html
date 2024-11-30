@@ -284,6 +284,19 @@ Quagga.onDetected(async (data) => {
 
             // Update the item total dynamically
             updateItemTotal();
+
+            // After populating fields, save data to Google Sheets
+            await postDataToGoogleSheets({
+                barcode: code,
+                invoiceNumber: document.getElementById('invoicenumber').value,
+                date: document.getElementById('date').value,
+                category: document.getElementById('category').value,
+                item: document.getElementById('item').value,
+                uom: document.getElementById('uom').value,
+                quantity: document.getElementById('quantity').value,
+                price: document.getElementById('price').value,
+                itemTotal: document.getElementById('itemtotal').value,
+            });
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -296,6 +309,21 @@ Quagga.onDetected(async (data) => {
         isChecking = false;
     }
 });
+
+async function postDataToGoogleSheets(data) {
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+
+    try {
+        const response = await fetch(
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&dataToSave=${encodeURIComponent(JSON.stringify(Object.values(data)))}`
+        );
+        const result = await response.json();
+        console.log('Data posted successfully:', result);
+    } catch (error) {
+        console.error('Error posting data to Google Sheets:', error);
+    }
+}
+
 
 
 
