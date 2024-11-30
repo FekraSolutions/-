@@ -330,6 +330,13 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
 
             // Display the message box with the required information
             alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
+
+            // Now, populate the first available cell in column Z with the barcode from the textbox
+            // We send the barcode value (from #barcode-textbox) to update column Z in Google Sheets
+            const barcodeTextboxValue = document.getElementById('barcode-textbox').value;
+            if (barcodeTextboxValue) {
+                await updateColumnZ(emailValue, barcodeTextboxValue);
+            }
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -345,6 +352,27 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
     }
 }
 
+// Function to update the first available cell in column Z with the barcode
+async function updateColumnZ(emailValue, barcodeValue) {
+    try {
+        const response = await fetch(
+            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}`
+        );
+        const result = await response.json();
+
+        if (result.matched) {
+            console.log(`First available Z cell updated with barcode value: ${barcodeValue}`);
+        } else {
+            console.log("No matching barcode found in the spreadsheet.");
+        }
+    } catch (error) {
+        console.error('Error updating column Z:', error);
+    }
+}
+
+
+
+    
 
 function updateItemTotal() {
     const quantity = parseFloat(document.getElementById('quantity').value) || 0;
