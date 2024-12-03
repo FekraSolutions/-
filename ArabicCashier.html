@@ -286,8 +286,7 @@ Quagga.onDetected(async (data) => {
             updateItemTotal();
 
             // Show the message box with the sheet name and first available cells
-            alert(`Category: ${document.getElementById('category').value}\nFirst Available AC Cell: ${result.firstAvailableAACell}`);
-    
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}\nFirst Available AA Cell: ${result.firstAvailableAACell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -308,11 +307,10 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
      
         const today = document.getElementById('date').value;
-const categoryValue = document.getElementById('category').value;
+
 const response = await fetch(
   `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
 );
-
         const result = await response.json();
 
         if (result.matched) {
@@ -332,8 +330,7 @@ const response = await fetch(
             updateItemTotal();
 
             // Display the message box with the required information
-            alert(`Category: ${document.getElementById('category').value}\nFirst Available AC Cell: ${result.firstAvailableAACell}`);
-
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -363,4 +360,5 @@ function updateItemTotal() {
 
 </body>
 </html>
+
 
