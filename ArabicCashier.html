@@ -286,7 +286,7 @@ Quagga.onDetected(async (data) => {
             updateItemTotal();
 
             // Show the message box with the sheet name and first available cells
-            alert(`Category: ${document.getElementById('category').value}`);
+            alert(`Quantity: ${document.getElementById('quantity').value}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -330,7 +330,7 @@ const response = await fetch(
             updateItemTotal();
 
             // Display the message box with the required information
-            alert(`Category: ${document.getElementById('category').value}`);
+            alert(`Quantity: ${document.getElementById('quantity').value}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
