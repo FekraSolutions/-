@@ -306,44 +306,44 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
-        const response = await fetch(
-            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&invoicenumber=${encodeURIComponent(document.getElementById('invoicenumber').value)}&date=${encodeURIComponent(document.getElementById('date').value)}&category=${encodeURIComponent(document.getElementById('category').value)}&item=${encodeURIComponent(document.getElementById('item').value)}&uom=${encodeURIComponent(document.getElementById('uom').value)}&quantity=${encodeURIComponent(document.getElementById('quantity').value)}&price=${encodeURIComponent(document.getElementById('price').value)}&itemtotal=${encodeURIComponent(document.getElementById('itemtotal').value)}`
-        );
+        // Collect all required values from the DOM
+        const invoiceNumber = document.getElementById('invoicenumber').value;
+        const date = document.getElementById('date').value;
+        const category = document.getElementById('category').value;
+        const item = document.getElementById('item').value;
+        const uom = document.getElementById('uom').value;
+        const quantity = document.getElementById('quantity').value;
+        const price = document.getElementById('price').value;
+        const itemTotal = document.getElementById('itemtotal').value;
 
-        const result = await response.json();
+        // Check if all required values are present
+        if (!emailValue || !barcodeValue || !date) {
+            console.error('Missing required fields. Please check inputs.');
+            return;
+        }
 
-        if (result.matched) {
-            // Map values to the corresponding fields
-            const [S, T, U, V, W, X] = result.values;
+        // Construct the URL string
+        const url = `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&invoicenumber=${encodeURIComponent(invoiceNumber)}&date=${encodeURIComponent(date)}&category=${encodeURIComponent(category)}&item=${encodeURIComponent(item)}&uom=${encodeURIComponent(uom)}&quantity=${encodeURIComponent(quantity)}&price=${encodeURIComponent(price)}&itemtotal=${encodeURIComponent(itemTotal)}`;
 
-            document.getElementById('category').value = S || ''; // Column S
-            document.getElementById('item').value = T || '';     // Column T
-            document.getElementById('uom').value = U || '';      // Column U
-            document.getElementById('quantity').value = 1;  // Default to 1
-            document.getElementById('price').value = X || 0;     // Column X
+        // Fetch the data from the server
+        const response = await fetch(url);
 
-            // Populate the invoice number field
-            document.getElementById('invoicenumber').value = result.invoiceNumber || '';
-
-            // Update the item total dynamically
-            updateItemTotal();
-
-            // Display the message box with the required information
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
+        // Handle response
+        if (response.ok) {
+            const result = await response.json();
+            if (result.matched) {
+                console.log('Match found:', result);
+            } else {
+                console.log('No match found.');
+            }
         } else {
-            // Clear the fields if no match is found
-            document.getElementById('category').value = '';
-            document.getElementById('item').value = '';
-            document.getElementById('uom').value = '';
-            document.getElementById('quantity').value = 0;
-            document.getElementById('price').value = 0;
-            document.getElementById('invoicenumber').value = '';
+            console.error('Error response from server:', response.status, response.statusText);
         }
     } catch (error) {
-        console.error('Error checking sheet:', error);
-        return { matched: false };
+        console.error('Error in checkBarcodeExists:', error);
     }
 }
+
 
 
 function updateItemTotal() {
