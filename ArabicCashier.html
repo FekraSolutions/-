@@ -286,7 +286,8 @@ Quagga.onDetected(async (data) => {
             updateItemTotal();
 
             // Show the message box with the sheet name and first available cells
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}\nFirst Available AA Cell: ${result.firstAvailableAACell}`);
+            alert(`Category: ${document.getElementById('category').value}\nFirst Available AC Cell: ${result.firstAvailableAACell}`);
+    
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -330,7 +331,8 @@ const response = await fetch(
             updateItemTotal();
 
             // Display the message box with the required information
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
+            alert(`Category: ${document.getElementById('category').value}\nFirst Available AC Cell: ${result.firstAvailableAACell}`);
+
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
