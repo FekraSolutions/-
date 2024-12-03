@@ -308,12 +308,9 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
      
         const today = document.getElementById('date').value;
 
-const categoryValue = document.getElementById('category').value;
-
 const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&category=${encodeURIComponent(categoryValue)}`
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
 );
-
         const result = await response.json();
 
         if (result.matched) {
@@ -363,5 +360,3 @@ function updateItemTotal() {
 
 </body>
 </html>
-
-
