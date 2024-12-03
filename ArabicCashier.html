@@ -285,8 +285,6 @@ Quagga.onDetected(async (data) => {
             // Update the item total dynamically
             updateItemTotal();
 
-            // Show the message box with the sheet name and first available cells
-            alert(`Category: ${document.getElementById('category').value}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -307,12 +305,10 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
      
         const today = document.getElementById('date').value;
-const quantity = document.getElementById('quantity').value;  // Get the quantity from the textbox
 
 const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&quantity=${encodeURIComponent(quantity)}`
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
 );
-
         const result = await response.json();
 
         if (result.matched) {
@@ -331,8 +327,6 @@ const response = await fetch(
             // Update the item total dynamically
             updateItemTotal();
 
-            // Display the message box with the required information
-            alert(`${document.getElementById('quantity').value}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
