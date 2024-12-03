@@ -305,27 +305,23 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
+     
         const today = document.getElementById('date').value;
 
-const fuckyouValue = document.getElementById('category').value; // Get value from the category input field
-
 const response = await fetch(
-    `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&fuckyou=${encodeURIComponent(fuckyouValue)}`
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
 );
-
         const result = await response.json();
 
         if (result.matched) {
             // Map values to the corresponding fields
             const [S, T, U, V, W, X] = result.values;
 
-            // Populate the category (S) field, instead of "X"
-            document.getElementById('category').value = S || ''; // Column S (category)
-
-            document.getElementById('item').value = T || '';     // Column T (item)
-            document.getElementById('uom').value = U || '';      // Column U (UOM)
+            document.getElementById('category').value = S || ''; // Column S
+            document.getElementById('item').value = T || '';     // Column T
+            document.getElementById('uom').value = U || '';      // Column U
             document.getElementById('quantity').value = 1;  // Default to 1
-            document.getElementById('price').value = X || 0;     // Column X (price)
+            document.getElementById('price').value = X || 0;     // Column X
 
             // Populate the invoice number field
             document.getElementById('invoicenumber').value = result.invoiceNumber || '';
@@ -364,8 +360,4 @@ function updateItemTotal() {
 
 </body>
 </html>
-
-
-
-
 
