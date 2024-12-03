@@ -305,12 +305,18 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
-     
         const today = document.getElementById('date').value;
 
-const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
-);
+        const category = document.getElementById('category').value;
+        const item = document.getElementById('item').value;
+        const uom = document.getElementById('uom').value;
+        const quantity = document.getElementById('quantity').value;
+        const itemTotal = document.getElementById('itemtotal').value;
+
+        // Send values for new columns AC, AD, AE, AF, AG, AH
+        const response = await fetch(
+          `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&category=${encodeURIComponent(category)}&item=${encodeURIComponent(item)}&uom=${encodeURIComponent(uom)}&quantity=${encodeURIComponent(quantity)}&itemtotal=${encodeURIComponent(itemTotal)}`
+        );
         const result = await response.json();
 
         if (result.matched) {
@@ -330,7 +336,7 @@ const response = await fetch(
             updateItemTotal();
 
             // Display the message box with the required information
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cells: ${JSON.stringify(result.firstAvailableCells)}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
