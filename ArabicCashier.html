@@ -305,18 +305,19 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
+     
         const today = document.getElementById('date').value;
 
-        const response = await fetch(
-            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
-        );
+const response = await fetch(
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
+);
         const result = await response.json();
 
         if (result.matched) {
             // Map values to the corresponding fields
             const [S, T, U, V, W, X] = result.values;
 
-            document.getElementById('category').value = result.categoryValue || ''; // Populate the category field with the value from the server
+            document.getElementById('category').value = S || ''; // Column S
             document.getElementById('item').value = T || '';     // Column T
             document.getElementById('uom').value = U || '';      // Column U
             document.getElementById('quantity').value = 1;  // Default to 1
@@ -329,7 +330,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             updateItemTotal();
 
             // Display the message box with the required information
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}\nFirst Available AA Cell: ${result.firstAvailableAACell}`);
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -346,7 +347,6 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
 }
 
 
-
 function updateItemTotal() {
     const quantity = parseFloat(document.getElementById('quantity').value) || 0;
     const price = parseFloat(document.getElementById('price').value) || 0;
@@ -360,4 +360,3 @@ function updateItemTotal() {
 
 </body>
 </html>
-
