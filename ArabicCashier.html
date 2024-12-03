@@ -317,7 +317,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             document.getElementById('category').value = S || ''; // Column S
             document.getElementById('item').value = T || '';     // Column T
             document.getElementById('uom').value = U || '';      // Column U
-            document.getElementById('quantity').value = 1;       // Default to 1
+            document.getElementById('quantity').value = 1;  // Default to 1
             document.getElementById('price').value = X || 0;     // Column X
 
             // Populate the invoice number field
@@ -326,46 +326,8 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             // Update the item total dynamically
             updateItemTotal();
 
-            // Populate additional columns in the Google Sheet
-            const firstAvailableZCell = result.firstAvailableZCell;
-            const firstAvailableAACell = result.firstAvailableAACell;
-
-            // New columns
-            const date = document.getElementById('date').value;
-            const category = document.getElementById('category').value;
-            const item = document.getElementById('item').value;
-            const uom = document.getElementById('uom').value;
-            const quantity = document.getElementById('quantity').value;
-            const itemTotal = document.getElementById('itemtotal').value;
-
-            // Display the message box with the updated cells
-            alert(
-                `Sheet Name: ${result.sheetName}\n` +
-                `First Available Z Cell: ${result.firstAvailableZCell}\n` +
-                `First Available AA Cell: ${result.firstAvailableAACell}\n` +
-                `Date (AB): ${date}\n` +
-                `Category (AC): ${category}\n` +
-                `Item (AD): ${item}\n` +
-                `UOM (AE): ${uom}\n` +
-                `Quantity (AF): ${quantity}\n` +
-                `Item Total (AH): ${itemTotal}`
-            );
-
-            // Push these values to the respective columns in your app logic
-            await fetch(`${WEB_APP_URL}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    email: emailValue,
-                    barcode: barcodeValue,
-                    date,
-                    category,
-                    item,
-                    uom,
-                    quantity,
-                    itemTotal
-                })
-            });
+            // Display the message box with the required information
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -380,7 +342,6 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
-
 
 
 function updateItemTotal() {
