@@ -306,9 +306,9 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
-        const result = await fetch(
-    `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(code)}&invoicenumber=${encodeURIComponent(document.getElementById('invoicenumber').value)}&date=${encodeURIComponent(document.getElementById('date').value)}&category=${encodeURIComponent(document.getElementById('category').value)}&item=${encodeURIComponent(document.getElementById('item').value)}&uom=${encodeURIComponent(document.getElementById('uom').value)}&quantity=${encodeURIComponent(document.getElementById('quantity').value)}&price=${encodeURIComponent(document.getElementById('price').value)}&itemtotal=${encodeURIComponent(document.getElementById('itemtotal').value)}`
-);
+        const response = await fetch(
+            ${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(code)}&invoicenumber=${encodeURIComponent(document.getElementById('invoicenumber').value)}&date=${encodeURIComponent(document.getElementById('date').value)}&category=${encodeURIComponent(document.getElementById('category').value)}&item=${encodeURIComponent(document.getElementById('item').value)}&uom=${encodeURIComponent(document.getElementById('uom').value)}&quantity=${encodeURIComponent(document.getElementById('quantity').value)}&price=${encodeURIComponent(document.getElementById('price').value)}&itemtotal=${encodeURIComponent(document.getElementById('itemtotal').value)}
+        );
 
         const result = await response.json();
 
