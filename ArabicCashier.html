@@ -306,11 +306,11 @@ Quagga.onDetected(async (data) => {
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
      
-        const today = document.getElementById('date').value;
+        const today = document.getElementById('date').value;        
+        const response = await fetch(
+        `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&category=${encodeURIComponent(document.getElementById('category').value)}`
+        );
 
-const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
-);
         const result = await response.json();
 
         if (result.matched) {
