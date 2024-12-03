@@ -307,9 +307,9 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
      
         const today = document.getElementById('date').value;
-        const category = document.getElementById('category').value;
+        const categoryvalue = document.getElementById('category').value;
 const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&category=${encodeURIComponent(category)}`
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&category=${encodeURIComponent(categoryvalue)}`
 );
         const result = await response.json();
 
