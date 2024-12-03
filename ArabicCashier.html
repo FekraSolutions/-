@@ -314,33 +314,32 @@ const response = await fetch(
         const result = await response.json();
 
         if (result.matched) {
-    // Map values to the corresponding fields
-    const [S, T, U, V, W, X] = result.values;
+            // Map values to the corresponding fields
+            const [S, T, U, V, W, X] = result.values;
 
-    document.getElementById('category').value = result.categoryValue || ''; // Populate category with the value from AC
-    document.getElementById('item').value = T || ''; // Column T
-    document.getElementById('uom').value = U || ''; // Column U
-    document.getElementById('quantity').value = 1; // Default to 1
-    document.getElementById('price').value = X || 0; // Column X
+            document.getElementById('category').value = S || ''; // Column S
+            document.getElementById('item').value = T || '';     // Column T
+            document.getElementById('uom').value = U || '';      // Column U
+            document.getElementById('quantity').value = 1;  // Default to 1
+            document.getElementById('price').value = X || 0;     // Column X
 
-    // Populate the invoice number field
-    document.getElementById('invoicenumber').value = result.invoiceNumber || '';
+            // Populate the invoice number field
+            document.getElementById('invoicenumber').value = result.invoiceNumber || '';
 
-    // Update the item total dynamically
-    updateItemTotal();
+            // Update the item total dynamically
+            updateItemTotal();
 
-    // Display the message box with the required information
-    alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
-} else {
-    // Clear the fields if no match is found
-    document.getElementById('category').value = '';
-    document.getElementById('item').value = '';
-    document.getElementById('uom').value = '';
-    document.getElementById('quantity').value = 0;
-    document.getElementById('price').value = 0;
-    document.getElementById('invoicenumber').value = '';
-}
-
+            // Display the message box with the required information
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Cell in Z: ${result.firstAvailableZCell}`);
+        } else {
+            // Clear the fields if no match is found
+            document.getElementById('category').value = '';
+            document.getElementById('item').value = '';
+            document.getElementById('uom').value = '';
+            document.getElementById('quantity').value = 0;
+            document.getElementById('price').value = 0;
+            document.getElementById('invoicenumber').value = '';
+        }
     } catch (error) {
         console.error('Error checking sheet:', error);
         return { matched: false };
