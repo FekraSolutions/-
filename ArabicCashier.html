@@ -308,9 +308,11 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
      
         const today = document.getElementById('date').value;
 
+const quantity = document.getElementById('quantity').value || 0; // Get the quantity field value
 const response = await fetch(
-  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&quantity=${encodeURIComponent(quantity)}`
 );
+
         const result = await response.json();
 
         if (result.matched) {
