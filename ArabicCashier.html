@@ -280,13 +280,13 @@ Quagga.onDetected(async (data) => {
             document.getElementById('price').value = X || 0;     // Column X
 
             // Populate the invoice number field
-            document.getElementById('invoicenumber').value = result.invoiceNumber || '';
+            const invoiceNumber = document.getElementById('invoicenumber').value = result.invoiceNumber || '';
 
             // Update the item total dynamically
             updateItemTotal();
 
-            // Show the message box with the sheet name and first available Z cell
-            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}`);
+            // Show the message box with the sheet name and first available cells
+            alert(`Sheet Name: ${result.sheetName}\nFirst Available Z Cell: ${result.firstAvailableZCell}\nFirst Available AA Cell: ${result.firstAvailableAACell}`);
         } else {
             // Clear the fields if no match is found
             document.getElementById('category').value = '';
@@ -299,8 +299,6 @@ Quagga.onDetected(async (data) => {
         isChecking = false;
     }
 });
-
-
 
 
     }
