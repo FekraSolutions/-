@@ -350,6 +350,50 @@ function updateItemTotal() {
     document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
 }
 
+    // Add this function to handle updating the Google Sheets file
+function updateQuantityInSheet(newQuantity) {
+    // Retrieve the sheet/tab name from the emailTextbox field
+    const sheetName = document.getElementById('emailTextbox')?.placeholder;
+
+    if (!sheetName) {
+        console.error("Sheet name is missing. Cannot update quantity in Sheets.");
+        return;
+    }
+
+    // Data to send to the Apps Script web app
+    const data = {
+        sheetName: sheetName, // The sheet/tab name
+        quantity: newQuantity // The new quantity value
+    };
+
+    // Send the data to the Apps Script web app using POST
+    fetch('https://script.google.com/macros/s/AKfycbzaar1eTzLvw7oB4jj4ScUPHeBi-_NrmnaRgBF9tJuIbs7MoX0hDaS6A_RKvDVXGnRu/exec', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(result => {
+            console.log("Successfully updated quantity in Google Sheets:", result);
+        })
+        .catch(error => {
+            console.error("Error updating quantity in Google Sheets:", error);
+        });
+}
+
+// Update the event listener to call the new function
+document.getElementById('quantity').addEventListener('input', function (event) {
+    const newQuantity = event.target.value;
+
+    // Call the new function to update Google Sheets
+    updateQuantityInSheet(newQuantity);
+
+    // Call the existing function to update the item total
+    updateItemTotal();
+});
+
 </script>
 
 
