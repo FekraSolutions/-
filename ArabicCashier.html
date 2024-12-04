@@ -204,7 +204,6 @@ window.onload = function () {
 };
 
 
-// Modify the updateQ function to display the quantity value, sheet existence, and last cell value in column AF
 function updateQ() {
     const quantity = document.getElementById('quantity').value; // Get the value from the input field
     const sheet = document.getElementById('emailTextbox').placeholder; // Get the value from the input field
@@ -218,20 +217,13 @@ function updateQ() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                // Check if the sheet exists
-                const sheetExistsMessage = data.sheetExists ? "Sheet exists!" : "Sheet does not exist!";
-                
-                // Get the last filled value in column AF
-                const lastCellValueMessage = data.lastCellValue ? "Last value in AF: " + data.lastCellValue : "No value in column AF.";
-                
-                // Success message for updating the sheet
-                const updateSuccessMessage = data.success ? "Last filled cell in AF updated!" : "Failed to update last filled cell in AF.";
-               
-                
+                // If needed, you can process the response here without showing an alert
+                console.log("Sheet exists:", data.sheetExists);
+                console.log("Last value in AF:", data.lastCellValue);
+                console.log("Update success:", data.success);
             })
             .catch(error => {
                 console.error('Error checking sheet:', error);
-                alert("An error occurred while checking the sheet.");
             });
     }
 }
