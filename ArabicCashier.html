@@ -203,14 +203,35 @@ window.onload = function () {
     });
 };
 
-// Modify the updateQ function to display the quantity value
+
+  // Modify the updateQ function to display the quantity value and check if the sheet exists
 function updateQ() {
     const quantity = document.getElementById('quantity').value; // Get the value from the input field
     const sheet = document.getElementById('emailTextbox').placeholder; // Get the value from the input field
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzaar1eTzLvw7oB4jj4ScUPHeBi-_NrmnaRgBF9tJuIbs7MoX0hDaS6A_RKvDVXGnRu/exec'; // Replace with your Web App URL
+    
     if (quantity !== "") {  // Only run if the quantity is not blank
-        alert("Quantity: " + quantity + "\nSheet: " + sheet);  // Show both values in the alert
+        // Create the URL with the sheetName parameter
+        const url = `${webAppUrl}?sheetName=${encodeURIComponent(sheet)}`;
+        
+        // Make a request to the Web App
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Check if the sheet exists
+                const sheetExistsMessage = data.sheetExists ? "Sheet exists!" : "Sheet does not exist!";
+                
+                // Show the message with all details
+                alert("Quantity: " + quantity + "\nSheet: " + sheet + "\n" + sheetExistsMessage);
+            })
+            .catch(error => {
+                console.error('Error checking sheet:', error);
+                alert("An error occurred while checking the sheet.");
+            });
     }
 }
+
+
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
