@@ -206,7 +206,7 @@ window.onload = function () {
 // Modify the updateQ function to display the quantity value
 function updateQ() {
     const quantity = document.getElementById('quantity').value; // Get the value from the input field
-    const sheet = document.getElementById('emailTextbox').value; // Get the value from the input field
+    const sheet = document.getElementById('emailTextbox').placeholder; // Get the value from the input field
     if (quantity !== "") {  // Only run if the quantity is not blank
         alert("Quantity: " + quantity + "\nSheet: " + sheet);  // Show both values in the alert
     }
