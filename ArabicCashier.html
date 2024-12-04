@@ -196,9 +196,12 @@ window.onload = function () {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
 
-    // Add event listener to update item total
-    document.getElementById('quantity').addEventListener('input', updateItemTotal);
-};
+// Add event listener to update item total
+document.getElementById('quantity').addEventListener('input', function() {
+    // Call UpdateQ before updating item total
+    UpdateQ();
+    updateItemTotal();
+});
 
 
     function getQueryParameter(name) {
@@ -350,6 +353,11 @@ function updateItemTotal() {
     document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
 }
 
+    // Define the new function
+function UpdateQ() {
+    alert("Hello World");
+}
+    
 </script>
 
 
