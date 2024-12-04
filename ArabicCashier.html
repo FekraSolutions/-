@@ -350,7 +350,7 @@ function updateItemTotal() {
     document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
 }
 
-    // Add this function to handle updating the Google Sheets file
+// Add this function to handle updating the Google Sheets file
 function updateQuantityInSheet(newQuantity) {
     // Retrieve the sheet/tab name from the emailTextbox field
     const sheetName = document.getElementById('emailTextbox')?.placeholder;
@@ -383,16 +383,6 @@ function updateQuantityInSheet(newQuantity) {
         });
 }
 
-// Update the event listener to call the new function
-document.getElementById('quantity').addEventListener('input', function (event) {
-    const newQuantity = event.target.value;
-
-    // Call the new function to update Google Sheets
-    updateQuantityInSheet(newQuantity);
-
-    // Call the existing function to update the item total
-    updateItemTotal();
-});
 
 </script>
 
