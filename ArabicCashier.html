@@ -196,10 +196,16 @@ window.onload = function () {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
 
-    // Add event listener to update item total
-    document.getElementById('quantity').addEventListener('input', updateItemTotal);
+    // Add event listener to update item total and call updateQ
+    document.getElementById('quantity').addEventListener('input', function() {
+        updateItemTotal();  // Existing function
+        updateQ();          // New function
+    });
 };
 
+    function UpdateQ() {
+    alert("Hello World");
+}
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
