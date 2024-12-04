@@ -303,12 +303,12 @@ Quagga.onDetected(async (data) => {
 
 async function checkBarcodeExists(emailValue, barcodeValue) {
     try {
+     
         const today = document.getElementById('date').value;
-        const quantity = document.getElementById('quantity').value || 1; // Default to 1 if empty
 
-        const response = await fetch(
-            `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}&quantity=${encodeURIComponent(quantity)}`
-        );
+const response = await fetch(
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
+);
         const result = await response.json();
 
         if (result.matched) {
@@ -318,7 +318,7 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
             document.getElementById('category').value = S || ''; // Column S
             document.getElementById('item').value = T || '';     // Column T
             document.getElementById('uom').value = U || '';      // Column U
-            document.getElementById('quantity').value = quantity; // Keep the user-set value
+            document.getElementById('quantity').value = 1;  // Default to 1
             document.getElementById('price').value = X || 0;     // Column X
 
             // Populate the invoice number field
@@ -341,7 +341,6 @@ async function checkBarcodeExists(emailValue, barcodeValue) {
         return { matched: false };
     }
 }
-
 
 
 function updateItemTotal() {
