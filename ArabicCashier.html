@@ -206,35 +206,11 @@ window.onload = function () {
 // Modify the updateQ function to display the quantity value
 function updateQ() {
     const quantity = document.getElementById('quantity').value; // Get the value from the input field
-    const sheetName = document.getElementById('emailTextbox').value; // Get the sheet name from the textbox
-    
+    const sheet = document.getElementById('emailTextbox').value; // Get the value from the input field
     if (quantity !== "") {  // Only run if the quantity is not blank
-        alert(quantity);  // Show the value of quantity in the alert
-
-        // Sending the value to the Google Sheets web app
-        const url = "https://script.google.com/macros/s/AKfycbzaar1eTzLvw7oB4jj4ScUPHeBi-_NrmnaRgBF9tJuIbs7MoX0hDaS6A_RKvDVXGnRu/exec";  // Replace with your web app URL
-        const params = {
-            method: "POST",
-            contentType: "application/json",
-            payload: JSON.stringify({
-                quantity: quantity,
-                sheetName: sheetName
-            })
-        };
-
-        // Make the request to the web app
-        fetch(url, params)
-            .then(response => response.text())
-            .then(result => {
-                console.log('Success:', result);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        alert("Quantity: " + quantity + "\nSheet: " + sheet);  // Show both values in the alert
     }
 }
-
-
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
