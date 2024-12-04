@@ -226,9 +226,8 @@ function updateQ() {
                 
                 // Success message for updating the sheet
                 const updateSuccessMessage = data.success ? "Last filled cell in AF updated!" : "Failed to update last filled cell in AF.";
-
-                // Show the message with all details
-                alert("Quantity: " + quantity + "\nSheet: " + sheet + "\n" + sheetExistsMessage + "\n" + lastCellValueMessage + "\n" + updateSuccessMessage);
+               
+                
             })
             .catch(error => {
                 console.error('Error checking sheet:', error);
