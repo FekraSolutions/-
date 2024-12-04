@@ -348,6 +348,48 @@ function updateItemTotal() {
     const price = parseFloat(document.getElementById('price').value) || 0;
     const itemTotal = quantity * price;
     document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
+
+    // Send updated quantity to Google Sheets
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+    if (emailValue) {
+        fetch(`https://script.google.com/macros/s/AKfycbxtTO_DMe2ZP9BEmCkBflaGk_EGe47pw7798hPE6t2syPrxDhKEHZg2psg21SWx2fIn/exec`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                email: emailValue,
+                quantity: quantity
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (!result.success) {
+                console.error("Error updating quantity in sheet:", result.error);
+            } else {
+                console.log("Quantity updated successfully.");
+            }
+        })
+        .catch(error => console.error("Error communicating with the web app:", error));
+    }
+}
+
+
+    function updateQuantity(emailValue, quantity) {
+  const ss = SpreadsheetApp.openById('1XO4UezQz2Hzxn1a72JkNVM0GM-IQtbXOjY4XnA6P4sg'); // Replace with your sheet ID
+  const sheet = ss.getSheetByName(emailValue); // Use the sheet name from the input field
+  if (!sheet) {
+    throw new Error(`Sheet with name ${emailValue} not found.`);
+  }
+
+  // Get column AF (32nd column)
+  const columnAF = sheet.getRange('AF2:AF').getValues().flat();
+  let lastFilledRow = columnAF.findIndex(value => value === '' || value === null); // Find the first empty cell
+  
+  if (lastFilledRow === -1) {
+    lastFilledRow = columnAF.length; // If no empty cells, take the last cell
+  }
+  
+  const rowToUpdate = lastFilledRow + 1; // Add 1 because index starts at 0
+  sheet.getRange(rowToUpdate, 32).setValue(quantity); // Update AF column (32nd column) with the new quantity
 }
 
 </script>
