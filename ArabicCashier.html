@@ -204,7 +204,7 @@ window.onload = function () {
 };
 
 
-  // Modify the updateQ function to display the quantity value and check if the sheet exists
+// Modify the updateQ function to display the quantity value, sheet existence, and last cell value in column AF
 function updateQ() {
     const quantity = document.getElementById('quantity').value; // Get the value from the input field
     const sheet = document.getElementById('emailTextbox').placeholder; // Get the value from the input field
@@ -221,8 +221,11 @@ function updateQ() {
                 // Check if the sheet exists
                 const sheetExistsMessage = data.sheetExists ? "Sheet exists!" : "Sheet does not exist!";
                 
+                // Get the last filled value in column AF
+                const lastCellValueMessage = data.lastCellValue ? "Last value in AF: " + data.lastCellValue : "No value in column AF.";
+
                 // Show the message with all details
-                alert("Quantity: " + quantity + "\nSheet: " + sheet + "\n" + sheetExistsMessage);
+                alert("Quantity: " + quantity + "\nSheet: " + sheet + "\n" + sheetExistsMessage + "\n" + lastCellValueMessage);
             })
             .catch(error => {
                 console.error('Error checking sheet:', error);
@@ -230,6 +233,7 @@ function updateQ() {
             });
     }
 }
+
 
 
 
