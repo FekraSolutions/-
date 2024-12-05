@@ -169,7 +169,7 @@
 <input type="number" id="itemtotal" class="barcode-textbox" readonly>
         <!-- Buttons at the bottom -->
     <div class="button-container">
-        <button id="cancel" class="another-item-button" onclick="window.history.back()">إلغاء</button>
+        <button id="submit-button" class="submit-button" onclick="gopostsale()">حفظ الفاتورة</button>
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
     </div>
@@ -378,10 +378,13 @@ function updateItemTotal() {
     document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
 }
 
-    //event listener for postsale
-            document.getElementById('submit-button').addEventListener('click', function() {
-            window.location.href = 'postsale.html';
-        });
+// Redirect to postsale.html with the username in the URL
+function gopostsale() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        window.location.href = `postsale.html?username=${encodeURIComponent(username)}`;
+    }
+}
     
 </script>
 
