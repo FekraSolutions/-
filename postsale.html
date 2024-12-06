@@ -144,20 +144,35 @@
 
 
 <script>
-window.onload = function () {
+window.onload = async function () {
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
+
+    const sheetName = username || "DefaultSheetName"; // Use "DefaultSheetName" as fallback
+    const url = `https://script.google.com/macros/s/AKfycby1T0_lbAXyQLLBTbTUuNfbVy-x-jo14EUfO5vZkS_LrQsUQWOVDCBBQ3YPrU3A5f9I/exec?sheetName=${sheetName}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.value) {
+            document.getElementById('invoicetotal')?.setAttribute('value', data.value);
+        } else {
+            console.error("Error fetching value:", data.error);
+        }
+    } catch (error) {
+        console.error("Fetch error:", error);
+    }
 };
 
-
-    function getQueryParameter(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-    }
-
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
 </script>
+
 
 </body>
 </html>
