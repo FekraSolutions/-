@@ -193,31 +193,6 @@ function updateChangeField() {
     }
 }
 
-document.getElementById('submit-button').addEventListener('click', function() {
-    // Get the placeholder value from the input field
-    let placeholder = document.getElementById('emailTextbox').getAttribute('placeholder');
-
-    // Web App URL from the Google Apps Script deployment
-    let webAppUrl = "https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec";
-
-    // Send the placeholder value to the Web App
-    fetch(webAppUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ placeholder: placeholder })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.exists) {
-            alert("The sheet/tab exists!");
-        } else {
-            alert("The sheet/tab does not exist.");
-        }
-    })
-    .catch(error => alert("Request failed: " + error.message));
-});
-
-
 </script>
 
 </body>
