@@ -211,16 +211,18 @@ submitButton.addEventListener('click', () => {
         .then(response => response.json())
         .then(data => {
             if (data.exists) {
-                alert(`The sheet/tab "${sheetName}" exists.`);
+                console.log("Data from AU1 to last used cell in AY:", data.data);
+                // You can process or display this data as needed
             } else {
                 alert(`The sheet/tab "${sheetName}" does not exist.`);
             }
         })
         .catch(error => {
             console.error('Error:', error);
-            alert("An error occurred while checking the sheet.");
+            alert("An error occurred while fetching the data.");
         });
 });
+
 
 </script>
 
