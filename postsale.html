@@ -158,21 +158,41 @@ window.onload = async function () {
         const data = await response.json();
 
         if (data.value) {
-            document.getElementById('invoicetotal')?.setAttribute('value', data.value);
+            const invoiceTotalElement = document.getElementById('invoicetotal');
+            invoiceTotalElement?.setAttribute('value', data.value);
+            
+            // Update the change field initially
+            updateChangeField();
         } else {
             console.error("Error fetching value:", data.error);
         }
     } catch (error) {
         console.error("Fetch error:", error);
     }
+
+    // Add event listener for the paid field
+    document.getElementById('paid')?.addEventListener('input', updateChangeField);
 };
 
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
 }
-</script>
 
+// Function to update the "change" field
+function updateChangeField() {
+    const invoiceTotalElement = document.getElementById('invoicetotal');
+    const paidElement = document.getElementById('paid');
+    const changeElement = document.getElementById('change');
+
+    const invoiceTotal = parseFloat(invoiceTotalElement?.value || 0);
+    const paid = parseFloat(paidElement?.value || 0);
+
+    if (changeElement) {
+        changeElement.setAttribute('value', (invoiceTotal - paid).toFixed(2));
+    }
+}
+</script>
 
 </body>
 </html>
