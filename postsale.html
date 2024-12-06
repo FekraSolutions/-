@@ -151,7 +151,7 @@ window.onload = async function () {
     }
 
     const sheetName = username || "DefaultSheetName"; // Use "DefaultSheetName" as fallback
-    const url = `https://script.google.com/macros/s/AKfycby1T0_lbAXyQLLBTbTUuNfbVy-x-jo14EUfO5vZkS_LrQsUQWOVDCBBQ3YPrU3A5f9I/exec?sheetName=${sheetName}`;
+    const url = `YOUR_WEB_APP_URL?sheetName=${sheetName}`;
 
     try {
         const response = await fetch(url);
@@ -160,7 +160,7 @@ window.onload = async function () {
         if (data.value) {
             const invoiceTotalElement = document.getElementById('invoicetotal');
             invoiceTotalElement?.setAttribute('value', data.value);
-            
+
             // Update the change field initially
             updateChangeField();
         } else {
@@ -189,7 +189,7 @@ function updateChangeField() {
     const paid = parseFloat(paidElement?.value || 0);
 
     if (changeElement) {
-        changeElement.setAttribute('value', (invoiceTotal - paid).toFixed(2));
+        changeElement.setAttribute('value', (paid - invoiceTotal).toFixed(2));
     }
 }
 </script>
