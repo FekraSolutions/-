@@ -193,7 +193,6 @@ function updateChangeField() {
     }
 }
 
-//print and save
 const submitButton = document.getElementById('submit-button');
 const emailTextbox = document.getElementById('emailTextbox');
 
@@ -211,8 +210,9 @@ submitButton.addEventListener('click', () => {
         .then(response => response.json())
         .then(data => {
             if (data.exists) {
-                console.log("Data from AU1 to last used cell in AY:", data.data);
-                // You can process or display this data as needed
+                console.log("Selected data:", data.data);
+                // Display the data in the console or process it as needed
+                displayData(data.data); // Optional: Implement display logic
             } else {
                 alert(`The sheet/tab "${sheetName}" does not exist.`);
             }
@@ -222,6 +222,21 @@ submitButton.addEventListener('click', () => {
             alert("An error occurred while fetching the data.");
         });
 });
+
+// Function to display data in a table or any UI element
+function displayData(data) {
+    const table = document.createElement('table');
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
+    document.body.appendChild(table); // Append the table to the body or any specific container
+}
 
 
 </script>
