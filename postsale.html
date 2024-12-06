@@ -192,6 +192,33 @@ function updateChangeField() {
         changeElement.setAttribute('value', (paid - invoiceTotal).toFixed(2));
     }
 }
+
+//print and save
+    document.getElementById('submit-button').addEventListener('click', function() {
+    // Extract the sheet/tab name and the value to print
+    let tabName = document.getElementById('emailTextbox').value; // From the textbox
+    let value = "AU1"; // Hardcoded value to print
+
+    // Web App URL from the Google Apps Script deployment
+    let webAppUrl = "https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec";
+
+    // Send the data to the Google Apps Script Web App
+    fetch(webAppUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tabName: tabName, value: value })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Data successfully added to Google Sheets!");
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => alert("Request failed: " + error.message));
+});
+
 </script>
 
 </body>
