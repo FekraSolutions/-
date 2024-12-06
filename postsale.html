@@ -193,52 +193,6 @@ function updateChangeField() {
     }
 }
 
-const submitButton = document.getElementById('submit-button');
-const emailTextbox = document.getElementById('emailTextbox');
-
-submitButton.addEventListener('click', () => {
-    const sheetName = emailTextbox.placeholder.trim();
-
-    if (!sheetName) {
-        alert("Please provide a valid sheet name.");
-        return;
-    }
-
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec"; // Replace with your Web App URL
-
-    fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.exists) {
-                console.log("Selected data:", data.data);
-                // Display the data in the console or process it as needed
-                displayData(data.data); // Optional: Implement display logic
-            } else {
-                alert(`The sheet/tab "${sheetName}" does not exist.`);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("An error occurred while fetching the data.");
-        });
-});
-
-// Function to display data in a table or any UI element
-function displayData(data) {
-    const table = document.createElement('table');
-    data.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
-        });
-        table.appendChild(tr);
-    });
-    document.body.appendChild(table); // Append the table to the body or any specific container
-}
-
-
 </script>
 
 </body>
