@@ -381,7 +381,7 @@ function updateItemTotal() {
     // Redirect to postsale page based on device type with the username in the URL
 // Define the function
 function gopostsale() {
-    const username = document.getElementById('emailTextbox').value;
+    const username = document.getElementById('emailTextbox').placeholder;
     if (username) {
         window.location.href = `postsale.html?username=${encodeURIComponent(username)}`;
     } else {
