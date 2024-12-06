@@ -194,34 +194,34 @@ function updateChangeField() {
 }
 
 //print and save
-  const submitButton = document.getElementById('submit-button');
-    const emailTextbox = document.getElementById('emailTextbox');
+const submitButton = document.getElementById('submit-button');
+const emailTextbox = document.getElementById('emailTextbox');
 
-    submitButton.addEventListener('click', () => {
-      const sheetName = emailTextbox.value.trim();
+submitButton.addEventListener('click', () => {
+    const sheetName = emailTextbox.placeholder.trim();
 
-      if (!sheetName) {
-        alert("Please enter a sheet name.");
+    if (!sheetName) {
+        alert("Please provide a valid sheet name.");
         return;
-      }
+    }
 
-      // Replace with your Google Apps Script Web App URL
-      const webAppUrl = "https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec";
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec"; // Replace with your Web App URL
 
-      fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`)
+    fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`)
         .then(response => response.json())
         .then(data => {
-          if (data.exists) {
-            alert(`Sheet "${sheetName}" exists.`);
-          } else {
-            alert(`Sheet "${sheetName}" does not exist.`);
-          }
+            if (data.exists) {
+                alert(`The sheet/tab "${sheetName}" exists.`);
+            } else {
+                alert(`The sheet/tab "${sheetName}" does not exist.`);
+            }
         })
         .catch(error => {
-          console.error('Error:', error);
-          alert("An error occurred while checking the sheet.");
+            console.error('Error:', error);
+            alert("An error occurred while checking the sheet.");
         });
-    });
+});
+
 </script>
 
 </body>
