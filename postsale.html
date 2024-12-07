@@ -280,28 +280,29 @@ function updateChangeField() {
       .catch(error => console.error('Error fetching data:', error));
   }
 
-        document.getElementById("printbutton").addEventListener("click", function () {
+            document.getElementById("printbutton").addEventListener("click", function () {
         // Select the container to print
         const printContainer = document.querySelector(".new-container");
         
         if (printContainer) {
-            // Create a new window for printing
-            const printWindow = window.open("", "_blank");
+            // Save the original page content
+            const originalContent = document.body.innerHTML;
 
-            // Write the contents of the container to the new window
-            printWindow.document.open();
-            printWindow.document.write(`
+            // Replace the page content with the container content
+            document.body.innerHTML = `
                 <html>
                     <head>
                         <title>طباعة</title>
                         <style>
-                            /* Add styles for the table and page */
+                            /* Mobile-friendly styles */
                             body {
                                 font-family: Arial, sans-serif;
                                 margin: 0;
                                 padding: 20px;
                                 direction: rtl; /* For Arabic text direction */
                                 text-align: right;
+                                width: 100%;
+                                overflow-x: hidden;
                             }
                             table {
                                 width: 100%;
@@ -318,14 +319,16 @@ function updateChangeField() {
                         ${printContainer.outerHTML}
                     </body>
                 </html>
-            `);
-            printWindow.document.close();
+            `;
 
-            // Wait for the content to load, then print and close the window
-            printWindow.onload = function () {
-                printWindow.print();
-                printWindow.close();
-            };
+            // Trigger the print
+            window.print();
+
+            // Restore the original page content
+            document.body.innerHTML = originalContent;
+
+            // Rebind JavaScript events if necessary (important if your page relies on them)
+            window.location.reload();
         } else {
             alert("The container to print was not found.");
         }
