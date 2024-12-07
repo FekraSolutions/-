@@ -158,7 +158,7 @@ body {
 
 <!-- New empty container below the existing one -->
 <div class="new-container">
-    <table style="width: 100%; border-collapse: collapse;">
+    <table id="dynamicTable" style="width: 100%; border-collapse: collapse;">
         <thead>
             <tr>
                 <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الصنف</th>
@@ -168,19 +168,7 @@ body {
             </tr>
         </thead>
         <tbody>
-            <!-- You can add rows here as needed -->
-            <tr>
-                <td style="padding: 10px; text-align: center;">Example Item 1</td>
-                <td style="padding: 10px; text-align: center;">2</td>
-                <td style="padding: 10px; text-align: center;">$10</td>
-                <td style="padding: 10px; text-align: center;">$20</td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; text-align: center;">Example Item 2</td>
-                <td style="padding: 10px; text-align: center;">1</td>
-                <td style="padding: 10px; text-align: center;">$15</td>
-                <td style="padding: 10px; text-align: center;">$15</td>
-            </tr>
+            <!-- Dynamic rows will be inserted here -->
         </tbody>
     </table>
 </div>
@@ -216,6 +204,7 @@ window.onload = async function () {
 
     // Add event listener for the paid field
     document.getElementById('paid')?.addEventListener('input', updateChangeField);
+    fetchTableData();
 };
 
 function getQueryParameter(name) {
@@ -237,6 +226,58 @@ function updateChangeField() {
     }
 }
 
+    // Function to fetch data from Google Sheets through the web app
+  function fetchTableData() {
+    // Get the sheet name from the placeholder in the emailTextbox
+    var sheetName = document.getElementById("emailTextbox").placeholder;
+    
+    // Define the URL of the Google Apps Script Web App
+    var url = "https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec?sheetName=" + sheetName;
+    
+    // Fetch data from the web app
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        // Get the table body element
+        var tableBody = document.querySelector("#dynamicTable tbody");
+        
+        // Clear any existing rows
+        tableBody.innerHTML = "";
+        
+        // Loop through the data and create table rows dynamically
+        data.forEach(row => {
+          var tr = document.createElement("tr");
+          
+          var tdItem = document.createElement("td");
+          tdItem.textContent = row.item;
+          tdItem.style.padding = "10px";
+          tdItem.style.textAlign = "center";
+          tr.appendChild(tdItem);
+          
+          var tdQuantity = document.createElement("td");
+          tdQuantity.textContent = row.quantity;
+          tdQuantity.style.padding = "10px";
+          tdQuantity.style.textAlign = "center";
+          tr.appendChild(tdQuantity);
+          
+          var tdPrice = document.createElement("td");
+          tdPrice.textContent = row.price;
+          tdPrice.style.padding = "10px";
+          tdPrice.style.textAlign = "center";
+          tr.appendChild(tdPrice);
+          
+          var tdTotal = document.createElement("td");
+          tdTotal.textContent = row.total;
+          tdTotal.style.padding = "10px";
+          tdTotal.style.textAlign = "center";
+          tr.appendChild(tdTotal);
+          
+          // Append the row to the table body
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }
 </script>
 
 </body>
