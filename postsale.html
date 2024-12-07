@@ -165,6 +165,7 @@ body {
 
 <script>
 window.onload = async function () {
+    // Existing functionality
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
@@ -192,7 +193,28 @@ window.onload = async function () {
 
     // Add event listener for the paid field
     document.getElementById('paid')?.addEventListener('input', updateChangeField);
+
+    // New functionality for displaying the receipt
+    const placeholder = document.getElementById('emailTextbox')?.getAttribute('placeholder') || "DefaultSheetName";
+    const receiptUrl = `https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec?sheetName=${placeholder}&range=AU1:AY`;
+
+    try {
+        const receiptResponse = await fetch(receiptUrl);
+        const receiptData = await receiptResponse.json();
+
+        if (receiptData.rows) {
+            const container = document.querySelector('.new-container');
+            container.innerHTML = receiptData.rows
+                .map(row => `<div>${row.join(' - ')}</div>`)
+                .join('');
+        } else {
+            console.error("Error fetching receipt data:", receiptData.error);
+        }
+    } catch (error) {
+        console.error("Fetch error (receipt):", error);
+    }
 };
+
 
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
