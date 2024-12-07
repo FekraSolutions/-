@@ -128,22 +128,27 @@
         <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
     </div>
 
-    <!-- Center container with camera preview and barcode textbox -->
-    <div class="center-container">
-        <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-<input type="text" id="invoicetotal" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">تم دفع</label>
-<input type="number" id="paid" class="barcode-textbox">
-        <label for="category-dropdown" class="form-label">المتبقي</label>
-<input type="number" id="change" class="barcode-textbox" readonly>
+<!-- Center container with camera preview and barcode textbox -->
+<div class="center-container">
+    <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
+    <input type="text" id="invoicetotal" class="barcode-textbox" readonly>
+    <label for="category-dropdown" class="form-label">تم دفع</label>
+    <input type="number" id="paid" class="barcode-textbox">
+    <label for="category-dropdown" class="form-label">المتبقي</label>
+    <input type="number" id="change" class="barcode-textbox" readonly>
 
-        <!-- Buttons at the bottom -->
+    <!-- Buttons at the bottom -->
     <div class="button-container">
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
-<!-- Center container for receipt -->
-    <div class="center-container">
-    </div>    
+</div>
+
+<!-- Receipt container -->
+<div class="center-container">
+    <!-- You can add similar content or leave it empty for now -->
+</div>
+
+ 
 <script>
 window.onload = async function () {
     const username = getQueryParameter('username');
