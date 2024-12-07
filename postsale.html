@@ -340,7 +340,7 @@ function updateChangeField() {
 
     
     // function to save sale
-    document.getElementById("submit-button").addEventListener("click", function() {
+  document.getElementById("submit-button").addEventListener("click", function() {
   const emailTextbox = document.getElementById("emailTextbox");
   const placeholder = emailTextbox.placeholder;
 
@@ -349,13 +349,27 @@ function updateChangeField() {
     return;
   }
 
-  const webAppUrl = "https://script.google.com/macros/s/AKfycbwjhBVk5X_FB_1kUkAqeFKe8rVYVtC9OgzVChw6DP2IO3mtfiNsQWv_JY-scbGDCo1b/exec"; // Replace with the actual web app URL
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbwjhBVk5X_FB_1kUkAqeFKe8rVYVtC9OgzVChw6DP2IO3mtfiNsQWv_JY-scbGDCo1b/exec"; // Replace with your deployed Google Apps Script URL
 
+  // Check if the sheet exists first
   fetch(`${webAppUrl}?placeholder=${encodeURIComponent(placeholder)}`)
     .then(response => response.json())
     .then(data => {
       if (data.exists) {
-        alert(`Sheet/tab "${placeholder}" exists.`);
+        // Perform the cut and paste action
+        fetch(`${webAppUrl}?placeholder=${encodeURIComponent(placeholder)}&action=cutPaste`)
+          .then(response => response.json())
+          .then(result => {
+            if (result.success) {
+              alert(result.message);
+            } else {
+              alert("An error occurred while performing the cut and paste operation.");
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while performing the cut and paste operation.");
+          });
       } else {
         alert(`Sheet/tab "${placeholder}" does not exist.`);
       }
@@ -365,6 +379,7 @@ function updateChangeField() {
       alert("An error occurred while checking the sheet/tab.");
     });
 });
+
 
 </script>
 
