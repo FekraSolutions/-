@@ -141,50 +141,37 @@ body {
         <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
     </div>
 
-<!-- Center container with camera preview and barcode textbox -->
-<div class="center-container">
-    <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-    <input type="text" id="invoicetotal" class="barcode-textbox" readonly>
-    <label for="category-dropdown" class="form-label">تم دفع</label>
-    <input type="number" id="paid" class="barcode-textbox">
-    <label for="category-dropdown" class="form-label">المتبقي</label>
-    <input type="number" id="change" class="barcode-textbox" readonly>
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">
+        <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
+        <input type="text" id="invoicetotal" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">تم دفع</label>
+        <input type="number" id="paid" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">المتبقي</label>
+        <input type="number" id="change" class="barcode-textbox" readonly>
 
-    <!-- Buttons at the bottom -->
-    <div class="button-container">
-        <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
+        <!-- Buttons at the bottom -->
+        <div class="button-container">
+            <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
+        </div>
     </div>
-</div>
 
-<!-- New empty container below the existing one -->
-<div class="new-container">
-    <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr>
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الصنف</th>
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الكمية</th>
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">سعر</th>
-                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">إجمالي</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- You can add rows here as needed -->
-            <tr>
-                <td style="padding: 10px; text-align: center;">Example Item 1</td>
-                <td style="padding: 10px; text-align: center;">2</td>
-                <td style="padding: 10px; text-align: center;">$10</td>
-                <td style="padding: 10px; text-align: center;">$20</td>
-            </tr>
-            <tr>
-                <td style="padding: 10px; text-align: center;">Example Item 2</td>
-                <td style="padding: 10px; text-align: center;">1</td>
-                <td style="padding: 10px; text-align: center;">$15</td>
-                <td style="padding: 10px; text-align: center;">$15</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
+    <!-- New empty container below the existing one -->
+    <div class="new-container">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الصنف</th>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الكمية</th>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">سعر</th>
+                    <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">إجمالي</th>
+                </tr>
+            </thead>
+            <tbody id="itemTableBody">
+                <!-- Rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
 
 
 <script>
@@ -216,6 +203,7 @@ window.onload = async function () {
 
     // Add event listener for the paid field
     document.getElementById('paid')?.addEventListener('input', updateChangeField);
+    populateItems();
 };
 
 function getQueryParameter(name) {
@@ -237,6 +225,68 @@ function updateChangeField() {
     }
 }
 
+
+    async function populateItems() {
+            // Get the sheet name from the input field's placeholder
+            var sheetName = document.getElementById('emailTextbox').placeholder;
+
+            // Ensure the sheet name is provided
+            if (!sheetName) {
+                alert('Please enter a sheet name.');
+                return;
+            }
+
+            // Define your web app URL here
+            const webAppUrl = 'https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec';
+
+            // Fetch data from the Google Apps Script web app
+            try {
+                const response = await fetch(`${webAppUrl}?sheetName=${sheetName}`);
+                const data = await response.json(); // Expecting the response to be a JSON object with items
+
+                // Get the table body to insert rows
+                var tableBody = document.getElementById('itemTableBody');
+
+                // Check if data exists
+                if (data && data.items && data.items.length > 0) {
+                    // Iterate over the items and create a table row for each
+                    data.items.forEach(function(item) {
+                        var row = document.createElement('tr');
+                        
+                        // Create cell for item
+                        var tdItem = document.createElement('td');
+                        tdItem.textContent = item[0]; // Assuming the data in AD2:AD is in a single column
+                        tdItem.style.textAlign = 'center';
+                        row.appendChild(tdItem);
+                        
+                        // Placeholder values for Quantity, Price, and Total (adjust as needed)
+                        var tdQuantity = document.createElement('td');
+                        tdQuantity.textContent = '1'; // Default quantity
+                        tdQuantity.style.textAlign = 'center';
+                        row.appendChild(tdQuantity);
+                        
+                        var tdPrice = document.createElement('td');
+                        tdPrice.textContent = '$10'; // Default price
+                        tdPrice.style.textAlign = 'center';
+                        row.appendChild(tdPrice);
+                        
+                        var tdTotal = document.createElement('td');
+                        tdTotal.textContent = '$10'; // Default total
+                        tdTotal.style.textAlign = 'center';
+                        row.appendChild(tdTotal);
+                        
+                        // Append the row to the table body
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    alert('No items found.');
+                }
+            } catch (error) {
+                console.error('Error fetching items:', error);
+                alert('There was an error fetching the items.');
+            }
+        }
+    
 </script>
 
 </body>
