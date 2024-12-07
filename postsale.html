@@ -117,6 +117,17 @@
     opacity: 0.8; /* Optional: Add hover effect */
 }
 
+        .new-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed gray;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #F0F0F0; /* Light gray background */
+    margin-top: 20px; /* Adds spacing from the above container */
+}
+
     </style>
 </head>
 <body>
@@ -143,12 +154,13 @@
     </div>
 </div>
 
-<!-- Receipt container -->
-<div class="center-container">
-    <!-- You can add similar content or leave it empty for now -->
+<!-- New empty container below the existing one -->
+<div class="new-container">
+    <!-- Add content here if needed -->
 </div>
 
- 
+
+
 <script>
 window.onload = async function () {
     const username = getQueryParameter('username');
