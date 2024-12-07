@@ -279,50 +279,6 @@ function updateChangeField() {
       })
       .catch(error => console.error('Error fetching data:', error));
   }
-
-document.getElementById('printbutton').addEventListener('click', function() {
-    // Select the container to be printed
-    const container = document.querySelector('.new-container');
-    
-    // Create a new iframe to use as the print area
-    const iframe = document.createElement('iframe');
-    iframe.style.position = 'absolute';
-    iframe.style.width = '0px';
-    iframe.style.height = '0px';
-    iframe.style.border = 'none';
-    document.body.appendChild(iframe);
-
-    // Write the content of the container into the iframe's document
-    const doc = iframe.contentWindow.document;
-    doc.open();
-    doc.write(`
-        <!DOCTYPE html>
-        <html lang="ar" dir="rtl">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Print</title>
-            <style>
-                body { margin: 0; font-family: Arial, sans-serif; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
-            </style>
-        </head>
-        <body>
-            ${container.outerHTML}
-        </body>
-        </html>
-    `);
-    doc.close();
-
-    // Wait for the content to load, then print and remove the iframe
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-
-    // Remove the iframe after printing
-    iframe.parentNode.removeChild(iframe);
-});
-    
 </script>
 
 </body>
