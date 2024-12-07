@@ -193,45 +193,6 @@ function updateChangeField() {
     }
 }
 
-    document.getElementById('submit-button').addEventListener('click', function() {
-  var sheetName = document.getElementById('emailTextbox').value;  // Get the sheet name from the textbox
-  
-  // Send a GET request to the Google Apps Script endpoint
-  var url = 'https://script.google.com/macros/s/AKfycbzNmgNbWxtymzeMnyKQHhUHktgFUNwjPNdUcHhQmvYIrXptgBkKcvUZaP0qk8PT_PGO/exec?sheetName=' + sheetName;
-  
-  fetch(url)
-    .then(response => response.json())
-    .then(receiptData => {
-      // Format the receipt data as a printable string (or HTML)
-      var receiptHtml = generateReceiptHtml(receiptData);
-      
-      // Open a new window to display the receipt and trigger print
-      var printWindow = window.open('', '', 'width=600,height=600');
-      printWindow.document.write('<html><body>' + receiptHtml + '</body></html>');
-      printWindow.document.close();
-      printWindow.print();
-    })
-    .catch(error => console.error('Error fetching receipt data:', error));
-});
-
-// Function to generate a printable receipt HTML
-function generateReceiptHtml(data) {
-  var html = '<h1>Receipt</h1><table border="1">';
-  html += '<tr><th>Item</th><th>Price</th><th>Quantity</th><th>Total</th></tr>';
-  
-  data.forEach(row => {
-    html += `<tr>
-      <td>${row.item}</td>
-      <td>${row.price}</td>
-      <td>${row.quantity}</td>
-      <td>${row.total}</td>
-    </tr>`;
-  });
-  
-  html += '</table>';
-  return html;
-}
-
 </script>
 
 </body>
