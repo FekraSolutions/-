@@ -361,7 +361,6 @@ function updateChangeField() {
           .then(response => response.json())
           .then(result => {
             if (result.success) {
-              alert(result.message);
                 window.history.back();
             } else {
               alert("An error occurred while performing the cut and paste operation.");
