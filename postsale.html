@@ -337,6 +337,35 @@ function updateChangeField() {
 
     // Attach the print function to the button
     document.getElementById('printbutton').addEventListener('click', printNewContainer);
+
+    
+    // function to save sale
+    document.getElementById("submit-button").addEventListener("click", function() {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const placeholder = emailTextbox.placeholder;
+
+  if (!placeholder) {
+    alert("Placeholder is empty!");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbwjhBVk5X_FB_1kUkAqeFKe8rVYVtC9OgzVChw6DP2IO3mtfiNsQWv_JY-scbGDCo1b/exec"; // Replace with the actual web app URL
+
+  fetch(`${webAppUrl}?placeholder=${encodeURIComponent(placeholder)}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        alert(`Sheet/tab "${placeholder}" exists.`);
+      } else {
+        alert(`Sheet/tab "${placeholder}" does not exist.`);
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("An error occurred while checking the sheet/tab.");
+    });
+});
+
 </script>
 
 </body>
