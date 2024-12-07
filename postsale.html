@@ -7,17 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'Cairo', sans-serif;
-            background-color: #B8E0CA; /* Soft, slightly darker green */
-            overflow: auto; /* Enable scrolling for the whole page */
-            position: relative;
-        }
+body {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #B8E0CA; /* Soft, slightly darker green */
+    overflow: auto; /* Enable scrolling for the whole page */
+    position: relative;
+}
+
 
         .icon-textbox-container {
             position: absolute;
@@ -117,6 +119,17 @@
     opacity: 0.8; /* Optional: Add hover effect */
 }
 
+        .new-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed gray;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #F0F0F0; /* Light gray background */
+    margin-top: 20px; /* Adds spacing from the above container */
+}
+
     </style>
 </head>
 <body>
@@ -128,19 +141,26 @@
         <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
     </div>
 
-    <!-- Center container with camera preview and barcode textbox -->
-    <div class="center-container">
-        <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-<input type="text" id="invoicetotal" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">تم دفع</label>
-<input type="number" id="paid" class="barcode-textbox">
-        <label for="category-dropdown" class="form-label">المتبقي</label>
-<input type="number" id="change" class="barcode-textbox" readonly>
+<!-- Center container with camera preview and barcode textbox -->
+<div class="center-container">
+    <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
+    <input type="text" id="invoicetotal" class="barcode-textbox" readonly>
+    <label for="category-dropdown" class="form-label">تم دفع</label>
+    <input type="number" id="paid" class="barcode-textbox">
+    <label for="category-dropdown" class="form-label">المتبقي</label>
+    <input type="number" id="change" class="barcode-textbox" readonly>
 
-        <!-- Buttons at the bottom -->
+    <!-- Buttons at the bottom -->
     <div class="button-container">
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
+</div>
+
+<!-- New empty container below the existing one -->
+<div class="new-container">
+    <!-- Add content here if needed -->
+</div>
+
 
 
 <script>
