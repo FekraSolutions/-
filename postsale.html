@@ -226,66 +226,61 @@ function updateChangeField() {
 }
 
 
-    async function populateItems() {
-            // Get the sheet name from the input field's placeholder
-            var sheetName = document.getElementById('emailTextbox').placeholder;
+  async function populateItems() {
+    var sheetName = document.getElementById('emailTextbox').placeholder;
 
-            // Ensure the sheet name is provided
-            if (!sheetName) {
-                alert('Please enter a sheet name.');
-                return;
-            }
+    if (!sheetName) {
+        alert('Please enter a sheet name.');
+        return;
+    }
 
-            // Define your web app URL here
-            const webAppUrl = 'https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec';
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec';
 
-            // Fetch data from the Google Apps Script web app
-            try {
-                const response = await fetch(`${webAppUrl}?sheetName=${sheetName}`);
-                const data = await response.json(); // Expecting the response to be a JSON object with items
+    try {
+        const response = await fetch(`${webAppUrl}?sheetName=${sheetName}`);
+        const data = await response.json();  // Parse response as JSON
 
-                // Get the table body to insert rows
-                var tableBody = document.getElementById('itemTableBody');
+        // Get the table body to insert rows
+        var tableBody = document.getElementById('itemTableBody');
 
-                // Check if data exists
-                if (data && data.items && data.items.length > 0) {
-                    // Iterate over the items and create a table row for each
-                    data.items.forEach(function(item) {
-                        var row = document.createElement('tr');
-                        
-                        // Create cell for item
-                        var tdItem = document.createElement('td');
-                        tdItem.textContent = item[0]; // Assuming the data in AD2:AD is in a single column
-                        tdItem.style.textAlign = 'center';
-                        row.appendChild(tdItem);
-                        
-                        // Placeholder values for Quantity, Price, and Total (adjust as needed)
-                        var tdQuantity = document.createElement('td');
-                        tdQuantity.textContent = '1'; // Default quantity
-                        tdQuantity.style.textAlign = 'center';
-                        row.appendChild(tdQuantity);
-                        
-                        var tdPrice = document.createElement('td');
-                        tdPrice.textContent = '$10'; // Default price
-                        tdPrice.style.textAlign = 'center';
-                        row.appendChild(tdPrice);
-                        
-                        var tdTotal = document.createElement('td');
-                        tdTotal.textContent = '$10'; // Default total
-                        tdTotal.style.textAlign = 'center';
-                        row.appendChild(tdTotal);
-                        
-                        // Append the row to the table body
-                        tableBody.appendChild(row);
-                    });
-                } else {
-                    alert('No items found.');
-                }
-            } catch (error) {
-                console.error('Error fetching items:', error);
-                alert('There was an error fetching the items.');
-            }
+        if (data && data.items && data.items.length > 0) {
+            data.items.forEach(function(item) {
+                var row = document.createElement('tr');
+
+                // Create cell for item name
+                var tdItem = document.createElement('td');
+                tdItem.textContent = item[0];  // Assuming each row in AD2:AD contains a single value (item name)
+                tdItem.style.textAlign = 'center';
+                row.appendChild(tdItem);
+
+                // Create cells for Quantity, Price, and Total (placeholder values)
+                var tdQuantity = document.createElement('td');
+                tdQuantity.textContent = '1';  // Default quantity
+                tdQuantity.style.textAlign = 'center';
+                row.appendChild(tdQuantity);
+
+                var tdPrice = document.createElement('td');
+                tdPrice.textContent = '$10';  // Default price
+                tdPrice.style.textAlign = 'center';
+                row.appendChild(tdPrice);
+
+                var tdTotal = document.createElement('td');
+                tdTotal.textContent = '$10';  // Default total
+                tdTotal.style.textAlign = 'center';
+                row.appendChild(tdTotal);
+
+                // Append the row to the table body
+                tableBody.appendChild(row);
+            });
+        } else {
+            alert('No items found.');
         }
+    } catch (error) {
+        console.error('Error fetching items:', error);
+        alert('There was an error fetching the items.');
+    }
+}
+
     
 </script>
 
