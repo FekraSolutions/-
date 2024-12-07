@@ -116,22 +116,6 @@
 .submit-button:hover {
     opacity: 0.8; /* Optional: Add hover effect */
 }
-.receipt-container {
-    margin: 20px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.receipt-row {
-    padding: 5px;
-    border-bottom: 1px solid #ddd;
-}
-
-.receipt-row:last-child {
-    border-bottom: none;
-}
 
     </style>
 </head>
@@ -157,10 +141,6 @@
     <div class="button-container">
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
-<!-- Receipt Container -->
-<div id="receipt-container" class="receipt-container">
-    <!-- Receipt rows will be dynamically added here -->
-</div>
 
 
 <script>
@@ -171,12 +151,10 @@ window.onload = async function () {
     }
 
     const sheetName = username || "DefaultSheetName"; // Use "DefaultSheetName" as fallback
-    const existingUrl = `https://script.google.com/macros/s/AKfycby1T0_lbAXyQLLBTbTUuNfbVy-x-jo14EUfO5vZkS_LrQsUQWOVDCBBQ3YPrU3A5f9I/exec?sheetName=${sheetName}`;
-    const newReceiptUrl = `https://script.google.com/macros/s/AKfycbw4nPVkgDs_iEs7JCY98ySGXYzvkv0C2rLACAc-IFQgxZ-sJtDN2DSHHZAFFsdxsuTr/exec?sheetName=${sheetName}`; // Replace with your new web app URL
+    const url = `https://script.google.com/macros/s/AKfycby1T0_lbAXyQLLBTbTUuNfbVy-x-jo14EUfO5vZkS_LrQsUQWOVDCBBQ3YPrU3A5f9I/exec?sheetName=${sheetName}`;
 
     try {
-        // Fetch invoice total
-        const response = await fetch(existingUrl);
+        const response = await fetch(url);
         const data = await response.json();
 
         if (data.value) {
@@ -188,27 +166,6 @@ window.onload = async function () {
         } else {
             console.error("Error fetching value:", data.error);
         }
-
-        // Fetch receipt data
-        const receiptResponse = await fetch(newReceiptUrl);
-        const receiptData = await receiptResponse.json();
-
-        if (receiptData.data) {
-            const receiptContainer = document.createElement('div');
-            receiptContainer.className = "receipt-container";
-
-            receiptData.data.forEach(row => {
-                const rowElement = document.createElement('div');
-                rowElement.className = "receipt-row";
-                rowElement.textContent = row.join(" | "); // Customize as needed
-                receiptContainer.appendChild(rowElement);
-            });
-
-            // Append the container above the button container
-            document.body.insertBefore(receiptContainer, document.querySelector('.button-container'));
-        } else {
-            console.error("Error fetching receipt data:", receiptData.error);
-        }
     } catch (error) {
         console.error("Fetch error:", error);
     }
@@ -216,7 +173,6 @@ window.onload = async function () {
     // Add event listener for the paid field
     document.getElementById('paid')?.addEventListener('input', updateChangeField);
 };
-
 
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
