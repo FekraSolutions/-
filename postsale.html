@@ -116,6 +116,22 @@
 .submit-button:hover {
     opacity: 0.8; /* Optional: Add hover effect */
 }
+.receipt-container {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.receipt-row {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.receipt-row:last-child {
+    border-bottom: none;
+}
 
     </style>
 </head>
@@ -141,6 +157,10 @@
     <div class="button-container">
         <button id="submit-button" class="submit-button">حفظ الفاتورة</button>
     </div>
+<!-- Receipt Container -->
+<div id="receipt-container" class="receipt-container">
+    <!-- Receipt rows will be dynamically added here -->
+</div>
 
 
 <script>
