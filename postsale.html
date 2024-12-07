@@ -337,6 +337,42 @@ function updateChangeField() {
 
     // Attach the print function to the button
     document.getElementById('printbutton').addEventListener('click', printNewContainer);
+
+// save sale function
+    document.getElementById("submit-button").addEventListener("click", async function () {
+  // Get the sheet name from the placeholder of the emailTextbox input field
+  const sheetName = document.getElementById("emailTextbox").placeholder;
+
+  // Ensure the sheet name is set
+  if (!sheetName) {
+    alert("Sheet name is not set in the placeholder.");
+    return;
+  }
+
+  // Web app URL (replace with your actual deployment URL)
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbwjhBVk5X_FB_1kUkAqeFKe8rVYVtC9OgzVChw6DP2IO3mtfiNsQWv_JY-scbGDCo1b/exec";
+
+  try {
+    // Send a POST request to the web app
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sheetName }),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      alert("Values moved successfully!");
+    } else {
+      alert("Error: " + result.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("An error occurred while processing the request.");
+  }
+});
+
 </script>
 
 </body>
