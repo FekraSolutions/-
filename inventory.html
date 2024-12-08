@@ -185,61 +185,39 @@ function getQueryParameter(name) {
 }
 
 //start date
-// Start date event listener
-document.getElementById("startdate").addEventListener("change", async function () {
-  const emailTextbox = document.getElementById("emailTextbox");
-  const sheetName = emailTextbox.placeholder;
-  const dateValue = this.value; // Get the selected date
+  document.getElementById("startdate").addEventListener("change", async function () {
+    const emailTextbox = document.getElementById("emailTextbox");
+    const sheetName = emailTextbox.placeholder;
+    const dateValue = this.value; // Get the selected date
 
-  if (!sheetName || !dateValue) {
-    console.error("Missing sheet name or date value.");
-    return;
-  }
+    if (!sheetName || !dateValue) {
+      console.error("Missing sheet name or date value.");
+      return;
+    }
 
-  const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
 
-  try {
-    const response = await fetch(webAppUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        sheetName: sheetName,
-        dateValue: dateValue,
-      }),
-    });
-
-    const result = await response.json(); // Parse the JSON response from Google Apps Script
-    console.log(result); // Log the data for debugging
-
-    // Populate the table with the data
-    const tableBody = document.querySelector("#dynamicTable tbody");
-    tableBody.innerHTML = ""; // Clear any existing rows
-
-    // Iterate over the data and create rows
-    result.forEach(row => {
-      const tr = document.createElement("tr");
-
-      // Create and append cells for each row
-      row.forEach(cell => {
-        const td = document.createElement("td");
-        td.style.padding = "10px";
-        td.style.border = "1px solid #ddd";
-        td.style.textAlign = "center";
-        td.textContent = cell;
-        tr.appendChild(td);
+    try {
+      const response = await fetch(webAppUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          sheetName: sheetName,
+          dateValue: dateValue,
+        }),
       });
 
-      tableBody.appendChild(tr);
-    });
-  } catch (error) {
-    console.error("Error sending date to Google Sheets:", error);
-  }
-});
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.error("Error sending date to Google Sheets:", error);
+    }
+  });
+
 
 </script>
 
 </body>
 </html>
-
