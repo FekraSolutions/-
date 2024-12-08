@@ -172,12 +172,12 @@ body {
 
 
 <script>
-window.onload = async function () {
+window.onload = function () {
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
-
+};
     
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
