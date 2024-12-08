@@ -248,6 +248,68 @@ document.getElementById("startdate").addEventListener("change", async function (
 });
 
 
+    //end date
+// Function to handle the startdate change, update BA2 and populate the table
+document.getElementById("enddate").addEventListener("change", async function () {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
+  const dateValue = this.value; // Get the selected date
+
+  if (!sheetName || !dateValue) {
+    console.error("Missing sheet name or date value.");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycby013sUGlDlXYIjAa9PMyPVQC8gFyrwJMdqwAxVI-RWT9WKqqcSTXRKxc88d1ek-tFG/exec"; // Replace with the deployed web app URL
+
+  try {
+    // Send the date to Google Sheets (BA2)
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        sheetName: sheetName,
+        dateValue: dateValue,
+      }),
+    });
+
+    const result = await response.text();
+    console.log(result); // Log the response to ensure the date was set in BA2
+
+    // Now fetch the row count and data for the table
+    const tableResponse = await fetch(webAppUrl + `?sheetName=${sheetName}`, {
+      method: "GET",
+    });
+
+    const tableResult = await tableResponse.json();
+    const rows = tableResult.rows; // Array of data for columns AT:AZ
+
+    // Populate the table with the data from AT:AZ
+    const tableBody = document.querySelector(".new-container tbody");
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    rows.forEach(rowData => {
+      const row = document.createElement('tr');
+      
+      // Loop through the row data (AT to AZ) and create cells
+      rowData.forEach(cellData => {
+        const cell = document.createElement('td');
+        cell.style.padding = "10px";
+        cell.style.border = "1px solid #ddd";
+        cell.style.textAlign = "center";
+        cell.textContent = cellData || ''; // Display empty if no data
+        row.appendChild(cell);
+      });
+
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error sending date to Google Sheets or populating table:", error);
+  }
+});
 </script>
 
 </body>
