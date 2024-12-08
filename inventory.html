@@ -185,36 +185,53 @@ function getQueryParameter(name) {
 }
 
 //start date
-  document.getElementById("startdate").addEventListener("change", async function () {
-    const emailTextbox = document.getElementById("emailTextbox");
-    const sheetName = emailTextbox.placeholder;
-    const dateValue = this.value; // Get the selected date
+  // Function to fetch the row count and populate the table
+async function updateTable() {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
 
-    if (!sheetName || !dateValue) {
-      console.error("Missing sheet name or date value.");
-      return;
+  if (!sheetName) {
+    console.error("Missing sheet name.");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+
+  try {
+    const response = await fetch(webAppUrl + `?sheetName=${sheetName}`, {
+      method: "GET",
+    });
+
+    const result = await response.json();
+    const rowCount = result.rowCount;
+
+    // Populate the table based on the rowCount
+    const tableBody = document.querySelector(".new-container tbody");
+    tableBody.innerHTML = ''; // Clear any existing rows
+
+    for (let i = 0; i < rowCount; i++) {
+      const row = document.createElement('tr');
+      
+      // Add empty cells to match the columns you want
+      for (let j = 0; j < 7; j++) {
+        const cell = document.createElement('td');
+        cell.style.padding = "10px";
+        cell.style.border = "1px solid #ddd";
+        cell.style.textAlign = "center";
+        row.appendChild(cell);
+      }
+
+      tableBody.appendChild(row);
     }
 
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+  } catch (error) {
+    console.error("Error fetching row count from Google Sheets:", error);
+  }
+}
 
-    try {
-      const response = await fetch(webAppUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          sheetName: sheetName,
-          dateValue: dateValue,
-        }),
-      });
-
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error("Error sending date to Google Sheets:", error);
-    }
-  });
+// Call the function when the page loads or when the start date is changed
+document.addEventListener("DOMContentLoaded", updateTable);
+document.getElementById("startdate").addEventListener("change", updateTable);
 
 
 </script>
