@@ -81,7 +81,7 @@
     <div class="label-container">
         <div class="label" onclick="goToCashierPage()">الكاشير</div>
         <div class="label" onclick="goToPurchasePage()">شراء المخزون</div>
-        <div class="label">رصيد المخزون</div>
+        <div class="label" onclick="goToInventoryPage()">رصيد المخزون</div>
         <div class="label">رصيد النقدية</div>
         <div class="label">رصيد الآجل</div>
     </div>
@@ -105,7 +105,13 @@ function goToPurchasePage() {
     }
 }
 
-
+// Redirect to inventory.html with the username in the URL
+function goToInventoryPage() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        window.location.href = `inventory.html?username=${encodeURIComponent(username)}`;
+    }
+}
         // Set the textbox value with the username from the URL
         window.onload = function () {
             const username = getQueryParameter('username');
