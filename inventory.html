@@ -174,55 +174,15 @@ body {
 <script>
 window.onload = function () {
     const username = getQueryParameter('username');
-    const emailTextbox = document.getElementById('emailTextbox');
     if (username) {
-        emailTextbox?.setAttribute('placeholder', username);
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
-
-    const startDateInput = document.getElementById('startdate');
-    const endDateInput = document.getElementById('enddate');
-
-    function sendDatesToGoogleSheets() {
-        const sheetName = emailTextbox?.getAttribute('placeholder');
-        const startDate = startDateInput?.value;
-        const endDate = endDateInput?.value;
-
-        if (!sheetName) {
-            console.error("Sheet name (placeholder) is not set.");
-            return;
-        }
-
-        const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the Web App URL
-        const data = { sheetName, startDate, endDate };
-
-        fetch(webAppUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.status === "success") {
-                console.log(result.message);
-            } else {
-                console.error(result.message);
-            }
-        })
-        .catch(error => console.error("Error sending dates:", error));
-    }
-
-    // Attach event listeners to the datepickers
-    startDateInput?.addEventListener("change", sendDatesToGoogleSheets);
-    endDateInput?.addEventListener("change", sendDatesToGoogleSheets);
 };
-
+    
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
 }
-
 
 </script>
 
