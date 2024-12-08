@@ -185,36 +185,73 @@ function getQueryParameter(name) {
 }
 
 //start date
-  document.getElementById("startdate").addEventListener("change", async function () {
-    const emailTextbox = document.getElementById("emailTextbox");
-    const sheetName = emailTextbox.placeholder;
-    const dateValue = this.value; // Get the selected date
+  //start date
+document.getElementById("startdate").addEventListener("change", async function () {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
+  const dateValue = this.value; // Get the selected date
 
-    if (!sheetName || !dateValue) {
-      console.error("Missing sheet name or date value.");
-      return;
-    }
+  if (!sheetName || !dateValue) {
+    console.error("Missing sheet name or date value.");
+    return;
+  }
 
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
 
-    try {
-      const response = await fetch(webAppUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          sheetName: sheetName,
-          dateValue: dateValue,
-        }),
-      });
+  try {
+    // Send the date to Google Sheets (BA2)
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        sheetName: sheetName,
+        dateValue: dateValue,
+        action: "updateDate", // Specify the action
+      }),
+    });
 
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error("Error sending date to Google Sheets:", error);
-    }
+    const result = await response.text();
+    console.log(result); // Log success or error
+
+    // Now fetch and populate the dynamic table
+    const dataResponse = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&action=fetchData`, {
+      method: "GET",
+    });
+
+    const data = await dataResponse.json();
+    populateTable(data); // Populate table with the fetched data
+
+  } catch (error) {
+    console.error("Error sending date or fetching data:", error);
+  }
+});
+
+// Function to populate the dynamic table with data
+function populateTable(data) {
+  const tableBody = document.querySelector("#dynamicTable tbody");
+
+  // Clear existing rows
+  tableBody.innerHTML = "";
+
+  // Populate rows dynamically
+  data.forEach(row => {
+    const tableRow = document.createElement("tr");
+
+    row.forEach(cell => {
+      const cellElement = document.createElement("td");
+      cellElement.textContent = cell;
+      cellElement.style.padding = "10px";
+      cellElement.style.border = "1px solid #ddd";
+      cellElement.style.textAlign = "center";
+      tableRow.appendChild(cellElement);
+    });
+
+    tableBody.appendChild(tableRow);
   });
+}
+
 
 
 </script>
