@@ -216,12 +216,14 @@ document.getElementById("startdate").addEventListener("change", async function (
     console.log(result); // Log success or error
 
     // Now fetch and populate the dynamic table
-    const dataResponse = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&action=fetchData`, {
-      method: "GET",
-    });
+const dataResponse = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&action=fetchData`, {
+  method: "GET",
+});
 
-    const data = await dataResponse.json();
-    populateTable(data); // Populate table with the fetched data
+const data = await dataResponse.json();
+console.log(data); // Log the fetched data to see what is returned
+populateTable(data); // Populate table with the fetched data
+
 
   } catch (error) {
     console.error("Error sending date or fetching data:", error);
@@ -229,11 +231,24 @@ document.getElementById("startdate").addEventListener("change", async function (
 });
 
 // Function to populate the dynamic table with data
+// Function to populate the dynamic table with data
 function populateTable(data) {
   const tableBody = document.querySelector("#dynamicTable tbody");
 
   // Clear existing rows
   tableBody.innerHTML = "";
+
+  // Check if data is not empty
+  if (data.length === 0) {
+    const noDataRow = document.createElement("tr");
+    const noDataCell = document.createElement("td");
+    noDataCell.colSpan = 7; // Assuming 7 columns
+    noDataCell.textContent = "No data available";
+    noDataCell.style.textAlign = "center";
+    noDataRow.appendChild(noDataCell);
+    tableBody.appendChild(noDataRow);
+    return;
+  }
 
   // Populate rows dynamically
   data.forEach(row => {
