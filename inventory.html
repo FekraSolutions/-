@@ -1,1 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>رصيد المخزون</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
+    <style>
+body {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #B8E0CA; /* Soft, slightly darker green */
+    overflow: auto; /* Enable scrolling for the whole page */
+    position: relative;
+}
 
+
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #A2D5B6; /* A soft, slightly darker green */
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+        }
+
+         .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        /* Custom style for dropdown menu */
+        .custom-dropdown {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5H7z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 20px;
+        }
+
+        .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add some space above the buttons */
+    gap: 50px; /* Add gap between buttons */
+}
+
+.submit-button {
+    background-color: #006400; /* Dark green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    opacity: 0.8; /* Optional: Add hover effect */
+}
+
+        .new-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed gray;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #F0F0F0; /* Light gray background */
+    margin-top: 20px; /* Adds spacing from the above container */
+}
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Building-Materials-Stores-Application/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
+    </div>
+
+<!-- Center container -->
+<div class="center-container">
+    <label for="category-dropdown" class="form-label">تاريخ أول التقرير</label>
+    <input type="date" id="startdate" class="barcode-textbox">
+    <label for="category-dropdown" class="form-label">تاريخ آخر التقرير</label>
+    <input type="date" id="enddate" class="barcode-textbox">
+</div>
+
+<!-- New empty container below the existing one -->
+<div class="new-container">
+    <table id="dynamicTable" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الكود</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الفئة</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الصنف</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">وحدة القياس</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الكمية المشتراه</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الكمية المباعة</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">الرصيد</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows will be inserted here -->
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+window.onload = async function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    }
+
+    
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+</script>
+
+</body>
+</html>
