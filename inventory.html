@@ -185,37 +185,70 @@ function getQueryParameter(name) {
 }
 
 //start date
-  document.getElementById("startdate").addEventListener("change", async function () {
-    const emailTextbox = document.getElementById("emailTextbox");
-    const sheetName = emailTextbox.placeholder;
-    const dateValue = this.value; // Get the selected date
+ document.getElementById("startdate").addEventListener("change", async function () {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
+  const dateValue = this.value; // Get the selected date
 
-    if (!sheetName || !dateValue) {
-      console.error("Missing sheet name or date value.");
-      return;
+  if (!sheetName || !dateValue) {
+    console.error("Missing sheet name or date value.");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed Web App URL
+
+  try {
+    // Send the date to the Google Sheets Web App
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        sheetName: sheetName,
+        dateValue: dateValue,
+      }),
+    });
+
+    const result = await response.json(); // Parse the JSON response
+
+    if (result.success) {
+      console.log("Date successfully updated and data fetched");
+
+      // Populate the dynamic table with data from AT2:AZ
+      await populateDynamicTable(result.data); // Pass the fetched data directly
+    } else {
+      console.error("Failed to update date or fetch data.");
     }
+  } catch (error) {
+    console.error("Error sending date to Google Sheets:", error);
+  }
+});
 
-    const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+// Function to populate the dynamic table
+async function populateDynamicTable(data) {
+  const tableBody = document.querySelector("#dynamicTable tbody");
+  tableBody.innerHTML = ""; // Clear existing rows
 
-    try {
-      const response = await fetch(webAppUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          sheetName: sheetName,
-          dateValue: dateValue,
-        }),
+  if (data && data.length > 0) {
+    data.forEach(row => {
+      const tableRow = document.createElement("tr");
+
+      row.forEach(cellData => {
+        const tableCell = document.createElement("td");
+        tableCell.style.padding = "10px";
+        tableCell.style.border = "1px solid #ddd";
+        tableCell.style.textAlign = "center";
+        tableCell.textContent = cellData;
+        tableRow.appendChild(tableCell);
       });
 
-      const result = await response.text();
-      console.log(result);
-    } catch (error) {
-      console.error("Error sending date to Google Sheets:", error);
-    }
-  });
-
+      tableBody.appendChild(tableRow);
+    });
+  } else {
+    console.log("No data available for table.");
+  }
+}
 
 </script>
 
