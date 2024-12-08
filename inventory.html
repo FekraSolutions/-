@@ -184,6 +184,33 @@ function getQueryParameter(name) {
     return urlParams.get(name);
 }
 
+    <script>
+  document.getElementById("startdate").addEventListener("change", async function () {
+    const emailTextbox = document.getElementById("emailTextbox");
+    const sheetName = emailTextbox.placeholder;
+
+    if (!sheetName) {
+      alert("No sheet name specified in the placeholder.");
+      return;
+    }
+
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+    try {
+      const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
+      const sheetExists = await response.text();
+
+      if (sheetExists === "true") {
+        alert(`Sheet '${sheetName}' exists.`);
+      } else {
+        alert(`Sheet '${sheetName}' does not exist.`);
+      }
+    } catch (error) {
+      console.error("Error checking sheet:", error);
+      alert("An error occurred while checking the sheet.");
+    }
+  });
+</script>
+
 </script>
 
 </body>
