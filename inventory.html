@@ -185,7 +185,7 @@ function getQueryParameter(name) {
 }
 
 //start date
-  // Function to fetch the row count and populate the table
+ // Function to fetch the data and populate the table
 async function updateTable() {
   const emailTextbox = document.getElementById("emailTextbox");
   const sheetName = emailTextbox.placeholder;
@@ -203,36 +203,36 @@ async function updateTable() {
     });
 
     const result = await response.json();
-    const rowCount = result.rowCount;
+    const rows = result.rows; // Assuming rows is an array of data from AT2:AZ
 
-    // Populate the table based on the rowCount
+    // Populate the table based on the fetched data
     const tableBody = document.querySelector(".new-container tbody");
     tableBody.innerHTML = ''; // Clear any existing rows
 
-    for (let i = 0; i < rowCount; i++) {
+    rows.forEach(rowData => {
       const row = document.createElement('tr');
       
-      // Add empty cells to match the columns you want
-      for (let j = 0; j < 7; j++) {
+      // Loop through the row data (AT to AZ) and create cells
+      rowData.forEach(cellData => {
         const cell = document.createElement('td');
         cell.style.padding = "10px";
         cell.style.border = "1px solid #ddd";
         cell.style.textAlign = "center";
+        cell.textContent = cellData || ''; // Display empty if no data
         row.appendChild(cell);
-      }
+      });
 
       tableBody.appendChild(row);
-    }
+    });
 
   } catch (error) {
-    console.error("Error fetching row count from Google Sheets:", error);
+    console.error("Error fetching data from Google Sheets:", error);
   }
 }
 
 // Call the function when the page loads or when the start date is changed
 document.addEventListener("DOMContentLoaded", updateTable);
 document.getElementById("startdate").addEventListener("change", updateTable);
-
 
 </script>
 
