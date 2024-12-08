@@ -177,7 +177,50 @@ window.onload = function () {
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
+
+    const startDateInput = document.getElementById('startdate');
+    const endDateInput = document.getElementById('enddate');
+    const emailTextbox = document.getElementById('emailTextbox');
+
+    async function updateDates() {
+        const startDate = startDateInput.value;
+        const endDate = endDateInput.value;
+        const sheetName = emailTextbox?.getAttribute('placeholder');
+
+        if (!startDate || !endDate || !sheetName) {
+            alert("Please ensure all fields are filled.");
+            return;
+        }
+
+        const payload = {
+            startDate: startDate,
+            endDate: endDate,
+            sheetName: sheetName
+        };
+
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert("Dates updated successfully!");
+            } else {
+                alert("Error: " + result.message || "Unknown error occurred.");
+            }
+        } catch (error) {
+            console.error("Failed to update dates:", error);
+            alert("Failed to update dates. Please try again.");
+        }
+    }
+
+    startDateInput.addEventListener('change', updateDates);
+    endDateInput.addEventListener('change', updateDates);
 };
+
     
 function getQueryParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
