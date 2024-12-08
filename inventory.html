@@ -217,6 +217,37 @@ function getQueryParameter(name) {
   });
 
 
+//end date
+  document.getElementById("enddate").addEventListener("change", async function () {
+    const emailTextbox = document.getElementById("emailTextbox");
+    const sheetName = emailTextbox.placeholder;
+    const dateValue = this.value; // Get the selected date
+
+    if (!sheetName || !dateValue) {
+      console.error("Missing sheet name or date value.");
+      return;
+    }
+
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwtBZj0Y1Ud_DSjuCnRMZ7ZByD0I6o67HA5kmoT74H3xe4uzkPS1WcpU1wVteliM-dQ/exec"; // Replace with the deployed web app URL
+
+    try {
+      const response = await fetch(webAppUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          sheetName: sheetName,
+          dateValue: dateValue,
+        }),
+      });
+
+      const result = await response.text();
+      console.log(result);
+    } catch (error) {
+      console.error("Error sending date to Google Sheets:", error);
+    }
+  });
 
 </script>
 
