@@ -240,13 +240,14 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
-    function fetchCategories() {
-        const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
-        fetch(url)
-            .then(response => response.json())
-            .then(data => populateCategories(data))
-            .catch(error => console.error('Error fetching categories:', error));
-    }
+function fetchCategories() {
+    const placeholder = document.getElementById('emailTextbox').placeholder;
+    const url = `https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec?placeholder=${encodeURIComponent(placeholder)}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => populateCategories(data))
+        .catch(error => console.error('Error fetching categories:', error));
+}
 
     function populateCategories(categories) {
         const select = document.getElementById('category-dropdown');
@@ -265,13 +266,14 @@
         });
     }
 
-    function fetchItems(category) {
-        const url = `https://script.google.com/macros/s/AKfycbxW1_9To32ui_ttahQBm8x0Ltt9VLlwwN5dWFZ3-QxrttJnURA761U7LkZSbHlRKjl9/exec?category=${encodeURIComponent(category)}`; // Replace with your Google Apps Script web app URL
-        fetch(url)
-            .then(response => response.json())
-            .then(data => updateItemSuggestions(data))
-            .catch(error => console.error('Error fetching items:', error));
-    }
+function fetchItems(category) {
+    const placeholder = document.getElementById('emailTextbox').placeholder;
+    const url = `https://script.google.com/macros/s/AKfycbxW1_9To32ui_ttahQBm8x0Ltt9VLlwwN5dWFZ3-QxrttJnURA761U7LkZSbHlRKjl9/exec?category=${encodeURIComponent(category)}&placeholder=${encodeURIComponent(placeholder)}`;
+    fetch(url)
+        .then(response => response.json())
+        .then(data => updateItemSuggestions(data))
+        .catch(error => console.error('Error fetching items:', error));
+}
 
     function updateItemSuggestions(items) {
         const textbox = document.getElementById('item-name-textbox');
