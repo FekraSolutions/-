@@ -261,20 +261,7 @@ async function checkSheetExists() {
     alert("Failed to fetch data: " + error.message);
   }
 }
-
-window.onload = function () {
-  // Existing code for onload initialization
-  const username = getQueryParameter('username');
-  if (username) {
-    document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-  }
-
-  // Call checkSheetExists at the end of onload
-  checkSheetExists();
-};
-
-
-    
+   
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
