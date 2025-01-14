@@ -241,7 +241,7 @@
         }
     
     function fetchCategories() {
-        const url = 'https://script.google.com/macros/s/AKfycbxgstopi-Vfyzg5hF5w27aBvoHxlEGsDMd5eEqUNCkKAj8aC88izqdoYjd5PviN8CIS/exec'; // Replace with your web app URL
+        const url = 'https://script.google.com/macros/s/AKfycbwYwXid68jhGgKP15ms63SJEOFBBgbMPqFGGciBLq9bzyEO9-sb6RF0ecGirKSyn4hb/exec'; // Replace with your web app URL
         fetch(url)
             .then(response => response.json())
             .then(data => populateCategories(data))
@@ -266,7 +266,7 @@
     }
 
     function fetchItems(category) {
-        const url = `https://script.google.com/macros/s/AKfycbwYwXid68jhGgKP15ms63SJEOFBBgbMPqFGGciBLq9bzyEO9-sb6RF0ecGirKSyn4hb/exec?category=${encodeURIComponent(category)}`; // Replace with your Google Apps Script web app URL
+        const url = `https://script.google.com/macros/s/AKfycbxgstopi-Vfyzg5hF5w27aBvoHxlEGsDMd5eEqUNCkKAj8aC88izqdoYjd5PviN8CIS/exec?category=${encodeURIComponent(category)}`; // Replace with your Google Apps Script web app URL
         fetch(url)
             .then(response => response.json())
             .then(data => updateItemSuggestions(data))
