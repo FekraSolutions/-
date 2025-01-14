@@ -287,6 +287,46 @@
 }
 
 
+//ittttem
+    // Fetch and update item suggestions based on the selected category
+async function updateItemSuggestions() {
+  const categoryDropdown = document.getElementById('category-dropdown');
+  const category = categoryDropdown.value; // Get the selected category
+  const itemTextbox = document.getElementById('item-name-textbox');
+  const itemList = document.getElementById('item-suggestion-list');
+  const sheetName = document.getElementById('emailTextbox').placeholder; // Get the sheet name
+
+  // Clear existing items in the datalist
+  itemList.innerHTML = '';
+
+  if (category) {
+    try {
+      // Fetch items for the selected category from the Google Sheets script
+      const webAppUrl = 'https://script.google.com/macros/s/AKfycbzpbzLGO_z6p7mE0_YG9Q59r20zGcQN1egIgWxtVfuyHKPei0WD33Ozguug9DZyNKtJ/exec'; // Replace with your actual web app URL
+      const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&category=${encodeURIComponent(category)}`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`);
+      }
+
+      const items = await response.json();
+
+      // Populate the datalist with the items
+      items.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        itemList.appendChild(option);
+      });
+    } catch (error) {
+      console.error('Error updating item suggestions:', error);
+    }
+  }
+}
+
+// Add an event listener to the category dropdown to trigger item suggestions update
+document.getElementById('category-dropdown').addEventListener('change', updateItemSuggestions);
 
     
     function getQueryParameter(name) {
