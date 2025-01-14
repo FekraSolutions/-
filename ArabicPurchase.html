@@ -239,7 +239,26 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
-    
+    document.addEventListener('DOMContentLoaded', function () {
+  const emailTextbox = document.getElementById('emailTextbox');
+  const sheetName = emailTextbox.placeholder;
+
+  fetch('https://script.google.com/macros/s/AKfycby1tuAzKfYjRtOeC4eI5DQxJqVpN1YnbwPgftYn1-ph08XlTzf_9JkoQ7xIVqkq2B4J/exec', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sheetName: sheetName })
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.exists) {
+        console.log(`The sheet "${sheetName}" exists.`);
+      } else {
+        console.log(`The sheet "${sheetName}" does not exist.`);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
