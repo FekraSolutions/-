@@ -241,7 +241,12 @@
         }
     
 //categories and items
+        document.getElementById('category-dropdown').addEventListener('change', function () {
+            const placeholderValue = document.getElementById('emailTextbox').placeholder;
+            alert(`Placeholder value: ${placeholderValue}`);
+        });
 
+    
     
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
