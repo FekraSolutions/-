@@ -219,7 +219,7 @@
                 document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
             }
             startCamera();
-            
+            fetchCategories();
 
             // Add event listeners for real-time calculation
             const quantityField = document.getElementById('quantity');
@@ -230,7 +230,6 @@
 
             // Ensure total is updated on page load
             updateTotal();
-            checkSheetExists();
         };
 
             // Update the total value based on quantity and purchase price
@@ -241,27 +240,62 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
-//categories and items
-async function checkSheetExists() {
-  const emailTextbox = document.getElementById("emailTextbox");
-  const sheetName = emailTextbox.getAttribute("placeholder");
+    function fetchCategories() {
+        const url = 'https://script.google.com/macros/s/AKfycbxalVIABVbzJMWc4UHGp9Y8kv-s8AhbP5grzpcHttOAsQgdsSUOwD3YryXw4vukgw_g/exec'; // Replace with your web app URL
+        fetch(url)
+            .then(response => response.json())
+            .then(data => populateCategories(data))
+            .catch(error => console.error('Error fetching categories:', error));
+    }
 
-  if (!sheetName) {
-    alert("Sheet name is missing in the placeholder attribute.");
-    return;
-  }
+    function populateCategories(categories) {
+        const select = document.getElementById('category-dropdown');
+        categories.forEach(function(category) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+        });
 
-  try {
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbyAiQNjQzNJ38qsIYx8ffdbDzh1tTF63PpmsqnGgxN4QmLr9gxd_CA0XLkYY4cfW8bW/exec'; // Replace with your actual web app URL
-    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
-    const result = await response.json();
+        // Add event listener to update item suggestions when a category is selected
+        select.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            console.log('Selected Category:', selectedCategory); // Debugging log
+            fetchItems(selectedCategory); // Call fetchItems function on category change
+        });
+    }
 
-    alert(result.message); // Show the result message
-  } catch (error) {
-    alert("Failed to fetch data: " + error.message);
-  }
-}
-   
+    function fetchItems(category) {
+        const url = `https://script.google.com/macros/s/AKfycbxW1_9To32ui_ttahQBm8x0Ltt9VLlwwN5dWFZ3-QxrttJnURA761U7LkZSbHlRKjl9/exec?category=${encodeURIComponent(category)}`; // Replace with your Google Apps Script web app URL
+        fetch(url)
+            .then(response => response.json())
+            .then(data => updateItemSuggestions(data))
+            .catch(error => console.error('Error fetching items:', error));
+    }
+
+    function updateItemSuggestions(items) {
+        const textbox = document.getElementById('item-name-textbox');
+        textbox.setAttribute('list', 'item-suggestion-list');
+
+        // Create a datalist to hold suggestions
+        let dataList = document.getElementById('item-suggestion-list');
+        if (!dataList) {
+            dataList = document.createElement('datalist');
+            dataList.id = 'item-suggestion-list';
+            document.body.appendChild(dataList);
+        }
+
+        // Clear previous options
+        dataList.innerHTML = '';
+
+        // Add new options
+        items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            dataList.appendChild(option);
+        });
+    }
+
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
