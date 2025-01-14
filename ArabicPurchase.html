@@ -213,23 +213,48 @@
 
 <script>
    // Set the textbox value with the username from the URL and initialize events
-        window.onload = function () {
-            const username = getQueryParameter('username');
-            if (username) {
-                document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
-            }
-            startCamera();
+window.onload = function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    }
+    startCamera();
 
-            // Add event listeners for real-time calculation
-            const quantityField = document.getElementById('quantity');
-            const priceField = document.getElementById('purchase-price-textbox');
+    // Add event listeners for real-time calculation
+    const quantityField = document.getElementById('quantity');
+    const priceField = document.getElementById('purchase-price-textbox');
 
-            quantityField.addEventListener('input', updateTotal);
-            priceField.addEventListener('input', updateTotal);
+    if (quantityField && priceField) {
+        quantityField.addEventListener('input', updateTotal);
+        priceField.addEventListener('input', updateTotal);
+    }
 
-            // Ensure total is updated on page load
-            updateTotal();
-        };
+    // Ensure total is updated on page load
+    updateTotal();
+
+    // Check if the sheet exists
+    const emailTextbox = document.getElementById('emailTextbox');
+    const sheetName = emailTextbox?.placeholder;
+
+    if (sheetName) {
+        fetch('https://script.google.com/macros/s/AKfycby1tuAzKfYjRtOeC4eI5DQxJqVpN1YnbwPgftYn1-ph08XlTzf_9JkoQ7xIVqkq2B4J/exec', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sheetName: sheetName })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    console.log(`The sheet "${sheetName}" exists.`);
+                } else {
+                    console.log(`The sheet "${sheetName}" does not exist.`);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    } else {
+        console.error('Sheet name is not set in the emailTextbox placeholder.');
+    }
+};
 
             // Update the total value based on quantity and purchase price
         function updateTotal() {
@@ -239,27 +264,7 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
-    document.addEventListener('DOMContentLoaded', function () {
-  const emailTextbox = document.getElementById('emailTextbox');
-  const sheetName = emailTextbox.placeholder;
-
-  fetch('https://script.google.com/macros/s/AKfycby1tuAzKfYjRtOeC4eI5DQxJqVpN1YnbwPgftYn1-ph08XlTzf_9JkoQ7xIVqkq2B4J/exec', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sheetName: sheetName })
-  })
-    .then(response => response.json())
-    .then(data => {
-      if (data.exists) {
-        console.log(`The sheet "${sheetName}" exists.`);
-      } else {
-        console.log(`The sheet "${sheetName}" does not exist.`);
-      }
-    })
-    .catch(error => console.error('Error:', error));
-});
-
-    function getQueryParameter(name) {
+      function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
