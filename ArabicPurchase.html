@@ -219,7 +219,7 @@
                 document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
             }
             startCamera();
-            checkSheetExists();
+            
 
             // Add event listeners for real-time calculation
             const quantityField = document.getElementById('quantity');
@@ -230,7 +230,7 @@
 
             // Ensure total is updated on page load
             updateTotal();
-            populateDropdown();
+            checkSheetExists();
         };
 
             // Update the total value based on quantity and purchase price
