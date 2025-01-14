@@ -229,6 +229,7 @@
 
             // Ensure total is updated on page load
             updateTotal();
+            populateCategoryDropdown();
         };
 
             // Update the total value based on quantity and purchase price
@@ -239,7 +240,55 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
+//cattttegory
+    async function fetchCategoryOptions(sheetName) {
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbw2RLYJhOfHzfEsDtU6GDloVkqnlM4_DIoSnN21iCSjjQaRvfTaCf9JZ4PwAnIE9Bpm/exec'; // Replace with your actual web app URL
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&range=BQ1:CY1`, {
+        method: 'GET',
+    });
 
+    if (!response.ok) {
+        throw new Error(`Error fetching data from Google Sheets: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    return data; // Assumed that data is an array of options from BQ1:CY1
+}
+
+    async function populateCategoryDropdown() {
+    const sheetName = document.getElementById('emailTextbox').placeholder;
+
+    try {
+        // Fetch options from Google Sheets
+        const options = await fetchCategoryOptions(sheetName);
+
+        // Get the dropdown element
+        const categoryDropdown = document.getElementById('category-dropdown');
+
+        // Clear existing options
+        categoryDropdown.innerHTML = '';
+
+        // Add default "Select Category" option
+        const defaultOption = document.createElement('option');
+        defaultOption.textContent = 'Select Category';
+        categoryDropdown.appendChild(defaultOption);
+
+        // Populate dropdown with fetched options
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option;
+            optionElement.textContent = option;
+            categoryDropdown.appendChild(optionElement);
+        });
+    } catch (error) {
+        console.error("Error populating category dropdown:", error);
+        alert("حدث خطأ أثناء تحميل الخيارات.");
+    }
+}
+
+
+
+    
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
