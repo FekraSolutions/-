@@ -219,7 +219,6 @@
                 document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
             }
             startCamera();
-            newcheck();
 
             // Add event listeners for real-time calculation
             const quantityField = document.getElementById('quantity');
@@ -240,33 +239,6 @@
             itemTotal.value = (quantity * purchasePrice).toFixed(2); // Calculate and format to 2 decimal places
         }
     
-
-    //categories
-    function newcheck() {
-  const barcodeTextbox = document.getElementById('emailTextbox');
-  const sheetName = barcodeTextbox.placeholder;
-
-  const url = 'https://script.google.com/macros/s/AKfycbzNe0xNEjvqXvciiLG9GzdbFjEn_6pOB3m2Fr1wWHqG56pa5Gg9H33zM_hCtUgP_VIn/exec'; // Replace this with the web app URL
-
-  const params = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ sheetName: sheetName }),
-  };
-
-  fetch(url, params)
-    .then(response => response.json())
-    .then(data => {
-      alert(data.message);  // Display the result in a message box
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred while checking the sheet.');
-    });
-}
-
 
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
