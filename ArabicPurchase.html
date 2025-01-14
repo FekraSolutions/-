@@ -159,6 +159,8 @@
         </select>
         <label for="category-dropdown" class="form-label">اسم الصنف</label>
         <input type="text" id="item-name-textbox" class="barcode-textbox" list="item-suggestion-list">
+<datalist id="item-suggestion-list"></datalist>
+
         <label for="category-dropdown" class="form-label">وحدة القياس</label>
         <select id="measurement-unit-dropdown" class="custom-dropdown">
         <option value="" disabled selected></option>
@@ -287,6 +289,51 @@
 }
 
 
+//itttttem
+    // Fetch items for the selected category
+async function fetchItemsForCategory(sheetName, category) {
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbwKpj2nTFpq1wdhV-kE3YcYXPa7TUF0wPc2pVYYTPSgGxBJp_1fdCU-wNf4vqQoY0jP/exec'; // Replace with your actual web app URL
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}&category=${encodeURIComponent(category)}`, {
+        method: 'GET',
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error fetching items for category: ${response.statusText}`);
+    }
+
+    return await response.json(); // Assumed that data is an array of items for the category
+}
+
+// Trigger on category change
+async function handleCategoryChange() {
+    const sheetName = document.getElementById('emailTextbox').placeholder;
+    const categoryDropdown = document.getElementById('category-dropdown');
+    const selectedCategory = categoryDropdown.value;
+
+    if (!selectedCategory) return; // Do nothing if no category is selected
+
+    try {
+        // Fetch items for the selected category
+        const items = await fetchItemsForCategory(sheetName, selectedCategory);
+
+        // Populate the datalist for item suggestions
+        const itemSuggestionList = document.getElementById('item-suggestion-list');
+        itemSuggestionList.innerHTML = ''; // Clear existing suggestions
+
+        items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item;
+            itemSuggestionList.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Error populating items:", error);
+        alert("حدث خطأ أثناء تحميل العناصر.");
+    }
+}
+
+// Attach the event listener to the category dropdown
+document.getElementById('category-dropdown').addEventListener('change', handleCategoryChange);
 
     
     function getQueryParameter(name) {
