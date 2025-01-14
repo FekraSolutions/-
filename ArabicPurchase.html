@@ -252,19 +252,26 @@ async function checkSheetExists() {
   }
 
   try {
-    const response = await fetch(`
-https://script.google.com/macros/s/AKfycbyAiQNjQzNJ38qsIYx8ffdbDzh1tTF63PpmsqnGgxN4QmLr9gxd_CA0XLkYY4cfW8bW/exec?sheetName=${encodeURIComponent(sheetName)}`);
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbyAiQNjQzNJ38qsIYx8ffdbDzh1tTF63PpmsqnGgxN4QmLr9gxd_CA0XLkYY4cfW8bW/exec'; // Replace with your actual web app URL
+    const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
     const result = await response.json();
 
-    if (result.exists) {
-      alert(result.message); // Sheet exists
-    } else {
-      alert(result.message); // Sheet does not exist
-    }
+    alert(result.message); // Show the result message
   } catch (error) {
     alert("Failed to fetch data: " + error.message);
   }
 }
+
+window.onload = function () {
+  // Existing code for onload initialization
+  const username = getQueryParameter('username');
+  if (username) {
+    document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+  }
+
+  // Call checkSheetExists at the end of onload
+  checkSheetExists();
+};
 
 
     
