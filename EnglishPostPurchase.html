@@ -1,1 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save Purchase Invoice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #E3C9A4;
+            overflow: auto; /* Enable scrolling for the whole page */
+            position: relative;
+        }
 
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #E8D3A5;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #F4E1BC;
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #E8D3A5;
+        }
+
+        .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #F4E1BC;
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        /* Custom style for dropdown menu */
+        .custom-dropdown {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #F4E1BC;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5H7z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 20px;
+        }
+
+        .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add some space above the buttons */
+    gap: 50px; /* Add gap between buttons */
+}
+
+.submit-button {
+    background-color: #006400; /* Dark green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.another-item-button {
+    background-color: #EE9090;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.submit-button:hover,
+.another-item-button:hover {
+    opacity: 0.8; /* Optional: Add hover effect */
+}
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Stores-Cashier-ERP-System/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
+    </div>
+
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">  
+        <label for="barcode-textbox" class="form-label">Date</label>
+        <input type="text" id="Date" class="barcode-textbox" placeholder="" readonly>
+        <label for="category-dropdown" class="form-label">Invoice #</label>
+        <input type="text" id="invoiceNumber" class="barcode-textbox">   
+        
+        <label for="category-dropdown" class="form-label">Vendor Name</label>
+        <input type="text" id="vendor" class="barcode-textbox">  
+        <label for="category-dropdown" class="form-label">Pay Terms</label>
+        <select id="paymethod" class="custom-dropdown">
+        <option value="" disabled selected></option>
+            <option value="Cash">Cash</option>
+            <option value="Credit">Credit</option>    
+            </select>
+        <label for="category-dropdown" class="form-label">Total</label>
+        <input type="text" id="invoicetotal" class="barcode-textbox" readonly />  
+        <!-- Dynamic Section for "Credit" -->
+    <div id="deferredPaymentSection" style="display: none;">
+    <label for="paid" class="form-label">Paid</label>
+    <input type="number" id="paid" class="barcode-textbox">
+    <label for="paid" class="form-label">Amount Due</label>
+    <input type="number" id="due" class="barcode-textbox" readonly />
+    <label for="dueDate" class="form-label">Due Date</label>
+    <input type="date" id="dueDate" class="barcode-textbox">
+    </div>
+    <div class="button-container">
+        <button id="submit" class="submit-button">Save Invoice</button>
+        <button id="cancel" class="another-item-button" onclick="window.history.back()">Cancel</button>
+    </div>
+    </div>
+<script>
+window.onload = async function () {
+    // Set the email textbox placeholder with the username from the URL
+    const username = getQueryParameter('username');
+    const emailTextbox = document.getElementById('emailTextbox');
+    const invoiceTotalTextbox = document.getElementById('invoicetotal');
+
+    if (username) {
+        emailTextbox.placeholder = username;
+    }
+
+    // Fetch the invoicetotal value
+    const sheetName = emailTextbox.placeholder; // Use the username as the sheet name
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbwMA623pp2oJv_gxxeRvgR5QyjHdXMKO0XlHfNrOyCuE8lIO14bipY2Sbg3SiY0qpo-/exec"; // Replace with your Apps Script web app URL
+
+    try {
+        const response = await fetch(`${webAppUrl}?sheetName=${encodeURIComponent(sheetName)}`);
+        const data = await response.json();
+
+        if (data.invoicetotal !== undefined) {
+            invoiceTotalTextbox.value = data.invoicetotal;
+        } else {
+            invoiceTotalTextbox.value = "Error fetching data";
+        }
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        invoiceTotalTextbox.value = "Error fetching data";
+    }
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('Date').value = today;
+    // Make the invoicetotal textbox read-only
+    invoiceTotalTextbox.readOnly = true;
+    updateDueField();
+};
+
+// Function to get a query parameter from the URL
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+        // Show or hide the deferred payment section based on selection
+    document.getElementById('paymethod').addEventListener('change', function() {
+        const deferredSection = document.getElementById('deferredPaymentSection');
+        if (this.value === 'Credit') {
+            deferredSection.style.display = 'block';
+        } else {
+            deferredSection.style.display = 'none';
+        }
+    });
+
+     // Function to update the due field
+  function updateDueField() {
+    const invoicetotal = parseFloat(document.getElementById('invoicetotal').value) || 0;
+    const paid = parseFloat(document.getElementById('paid').value) || 0;
+    const due = invoicetotal - paid;
+
+    document.getElementById('due').value = due.toFixed(2); // Set the due field value
+  }
+
+  // Add event listener to update due when the paid field changes
+  document.getElementById('paid').addEventListener('input', updateDueField);
+
+  // Initial calculation in case there is a prefilled value
+  updateDueField();
+
+document.getElementById("submit").addEventListener("click", async function () {
+  const invoiceNumber = document.getElementById("invoiceNumber").value.trim();
+  const vendor = document.getElementById("vendor").value.trim();
+  const paymethod = document.getElementById("paymethod").value.trim();
+  const emailTextbox = document.getElementById("emailTextbox").placeholder;
+
+  // Check if all required fields are filled
+  if (!invoiceNumber || !vendor || !paymethod) {
+    alert("Please fill all data");
+    return;
+  }
+
+  // Prepare data to send
+  const data = {
+    sheetName: emailTextbox,
+    Date: document.getElementById("Date").value,
+    invoiceNumber,
+    vendor,
+    paymethod,
+    invoicetotal: document.getElementById("invoicetotal").value || "0",
+    paid: document.getElementById("paid").value,
+    due: document.getElementById("due").value,
+    dueDate: document.getElementById("dueDate").value,
+  };
+
+  try {
+    // Replace with your Web App URL
+    const webAppUrl = "https://script.google.com/macros/s/AKfycbxvhCkG33IqeQk5uQPBhIvTSR6W954FbLLbUMDESQwrAgeDrIslfIc-ncgkAdNgo0LE/exec";
+
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+
+    if (result.status === "success") {
+      alert("Invoice Saved");
+    history.back(); // Navigate back after successful post
+    } else {
+      alert("Error Occured: " + result.message);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server ERROR");
+  }
+});
+
+
+</script>
+
+</body>
+</html>
