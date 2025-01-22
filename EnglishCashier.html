@@ -1,1 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stores Cashier App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #CDEEDC; /* Gentle, pastel green */
+            overflow: auto; /* Enable scrolling for the whole page */
+            position: relative;
+        }
 
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+        }
+
+        .camera-preview {
+            width: 300px;
+            height: 300px;
+            background-color: black;
+        }
+
+        .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        /* Custom style for dropdown menu */
+        .custom-dropdown {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5H7z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 20px;
+        }
+
+        .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add some space above the buttons */
+    gap: 50px; /* Add gap between buttons */
+}
+
+.submit-button {
+    background-color: #006400; /* Dark green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.another-item-button {
+    background-color: #E57373; /* Soft red */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.submit-button:hover,
+.another-item-button:hover {
+    opacity: 0.8; /* Optional: Add hover effect */
+}
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Stores-Cashier-ERP-System/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
+    </div>
+
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">
+        <video id="camera-preview" class="camera-preview" autoplay></video>
+        
+        <label for="barcode-textbox" class="form-label">Barcode</label>
+        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
+
+        <label for="category-dropdown" class="form-label">Invoice #</label>
+<input type="text" id="invoicenumber" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Date</label>
+<input type="text" id="date" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Category</label>
+<input type="text" id="category" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Item</label>
+<input type="text" id="item" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Unit</label>
+<input type="text" id="uom" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Quantity</label>
+<input type="number" id="quantity" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">Sell Price</label>
+<input type="number" id="price" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Total</label>
+<input type="number" id="itemtotal" class="barcode-textbox" readonly>
+        <!-- Buttons at the bottom -->
+    <div class="button-container">
+        <button id="cancel" class="another-item-button" onclick="window.history.back()">Cancel</button>
+        <button id="submit-button" class="submit-button">Save Invoice</button>
+    </div>
+    </div>
+
+    <audio id="beep-sound" src="Media/beep.mp3"></audio> <!-- Audio element for beep sound -->
+
+<script>
+    // URL for your Apps Script web app
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycby2z524Ob9mHwXlLSujQ69GptHtzTJwWAkYspoIKFSDTie787isxdMDQUfihVFU6vvv/exec'; // Replace with your deployed web app URL
+
+    // Global flag to prevent spamming messageboxes
+    let lastDetectedBarcode = '';
+    let isChecking = false;
+
+    // Set the textbox value with the username from the URL and initialize events
+window.onload = function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    }
+    startCamera();
+
+    // Set the Date textbox with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').value = today;
+
+    // Add event listener to update item total and call updateQ
+    document.getElementById('quantity').addEventListener('input', function() {
+        updateItemTotal();  // Existing function
+        updateQ();          // New function
+    });
+};
+
+
+function updateQ() {
+    const quantity = document.getElementById('quantity').value; // Get the value from the input field
+    const sheet = document.getElementById('emailTextbox').placeholder; // Get the value from the input field
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzaar1eTzLvw7oB4jj4ScUPHeBi-_NrmnaRgBF9tJuIbs7MoX0hDaS6A_RKvDVXGnRu/exec'; // Replace with your Web App URL
+    
+    if (quantity !== "") {  // Only run if the quantity is not blank
+        // Create the URL with the sheetName and quantity parameters
+        const url = `${webAppUrl}?sheetName=${encodeURIComponent(sheet)}&quantity=${encodeURIComponent(quantity)}`;
+        
+        // Make a request to the Web App
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // If needed, you can process the response here without showing an alert
+                console.log("Sheet exists:", data.sheetExists);
+                console.log("Last value in AF:", data.lastCellValue);
+                console.log("Update success:", data.success);
+            })
+            .catch(error => {
+                console.error('Error checking sheet:', error);
+            });
+    }
+}
+
+
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    async function startCamera() {
+        try {
+            const constraints = { video: { facingMode: 'environment' } };
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
+            const videoElement = document.getElementById('camera-preview');
+            videoElement.srcObject = stream;
+            startBarcodeDetection();
+        } catch (error) {
+            console.error('Error accessing the camera:', error);
+        }
+    }
+
+    function startBarcodeDetection() {
+        Quagga.init(
+            {
+                inputStream: {
+                    type: 'LiveStream',
+                    target: document.querySelector('#camera-preview'),
+                },
+                decoder: {
+                    readers: [
+                        'code_128_reader',
+                        'ean_reader',
+                        'ean_8_reader',
+                        'code_39_reader',
+                        'code_39_vin_reader',
+                        'upc_reader',
+                        'upc_e_reader',
+                        'i2of5_reader',
+                    ],
+                },
+            },
+            (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                Quagga.start();
+                console.log('Barcode detection started');
+            }
+        );
+
+Quagga.onDetected(async (data) => {
+    const code = data.codeResult.code;
+
+    // Prevent redundant detections
+    if (code === lastDetectedBarcode || isChecking) return;
+    lastDetectedBarcode = code;
+
+    // Update barcode textbox
+    const barcodeTextbox = document.getElementById('barcode-textbox');
+    barcodeTextbox.value = code;
+
+    // Play beep sound
+    const beepSound = document.getElementById('beep-sound');
+    beepSound.currentTime = 0;
+    beepSound.play();
+
+    // Check sheet match
+    const emailValue = document.getElementById('emailTextbox').placeholder;
+    if (emailValue) {
+        isChecking = true;
+        const result = await checkBarcodeExists(emailValue, code);
+        if (result.matched) {
+            // Map values to the corresponding fields
+            const [S, T, U, V, W, X] = result.values;
+
+            document.getElementById('category').value = S || ''; // Column S
+            document.getElementById('item').value = T || '';     // Column T
+            document.getElementById('uom').value = U || '';      // Column U
+            document.getElementById('quantity').value = 1;  // Default to 1
+            document.getElementById('price').value = X || 0;     // Column X
+
+            // Populate the invoice number field
+            const invoiceNumber = document.getElementById('invoicenumber').value = result.invoiceNumber || '';
+
+            // Update the item total dynamically
+            updateItemTotal();
+
+        } else {
+            // Clear the fields if no match is found
+            document.getElementById('category').value = '';
+            document.getElementById('item').value = '';
+            document.getElementById('uom').value = '';
+            document.getElementById('quantity').value = 0;
+            document.getElementById('price').value = 0;
+            document.getElementById('invoicenumber').value = '';
+        }
+        isChecking = false;
+    }
+});
+
+
+    }
+
+async function checkBarcodeExists(emailValue, barcodeValue) {
+    try {
+     
+        const today = document.getElementById('date').value;
+
+const response = await fetch(
+  `${WEB_APP_URL}?email=${encodeURIComponent(emailValue)}&barcode=${encodeURIComponent(barcodeValue)}&date=${encodeURIComponent(today)}`
+);
+        const result = await response.json();
+
+        if (result.matched) {
+            // Map values to the corresponding fields
+            const [S, T, U, V, W, X] = result.values;
+
+            document.getElementById('category').value = S || ''; // Column S
+            document.getElementById('item').value = T || '';     // Column T
+            document.getElementById('uom').value = U || '';      // Column U
+            document.getElementById('quantity').value = 1;  // Default to 1
+            document.getElementById('price').value = X || 0;     // Column X
+
+            // Populate the invoice number field
+            document.getElementById('invoicenumber').value = result.invoiceNumber || '';
+
+            // Update the item total dynamically
+            updateItemTotal();
+
+        } else {
+            // Clear the fields if no match is found
+            document.getElementById('category').value = '';
+            document.getElementById('item').value = '';
+            document.getElementById('uom').value = '';
+            document.getElementById('quantity').value = 0;
+            document.getElementById('price').value = 0;
+            document.getElementById('invoicenumber').value = '';
+        }
+    } catch (error) {
+        console.error('Error checking sheet:', error);
+        return { matched: false };
+    }
+}
+
+
+function updateItemTotal() {
+    const quantity = parseFloat(document.getElementById('quantity').value) || 0;
+    const price = parseFloat(document.getElementById('price').value) || 0;
+    const itemTotal = quantity * price;
+    document.getElementById('itemtotal').value = itemTotal.toFixed(2); // Keep two decimal places
+}
+
+    // Redirect to postsale page based on device type with the username in the URL
+// Define the function
+function gopostsale() {
+    const username = document.getElementById('emailTextbox').placeholder;
+    if (username) {
+        window.location.href = `Englishpostsale.html?username=${encodeURIComponent(username)}`;
+    } else {
+        alert("Please enter a username.");
+    }
+}
+
+// Add event listener to the button
+document.getElementById('submit-button').addEventListener('click', gopostsale);
+
+
+</script>
+
+
+
+</body>
+</html>
