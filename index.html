@@ -310,7 +310,7 @@ document.getElementById('loginButton').onclick = function() {
                 if (selectedLanguage === "ar") {
                     window.location.href = `ArabicHome.html?username=${encodeURIComponent(username)}`;
                 } else if (selectedLanguage === "en") {
-                    window.location.href = 'EnglishHome.html';
+                    window.location.href = `EnglishHome.html?username=${encodeURIComponent(username)}`;
                 }
             } else {
                 alert("INCORRECT INFORMATION");
