@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Balance Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
+    <style>
+body {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background-color: #B8E0CA; /* Soft, slightly darker green */
+    overflow: auto; /* Enable scrolling for the whole page */
+    position: relative;
+}
+
+
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #A2D5B6; /* A soft, slightly darker green */
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+        }
+
+         .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        /* Custom style for dropdown menu */
+        .custom-dropdown {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M7 10l5 5 5-5H7z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 10px) center;
+            background-size: 20px;
+        }
+
+        .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* Add some space above the buttons */
+    gap: 50px; /* Add gap between buttons */
+}
+
+.submit-button {
+    background-color: #006400; /* Dark green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    opacity: 0.8; /* Optional: Add hover effect */
+}
+
+        .new-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed gray;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #F0F0F0; /* Light gray background */
+    margin-top: 20px; /* Adds spacing from the above container */
+}
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Stores-Cashier-ERP-System/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
+    </div>
+
+<!-- Center container -->
+<div class="center-container">
+    <label for="category-dropdown" class="form-label">Report Start Date</label>
+    <input type="date" id="startdate" class="barcode-textbox">
+    <label for="category-dropdown" class="form-label">Report End Date</label>
+    <input type="date" id="enddate" class="barcode-textbox">
+</div>
+
+<!-- New empty container below the existing one -->
+<div class="new-container">
+    <table id="dynamicTable" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Bacrode</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Category</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Item</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Unit</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Qty Purchased</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Qty Sold</th>
+                <th style="padding: 10px; border: 1px solid #ddd; text-align: center;">Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamic rows will be inserted here -->
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+window.onload = function () {
+    const username = getQueryParameter('username');
+    if (username) {
+        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    }
+};
+    
+function getQueryParameter(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+//start date
+// Function to handle the startdate change, update BA2 and populate the table
+document.getElementById("startdate").addEventListener("change", async function () {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
+  const dateValue = this.value; // Get the selected date
+
+  if (!sheetName || !dateValue) {
+    console.error("Missing sheet name or date value.");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycbyTbA00gb6w5n-Dwl8uDhonVs2295bX-FDi_6gOz8z3ZP5HgQZ4l5ZftADvoFw6MMsY/exec"; // Replace with the deployed web app URL
+
+  try {
+    // Send the date to Google Sheets (BA2)
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        sheetName: sheetName,
+        dateValue: dateValue,
+      }),
+    });
+
+    const result = await response.text();
+    console.log(result); // Log the response to ensure the date was set in BA2
+
+    // Now fetch the row count and data for the table
+    const tableResponse = await fetch(webAppUrl + `?sheetName=${sheetName}`, {
+      method: "GET",
+    });
+
+    const tableResult = await tableResponse.json();
+    const rows = tableResult.rows; // Array of data for columns AT:AZ
+
+    // Populate the table with the data from AT:AZ
+    const tableBody = document.querySelector(".new-container tbody");
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    rows.forEach(rowData => {
+      const row = document.createElement('tr');
+      
+      // Loop through the row data (AT to AZ) and create cells
+      rowData.forEach(cellData => {
+        const cell = document.createElement('td');
+        cell.style.padding = "10px";
+        cell.style.border = "1px solid #ddd";
+        cell.style.textAlign = "center";
+        cell.textContent = cellData || ''; // Display empty if no data
+        row.appendChild(cell);
+      });
+
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error sending date to Google Sheets or populating table:", error);
+  }
+});
+
+
+    //end date
+// Function to handle the startdate change, update BA2 and populate the table
+document.getElementById("enddate").addEventListener("change", async function () {
+  const emailTextbox = document.getElementById("emailTextbox");
+  const sheetName = emailTextbox.placeholder;
+  const dateValue = this.value; // Get the selected date
+
+  if (!sheetName || !dateValue) {
+    console.error("Missing sheet name or date value.");
+    return;
+  }
+
+  const webAppUrl = "https://script.google.com/macros/s/AKfycby013sUGlDlXYIjAa9PMyPVQC8gFyrwJMdqwAxVI-RWT9WKqqcSTXRKxc88d1ek-tFG/exec"; // Replace with the deployed web app URL
+
+  try {
+    // Send the date to Google Sheets (BA2)
+    const response = await fetch(webAppUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        sheetName: sheetName,
+        dateValue: dateValue,
+      }),
+    });
+
+    const result = await response.text();
+    console.log(result); // Log the response to ensure the date was set in BA2
+
+    // Now fetch the row count and data for the table
+    const tableResponse = await fetch(webAppUrl + `?sheetName=${sheetName}`, {
+      method: "GET",
+    });
+
+    const tableResult = await tableResponse.json();
+    const rows = tableResult.rows; // Array of data for columns AT:AZ
+
+    // Populate the table with the data from AT:AZ
+    const tableBody = document.querySelector(".new-container tbody");
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    rows.forEach(rowData => {
+      const row = document.createElement('tr');
+      
+      // Loop through the row data (AT to AZ) and create cells
+      rowData.forEach(cellData => {
+        const cell = document.createElement('td');
+        cell.style.padding = "10px";
+        cell.style.border = "1px solid #ddd";
+        cell.style.textAlign = "center";
+        cell.textContent = cellData || ''; // Display empty if no data
+        row.appendChild(cell);
+      });
+
+      tableBody.appendChild(row);
+    });
+
+  } catch (error) {
+    console.error("Error sending date to Google Sheets or populating table:", error);
+  }
+});
+</script>
+
+</body>
+</html>
