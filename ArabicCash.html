@@ -94,15 +94,16 @@
 
     <!-- Center container with camera preview and barcode textbox -->
     <div class="center-container">
-        <label for="category-dropdown" class="form-label">رقم الفاتورة</label>
-<input type="text" id="invoicenumber" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">التاريخ</label>
-<input type="text" id="date" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">الفئة</label>
-<input type="text" id="category" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">اسم الصنف</label>
-<input type="text" id="item" class="barcode-textbox" readonly>
-        <label for="category-dropdown" class="form-label">وحدة القياس</label>
+        <label for="category-dropdown" class="form-label">تاريخ أول التقرير</label>
+<input type="date" id="startdate" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">تاريخ آخر التقرير</label>
+<input type="date" id="enddate" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">شراء مخزون</label>
+<input type="text" id="purchasecash" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">بيع مخزون</label>
+<input type="text" id="sellcash" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">صافي النقدية</label>
+<input type="text" id="netcash" class="barcode-textbox" readonly>
     </div>
 
 
