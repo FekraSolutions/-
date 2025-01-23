@@ -95,7 +95,7 @@ body {
         <div class="label" onclick="goToCashierPage()">Cashier</div>
         <div class="label" onclick="goToPurchasePage()">Purchase Inventory</div>
         <div class="label" onclick="goToInventoryPage()">Inventory Balance</div>
-        <div class="label">Cash Balance</div>
+        <div class="label" onclick="goToCashPage()">Cash Balance</div>
     </div>
 
  <script>
@@ -107,6 +107,13 @@ function goToCashierPage() {
     }
 }
 
+// Redirect to Cash page based on device type with the username in the URL
+function goToCashPage() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        window.location.href = `EnglishCash.html?username=${encodeURIComponent(username)}`;
+    }
+}
 
 
 // Redirect to ArabicPurchase.html with the username in the URL
