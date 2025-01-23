@@ -7,19 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
     <style>
-body {
-    display: flex;
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Cairo', sans-serif;
-    background-color: #B8E0CA; /* Soft, slightly darker green */
-    overflow: auto; /* Enable scrolling for the whole page */
-    position: relative;
-}
-
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #CDEEDC; /* Gentle, pastel green */
+            overflow: auto; /* Enable scrolling for the whole page */
+            position: relative;
+        }
 
         .icon-textbox-container {
             position: absolute;
@@ -27,7 +25,7 @@ body {
             left: 10px;
             display: flex;
             align-items: center;
-            background-color: #A2D5B6; /* A soft, slightly darker green */
+            background-color: #B8E0CA; /* Soft, slightly darker green */
             border-radius: 8px;
             box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
         }
@@ -60,7 +58,8 @@ body {
             background-color: #B8E0CA; /* Soft, slightly darker green */
         }
 
-         .barcode-textbox {
+       
+        .barcode-textbox {
             width: 300px;
             height: 35px;
             font-size: 18px;
@@ -81,6 +80,7 @@ body {
         }
 
 
+
     </style>
 </head>
 <body>
@@ -89,33 +89,43 @@ body {
         <a href="https://fekrasolutions.github.io/Stores-Cashier-ERP-System/">
             <img src="Media/off.png" alt="Icon" class="icon">
         </a>
-        <input type="text" id="barcode-textbox" class="barcode-textbox" placeholder="" readonly>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
     </div>
 
-<!-- Center container with camera preview and barcode textbox -->
-<div class="center-container">
-    <label for="category-dropdown" class="form-label">إجمالي الفاتورة</label>
-    <input type="text" id="invoicetotal" class="barcode-textbox" readonly>
-    <label for="category-dropdown" class="form-label">تم دفع</label>
-    <input type="number" id="paid" class="barcode-textbox">
-    <label for="category-dropdown" class="form-label">المتبقي</label>
-    <input type="number" id="change" class="barcode-textbox" readonly>
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">
+        <label for="category-dropdown" class="form-label">رقم الفاتورة</label>
+<input type="text" id="invoicenumber" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">التاريخ</label>
+<input type="text" id="date" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">الفئة</label>
+<input type="text" id="category" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">اسم الصنف</label>
+<input type="text" id="item" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">وحدة القياس</label>
+    </div>
+
 
 
 <script>
-window.onload = async function () {
+
+window.onload = function () {
     const username = getQueryParameter('username');
     if (username) {
         document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
     }
+};
 
 
-function getQueryParameter(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
 
+   
 </script>
+
+
 
 </body>
 </html>
