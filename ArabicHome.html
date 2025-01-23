@@ -95,7 +95,7 @@ body {
         <div class="label" onclick="goToCashierPage()">الكاشير</div>
         <div class="label" onclick="goToPurchasePage()">شراء المخزون</div>
         <div class="label" onclick="goToInventoryPage()">رصيد المخزون</div>
-        <div class="label">رصيد النقدية</div>
+        <div class="label" onclick="goToCashPage()">رصيد المخزون</div>
     </div>
 
  <script>
@@ -107,7 +107,13 @@ function goToCashierPage() {
     }
 }
 
-
+// Redirect to ArabicCash page based on device type with the username in the URL
+function goToCashPage() {
+    const username = document.getElementById('emailTextbox').value;
+    if (username) {
+        window.location.href = `ArabicCash.html?username=${encodeURIComponent(username)}`;
+    }
+}
 
 // Redirect to ArabicPurchase.html with the username in the URL
 function goToPurchasePage() {
