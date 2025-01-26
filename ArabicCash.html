@@ -112,8 +112,28 @@
     // Function to handle changes to the date fields
     function handleDateChange() {
         const emailTextbox = document.getElementById('emailTextbox');
-        const valueOrPlaceholder = emailTextbox.value || emailTextbox.placeholder;
-        alert(`Email Textbox Value/Placeholder: ${valueOrPlaceholder}`);
+        const sheetName = emailTextbox.value || emailTextbox.placeholder;
+
+        if (!sheetName) {
+            alert('Email Textbox is empty.');
+            return;
+        }
+
+        // Call the Google Apps Script web app to check if the sheet exists
+        const url = `https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec?sheetName=${encodeURIComponent(sheetName)}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    alert(`Sheet "${sheetName}" exists.`);
+                } else {
+                    alert(`Sheet "${sheetName}" does not exist.`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while checking the sheet.');
+            });
     }
 
     // Attach event listeners to the date fields
