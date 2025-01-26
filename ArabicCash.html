@@ -126,7 +126,7 @@
             return;
         }
 
-        // Call the Google Apps Script web app to update the cells
+        // Call the Google Apps Script web app to update and fetch the data
         const url = `https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec`;
         const params = new URLSearchParams({
             sheetName: sheetName,
@@ -139,9 +139,13 @@
             const data = await response.json();
 
             if (data.success) {
-                console.log('Dates successfully updated.');
+                // Update the readonly input fields with the fetched values
+                document.getElementById('sellcash').value = data.sellCash || '';
+                document.getElementById('purchasecash').value = data.purchaseCash || '';
+                document.getElementById('netcash').value = data.netCash || '';
+                console.log('Dates and cash values successfully updated.');
             } else {
-                console.error('Failed to update dates:', data.message);
+                console.error('Failed to update data:', data.message);
             }
         } catch (error) {
             console.error('Error:', error);
