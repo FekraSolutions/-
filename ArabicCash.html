@@ -123,7 +123,37 @@ window.onload = function () {
         return urlParams.get(name);
     }
 
-   
+
+document.getElementById("startdate").addEventListener("change", checkSheet);
+document.getElementById("enddate").addEventListener("change", checkSheet);
+
+function checkSheet() {
+    const emailTextbox = document.getElementById("emailTextbox");
+    const sheetName = emailTextbox.placeholder;
+
+    if (!sheetName) {
+        alert("The placeholder value is missing. Please set it first.");
+        return;
+    }
+
+    fetch("https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec", {
+        method: "POST",
+        body: JSON.stringify({ sheetName }),
+        headers: { "Content-Type": "application/json" }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.exists) {
+                alert(`Sheet "${sheetName}" exists!`);
+            } else {
+                alert(`Sheet "${sheetName}" does NOT exist.`);
+            }
+        })
+        .catch(error => {
+            console.error("Error checking sheet:", error);
+            alert("An error occurred while checking the sheet.");
+        });
+}
 </script>
 
 
