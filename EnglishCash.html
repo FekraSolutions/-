@@ -1,1 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash Balance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script> <!-- Include QuaggaJS -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: #CDEEDC; /* Gentle, pastel green */
+            overflow: auto; /* Enable scrolling for the whole page */
+            position: relative;
+        }
 
+        .icon-textbox-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 35px;
+            height: auto;
+            cursor: pointer;
+        }
+
+        .textbox {
+            width: 200px;
+            height: 20px;
+            margin-left: 10px;
+            background-color: #E2F6ED; /* Very light, friendly green */
+            border: none;
+            outline: none;
+            font-size: 12px;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid black;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #B8E0CA; /* Soft, slightly darker green */
+        }
+
+       
+        .barcode-textbox {
+            width: 300px;
+            height: 35px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: right;
+            border: none;
+            outline: none;
+            background-color: #E2F6ED; /* Very light, friendly green */
+        }
+
+        .form-label {
+            font-size: 14px;
+            color: #333;
+            text-align: right;
+            display: block;
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Top left container with off button and username textbox -->
+    <div class="icon-textbox-container">
+        <a href="https://fekrasolutions.github.io/Stores-Cashier-ERP-System/">
+            <img src="Media/off.png" alt="Icon" class="icon">
+        </a>
+        <input type="text" class="textbox" id="emailTextbox" placeholder="" readonly />
+    </div>
+
+    <!-- Center container with camera preview and barcode textbox -->
+    <div class="center-container">
+        <label for="category-dropdown" class="form-label">Report Start Date</label>
+<input type="date" id="startdate" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">Report End Date</label>
+<input type="date" id="enddate" class="barcode-textbox">
+        <label for="category-dropdown" class="form-label">Inventory Purchased</label>
+<input type="text" id="purchasecash" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Inventory Sold</label>
+<input type="text" id="sellcash" class="barcode-textbox" readonly>
+        <label for="category-dropdown" class="form-label">Cash Balance</label>
+<input type="text" id="netcash" class="barcode-textbox" readonly>
+    </div>
+
+
+<script>
+    // Function to handle changes to the date fields
+    async function handleDateChange() {
+        const emailTextbox = document.getElementById('emailTextbox');
+        const sheetName = emailTextbox.value || emailTextbox.placeholder;
+
+        if (!sheetName) {
+            alert('Email Textbox is empty.');
+            return;
+        }
+
+        const startDate = document.getElementById('startdate').value;
+        const endDate = document.getElementById('enddate').value;
+
+        if (!startDate || !endDate) {
+           return;
+        }
+
+        // Call the Google Apps Script web app to update and fetch the data
+        const url = `https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec`;
+        const params = new URLSearchParams({
+            sheetName: sheetName,
+            startDate: startDate,
+            endDate: endDate
+        });
+
+        try {
+            const response = await fetch(`${url}?${params.toString()}`);
+            const data = await response.json();
+
+            if (data.success) {
+                // Update the readonly input fields with the fetched values
+                document.getElementById('sellcash').value = data.sellCash || '';
+                document.getElementById('purchasecash').value = data.purchaseCash || '';
+                document.getElementById('netcash').value = data.netCash || '';
+                console.log('Dates and cash values successfully updated.');
+            } else {
+                console.error('Failed to update data:', data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    // Attach event listeners to the date fields
+    window.onload = function () {
+        const startDate = document.getElementById('startdate');
+        const endDate = document.getElementById('enddate');
+
+        startDate.addEventListener('input', handleDateChange);
+        endDate.addEventListener('input', handleDateChange);
+
+        // Existing username initialization code
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+        }
+    };
+
+    // Function to get query parameters
+    function getQueryParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+</script>
+
+
+</body>
+</html>
