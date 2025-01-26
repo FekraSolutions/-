@@ -120,7 +120,7 @@
         }
 
         // Call the Google Apps Script web app to check if the sheet exists
-        const url = `https://script.google.com/macros/s/https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec?sheetName=${encodeURIComponent(sheetName)}`;
+        const url = `https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec?sheetName=${encodeURIComponent(sheetName)}`;
         fetch(url)
             .then(response => response.json())
             .then(data => {
