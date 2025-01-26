@@ -109,25 +109,34 @@
 
 
 <script>
-
-window.onload = function () {
-    const username = getQueryParameter('username');
-    if (username) {
-        document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+    // Function to handle changes to the date fields
+    function handleDateChange() {
+        const emailTextbox = document.getElementById('emailTextbox');
+        const valueOrPlaceholder = emailTextbox.value || emailTextbox.placeholder;
+        alert(`Email Textbox Value/Placeholder: ${valueOrPlaceholder}`);
     }
-};
 
+    // Attach event listeners to the date fields
+    window.onload = function () {
+        const startDate = document.getElementById('startdate');
+        const endDate = document.getElementById('enddate');
 
+        startDate.addEventListener('input', handleDateChange);
+        endDate.addEventListener('input', handleDateChange);
+
+        // Existing username initialization code
+        const username = getQueryParameter('username');
+        if (username) {
+            document.getElementById('emailTextbox')?.setAttribute('placeholder', username);
+        }
+    };
+
+    // Function to get query parameters
     function getQueryParameter(name) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(name);
     }
-
-
-
-
 </script>
-
 
 
 </body>
