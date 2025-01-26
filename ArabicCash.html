@@ -107,10 +107,9 @@
     </div>
 
 
-
 <script>
     // Function to handle changes to the date fields
-    function handleDateChange() {
+    async function handleDateChange() {
         const emailTextbox = document.getElementById('emailTextbox');
         const sheetName = emailTextbox.value || emailTextbox.placeholder;
 
@@ -119,21 +118,34 @@
             return;
         }
 
-        // Call the Google Apps Script web app to check if the sheet exists
-        const url = `https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec?sheetName=${encodeURIComponent(sheetName)}`;
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.exists) {
-                    alert(`Sheet "${sheetName}" exists.`);
-                } else {
-                    alert(`Sheet "${sheetName}" does not exist.`);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred while checking the sheet.');
-            });
+        const startDate = document.getElementById('startdate').value;
+        const endDate = document.getElementById('enddate').value;
+
+        if (!startDate || !endDate) {
+            alert('Please select both start and end dates.');
+            return;
+        }
+
+        // Call the Google Apps Script web app to update the cells
+        const url = `https://script.google.com/macros/s/AKfycbwF3VvhyL4vTsmfn9pB5bj6EzmADtPIHs3Xq_MSlRztBcvUhstEphMXs1jCX2xfNzoD/exec`;
+        const params = new URLSearchParams({
+            sheetName: sheetName,
+            startDate: startDate,
+            endDate: endDate
+        });
+
+        try {
+            const response = await fetch(`${url}?${params.toString()}`);
+            const data = await response.json();
+
+            if (data.success) {
+                console.log('Dates successfully updated.');
+            } else {
+                console.error('Failed to update dates:', data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     // Attach event listeners to the date fields
